@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Youtool/static/css/main.cd12b2a9.css",
+    "main.js": "/Youtool/static/js/main.d930c5d9.js",
+    "static/js/787.86a7faa4.chunk.js": "/Youtool/static/js/787.86a7faa4.chunk.js",
+    "index.html": "/Youtool/index.html",
+    "main.cd12b2a9.css.map": "/Youtool/static/css/main.cd12b2a9.css.map",
+    "main.d930c5d9.js.map": "/Youtool/static/js/main.d930c5d9.js.map",
+    "787.86a7faa4.chunk.js.map": "/Youtool/static/js/787.86a7faa4.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cd12b2a9.css",
+    "static/js/main.d930c5d9.js"
+  ]
+}
