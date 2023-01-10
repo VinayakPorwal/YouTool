@@ -11,7 +11,9 @@ function App() {
 
   return (
     
-   <Container maxW="5500px" bg="purple.600" color="white" style={{minHeight:"100vh"}}>
+   <Container maxW="5500px" bg="purple.600" color="white" style={{minHeight:"100vh",
+          background: "#3f79e6",
+        }}>
       <Component/>
    </Container>
   );

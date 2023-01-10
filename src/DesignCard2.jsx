@@ -1,29 +1,54 @@
 import React from "react";
+import { format } from "date-fns";
 import { Text } from "@chakra-ui/react";
 function DesignCard2(props) {
   const data = props.data;
 
+  let duration = data.items[0].contentDetails.duration.slice(2, 8);
+  duration = duration.replace(/\D/g, ":");
+  duration = duration.slice(0, -1);
+
+  let date = data.items[0].snippet.publishedAt;
+  date = new Date(date);
+  date = date.toISOString().substring(0, 10);
+
+  function convertToInternational(labelValue) {
+    // Nine Zeroes for Billions
+    return Math.abs(Number(labelValue)) >= 1.0e9
+      ? (Math.abs(Number(labelValue)) / 1.0e9).toFixed(2) + "B"
+      : // Six Zeroes for Millions
+      Math.abs(Number(labelValue)) >= 1.0e6
+      ? (Math.abs(Number(labelValue)) / 1.0e6).toFixed(2) + "M"
+      : // Three Zeroes for Thousands
+      Math.abs(Number(labelValue)) >= 1.0e3
+      ? (Math.abs(Number(labelValue)) / 1.0e3).toFixed(2) + "K"
+      : Math.abs(Number(labelValue));
+  }
   return (
     <div class="card2">
       <div class="card-image">
         <img src={data.items[0].snippet.thumbnails.standard.url} alt="" />
         <Text
-        fontSize="xs"
+          fontSize="xs"
           style={{
             position: "absolute",
             margin: "-45px 0px 0px 2vw",
             background: "white",
-            color:"black",
+            color: "black",
             padding: "2px 4px",
             display: "inline-block",
             fontWeight: "700",
             borderRadius: "5px",
           }}
         >
-          {data.items[0].contentDetails.duration.slice(2, 8)}
+          {" "}
+          {duration}
         </Text>
       </div>
-      <div class="category"> {data.items[0].statistics.viewCount} Views </div>
+      <div class="category">
+        {" "}
+        {convertToInternational(data.items[0].statistics.viewCount)} Views{" "}
+      </div>
       <div class="heading"> {data.items[0].snippet.localized.title}</div>
       <div
         style={{
@@ -67,7 +92,8 @@ function DesignCard2(props) {
       </div>
       <div class="heading">
         <div class="author">
-          By <span class="name">Abi</span> 4 days ago
+          <span class="name">Published At : </span> {date}
+          {/* By <span class="name">Abi</span> 4 days ago */}
         </div>
       </div>
     </div>
