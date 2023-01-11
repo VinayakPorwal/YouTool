@@ -23,7 +23,6 @@ function Component(props) {
   const [array, setArray] = useState([]);
   const [check, setCheck] = useState();
   const [toggle, setToggle] = useState(false);
-
   const [input, setInput] = useState("");
   const [placeHolder, setPlaceHolder] = useState("");
   const count = 8;
@@ -56,8 +55,17 @@ function Component(props) {
     else if (toggle === 2) {
       
       var inputFilter = input.replace("https://www.youtube.com/channel/", "");
-      await Channel(inputFilter);
-      // setCheck(true);
+      if (input===inputFilter){
+        inputFilter = input.replace("https://www.youtube.com/", "") 
+        console.log(inputFilter)
+        await ChannelByUsername(inputFilter);
+      }
+      else{
+
+        console.log(inputFilter)
+        await ChannelById(inputFilter);
+        setCheck(2);
+      }
       setArray(mainData);
       console.log(array)
       loading.style.display = "none";
@@ -85,9 +93,20 @@ function Component(props) {
     // props.set;
     return data;
   }
-  async function Channel(id) {
+  async function ChannelById(id) {
     const response = await fetch(
       `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${id}&key=${api_key}`
+    );
+    const data = await response.json();
+    mainData.push(data);
+
+    console.log("channel", data.pageInfo.totalResults);
+    // props.set;
+    return data;
+  }
+  async function ChannelByUsername(username) {
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&forUsername=${username}&key=${api_key}`
     );
     const data = await response.json();
     mainData.push(data);
@@ -121,7 +140,8 @@ function Component(props) {
               setPlaceHolder("https://www.youtube.com/channel/");
               
             }}
-            _selected={{ color: "white", bg: "green.500" }} isDisabled
+            _selected={{ color: "white", bg: "green.500" }} 
+            // isDisabled
             >
             Channel Link
           </Tab>
@@ -193,7 +213,17 @@ function Component(props) {
             </>
           ))
         ) : (
-          <div>error</div>
+          array.map((data, i) => (
+            <>
+              {data.pageInfo.totalResults === 1 ? (
+                <div key={i} className="mainCardDiv" style={{width:"auto"}}>
+                  <ChannelCard data={data} />
+                </div>
+              ) : (
+                <div style={{ display: "none" }}> </div>
+              )}
+            </>
+          ))
         )}
        
       </div>
