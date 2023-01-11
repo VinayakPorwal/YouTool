@@ -25,8 +25,8 @@ function DesignCard2(props) {
       : Math.abs(Number(labelValue));
   }
   return (
-    <div class="card2">
-      <div class="card-image">
+    <div className="card2">
+      <div className="card-image">
         <img src={data.items[0].snippet.thumbnails.standard.url} alt="" />
         <Text
           fontSize="xs"
@@ -45,11 +45,11 @@ function DesignCard2(props) {
           {duration}
         </Text>
       </div>
-      <div class="category">
+      <div className="category">
         {" "}
         {convertToInternational(data.items[0].statistics.viewCount)} Views{" "}
       </div>
-      <div class="heading"> {data.items[0].snippet.localized.title}</div>
+      <div className="heading"> {data.items[0].snippet.localized.title}</div>
       <div
         style={{
           display: "flex",
@@ -90,9 +90,9 @@ function DesignCard2(props) {
           </Text>
         </Text>
       </div>
-      <div class="heading">
-        <div class="author">
-          <span class="name">Published At : </span> {date}
+      <div className="heading">
+        <div className="author">
+          <span className="name">Published At : </span> {date}
           {/* By <span class="name">Abi</span> 4 days ago */}
         </div>
       </div>
