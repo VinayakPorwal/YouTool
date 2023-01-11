@@ -18,12 +18,16 @@ import {
 import "./App.css";
 import DesignCard2 from "./DesignCard2";
 import ChannelCard from "./Designcard";
+import RecentCard from "./smallCard";
 
 function Component(props) {
   const [array, setArray] = useState([]);
+  const [recent, setRecent] = useState([]);
   const [check, setCheck] = useState();
   const [toggle, setToggle] = useState(false);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(
+    "https://www.youtube.com/channel/UCqwUrj10mAEsqezcItqvwEw"
+  );
   const [placeHolder, setPlaceHolder] = useState("");
   const count = 8;
   var mainData = [];
@@ -53,32 +57,31 @@ function Component(props) {
     }
     // Channel Id
     else if (toggle === 2) {
-      
       var inputFilter = input.replace("https://www.youtube.com/channel/", "");
-      if (input===inputFilter){
-        inputFilter = input.replace("https://www.youtube.com/", "") 
-        console.log(inputFilter)
+      if (input === inputFilter) {
+        inputFilter = input.replace("https://www.youtube.com/", "");
+        console.log(inputFilter);
         await ChannelByUsername(inputFilter);
-      }
-      else{
-
-        console.log(inputFilter)
+      } else {
+        console.log(inputFilter);
         await ChannelById(inputFilter);
+        setRecent(await RecentVideos(inputFilter));
+        console.log(recent);
         setCheck(2);
       }
       setArray(mainData);
-      console.log(array)
+      console.log(array);
       loading.style.display = "none";
     }
     // Video Id
     else if (toggle === 3) {
-      console.log("jbaksn",input)
+      console.log("jbaksn", input);
       var inputFilter = input.replace("https://www.youtube.com/watch?v=", "");
-      console.log(inputFilter)
+      console.log(inputFilter);
       await Detailed(inputFilter);
       setCheck(3);
       setArray(mainData);
-      console.log(array)
+      console.log(array);
       loading.style.display = "none";
     }
   }
@@ -115,6 +118,17 @@ function Component(props) {
     // props.set;
     return data;
   }
+  async function RecentVideos(channelID) {
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelID}&maxResults=10&order=date&type=video&key=${api_key}`
+    );
+    const data = await response.json();
+    // setRecent(data);
+
+    console.log("Recents", data);
+    // props.set;
+    return data.items;
+  }
 
   return (
     <>
@@ -125,31 +139,31 @@ function Component(props) {
       <Tabs colorScheme="green" mb="2" isFitted variant="enclosed">
         <TabList>
           <Tab
-            onClick={() => {setToggle(1);
-            setInput("");
-            setPlaceHolder("BB ki Vines");
-            
-          }}
-          _selected={{ color: "white", bg: "green.500" }}
+            onClick={() => {
+              setToggle(1);
+              // setInput("");
+              setPlaceHolder("BB ki Vines");
+            }}
+            _selected={{ color: "white", bg: "green.500" }}
           >
             Keyword
           </Tab>
           <Tab
-            onClick={() => {setToggle(2);
-              setInput("");
+            onClick={() => {
+              setToggle(2);
+              // setInput("");
               setPlaceHolder("https://www.youtube.com/channel/");
-              
             }}
-            _selected={{ color: "white", bg: "green.500" }} 
+            _selected={{ color: "white", bg: "green.500" }}
             // isDisabled
-            >
+          >
             Channel Link
           </Tab>
           <Tab
-            onClick={() => {setToggle(3);
-              setInput("");
+            onClick={() => {
+              setToggle(3);
+              // setInput("");
               setPlaceHolder("https://www.youtube.com/watch?v=");
-              
             }}
             _selected={{ color: "white", bg: "green.500" }}
           >
@@ -176,7 +190,7 @@ function Component(props) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <Button colorScheme="blue" onClick={keySearch}> 
+        <Button colorScheme="blue" onClick={keySearch}>
           Button
         </Button>
       </div>
@@ -199,33 +213,51 @@ function Component(props) {
           maxWidth: "1100px",
         }}
       >
-        
-        {check !==2 ? (
-          array.map((data, i) => (
-            <>
-              {data.pageInfo.totalResults === 1 ? (
-                <div key={i} className="mainCardDiv">
-                  <DesignCard2 data={data} />
-                </div>
-              ) : (
-                <div style={{ display: "none" }}> </div>
-              )}
-            </>
-          ))
-        ) : (
-          array.map((data, i) => (
-            <>
-              {data.pageInfo.totalResults === 1 ? (
-                <div key={i} className="mainCardDiv" style={{width:"auto"}}>
-                  <ChannelCard data={data} />
-                </div>
-              ) : (
-                <div style={{ display: "none" }}> </div>
-              )}
-            </>
-          ))
-        )}
-       
+        {check !== 2
+          ? array.map((data, i) => (
+              <>
+                {data.pageInfo.totalResults === 1 ? (
+                  <div key={i} className="mainCardDiv">
+                    <DesignCard2 data={data} />
+                  </div>
+                ) : (
+                  <div style={{ display: "none" }}> </div>
+                )}
+              </>
+            ))
+          : array.map((data, i) => (
+              <>
+                {data.pageInfo.totalResults === 1 ? (
+                  <div
+                    key={i}
+                    className="mainCardDiv"
+                    style={{ width: "auto" }}
+                  >
+                    <ChannelCard data={data} />
+                  </div>
+                ) : (
+                  <div style={{ display: "none" }}> </div>
+                )}
+              </>
+            ))}
+             <Heading size="md" m="3" style={{ textAlign: "left" }}>
+        Recent Videos
+      </Heading>
+        <div
+          style={{
+            margin: "auto",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-evenly",
+            maxWidth: "1100px",
+          }}
+        >
+          {recent.map((data, i) => (
+            <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
+              <RecentCard data={data} />
+            </div>
+          ))}
+        </div>
       </div>
       <div>
         <Text fontSize="xl" style={{ textAlign: "center", padding: "2vh" }}>
