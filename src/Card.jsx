@@ -174,7 +174,7 @@ function Component(props) {
         Search Your Youtube Video
       </Heading>
       Search By:
-      <Tabs colorScheme="green" mb="2" isFitted variant="enclosed">
+      <Tabs colorScheme="green" mb="2" isFitted variant="enclosed" style={{maxWidth:"90vw" ,margin:"2vh auto"}}>
         <TabList>
           <Tab
             onClick={() => {
