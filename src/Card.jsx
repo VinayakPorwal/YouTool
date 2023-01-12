@@ -28,8 +28,10 @@ function Component(props) {
   const count = 8;
   var mainData = [];
   var recData = [];
-  const api_key = "AIzaSyC6iuW5Oz08bv_e8pGIRTkyERDlTH5mWAc";
-  const api_key2 = "AIzaSyC6Q6QFsLZWlEJfmOUYgEXbh19m9NVIjpw";
+  // const api_key = "AIzaSyC6iuW5Oz08bv_e8pGIRTkyERDlTH5mWAc";
+  const api_key = "AIzaSyBeeesEJBFwXveug3nhfplFjuh5EDzdqRs";
+  const api_key2 = "AIzaSyBeeesEJBFwXveug3nhfplFjuh5EDzdqRs";
+  // const api_key2 = "AIzaSyC6Q6QFsLZWlEJfmOUYgEXbh19m9NVIjpw";
 
   const loading = document.getElementById("loading");
   async function keySearch() {
