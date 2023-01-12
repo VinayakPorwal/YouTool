@@ -20,7 +20,7 @@ function Component(props) {
   const [check, setCheck] = useState();
   const [deta, setDeta] = useState();
 
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState(2);
   const [input, setInput] = useState(
     "https://www.youtube.com/channel/UCqwUrj10mAEsqezcItqvwEw"
   );
@@ -173,8 +173,11 @@ function Component(props) {
       <Heading size="lg" style={{ textAlign: "center", margin: "2vh" }}>
         Search Your Youtube Video
       </Heading>
+      <div style={{textAlign:"center"}}>
       Search By:
-      <Tabs colorScheme="green" mb="2" isFitted variant="enclosed" style={{maxWidth:"90vw" ,margin:"2vh auto"}}>
+      </div>
+        
+      <Tabs colorScheme="green" mb="2" isFitted variant="enclosed" style={{margin:"2vh auto", maxWidth:"1220px"}}>
         <TabList>
           <Tab
             onClick={() => {
