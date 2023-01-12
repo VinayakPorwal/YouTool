@@ -1,8 +1,9 @@
 import React from "react";
 import { format } from "date-fns";
-import { Text } from "@chakra-ui/react";
+import { Text, Kbd, useToast, Code, background } from "@chakra-ui/react";
 function DesignCard2(props) {
   const data = props.data;
+  const toast = useToast();
 
   let duration = data.items[0].contentDetails.duration.slice(2, 8);
   duration = duration.replace(/\D/g, ":");
@@ -28,12 +29,14 @@ function DesignCard2(props) {
   function Details() {
     var metadata = document.getElementById(`${data.items[0].id}`);
     var button = document.getElementById(`${data.items[0].id}button`);
-    if ( metadata.style.display===  "none") 
-    {metadata.style.display=  "block";
-    button.style.transform ="rotate(0)"}
-    else {metadata.style.display=  "none";
-    button.style.transform ="rotate(180deg)"}
-    console.log("done")
+    if (metadata.style.display === "none") {
+      metadata.style.display = "block";
+      button.style.transform = "rotate(0)";
+    } else {
+      metadata.style.display = "none";
+      button.style.transform = "rotate(180deg)";
+    }
+    console.log("done");
   }
   return (
     <div className="card2" style={{ width: props.wd }} key={props.key}>
@@ -58,16 +61,37 @@ function DesignCard2(props) {
       </div>
       <div
         className="category"
-        style={{ display: "flex", justifyContent: "space-between",alignItems:"center", height:"2vh" ,    margin: "4px 0"}}
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          height: "2vh",
+          margin: "4px 0",
+        }}
       >
         {" "}
         <div>
           {convertToInternational(data.items[0].statistics.viewCount)} Views{" "}
         </div>
-        <button onClick={Details} style={{fontSize: "small", color:"black",transform:"rotate(180deg)", transition:"0.5s"}} id={`${data.items[0].id}button`}>^</button>
+        <button
+          onClick={Details}
+          style={{
+            fontSize: "small",
+            color: "black",
+            transform: "rotate(180deg)",
+            transition: "0.5s",
+          }}
+          id={`${data.items[0].id}button`}
+        >
+          ^
+        </button>
       </div>
       <div className="heading"> {data.items[0].snippet.localized.title}</div>
-      <div id={`${data.items[0].id}`} key={props.key} style={{display:"none"}}>
+      <div
+        id={`${data.items[0].id}`}
+        key={props.key}
+        style={{ display: "none" }}
+      >
         <div
           style={{
             display: "flex",
@@ -108,6 +132,74 @@ function DesignCard2(props) {
             </Text>
           </Text>
         </div>
+
+        <Text color="black" fontSize="sm">
+          Channel Link :
+          {/* <Kbd>
+            https://www.youtube.com/channel/
+            {data.items[0].snippet.channelId}
+          </Kbd> */}
+          <Code
+            style={{ width: "-webkit-fill-available", fontSize: "x-small" }}
+            children={`https://www.youtube.com/channel/${data.items[0].snippet.channelId}`}
+          />
+          <button
+            style={{
+              padding: "0 3px",
+              margin: "3px",
+              fontStyle: "italic",
+              background: "#4299e199",
+              borderRadius: "4px",
+              fontSize: "Smaller",
+            }}
+            onClick={() => {
+              navigator.clipboard.writeText(
+                `https://www.youtube.com/channel/${data.items[0].snippet.channelId}`
+              );
+              toast({
+                title: "Link Copied.",
+                description: "We've Copied your Link for you.",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+              });
+            }}
+          >
+            copy
+          </button>
+        </Text>
+        <Text color="black" fontSize="sm">
+          Video Link :{" "}
+          {/* <Kbd>https://www.youtube.com/watch?v={data.items[0].id}</Kbd> */}
+          <Code
+            style={{ width: "-webkit-fill-available", fontSize: "x-small" }}
+            children={`https://www.youtube.com/watch?v=${data.items[0].id}`}
+          />
+          <button
+            style={{
+              padding: "0 3px",
+              margin: "3px",
+              fontStyle: "italic",
+              background: "#4299e199",
+              borderRadius: "4px",
+              fontSize: "Smaller",
+            }}
+            onClick={() => {
+              navigator.clipboard.writeText(
+                `https://www.youtube.com/watch?v=${data.items[0].id}`
+              );
+              toast({
+                title: "Link Copied.",
+                description: "We've Copied your Link for you.",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+              });
+            }}
+          >
+            copy
+          </button>
+        </Text>
         <div className="heading">
           <div className="author">
             <span className="name">Published At : </span> {date}
