@@ -1,13 +1,36 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import { format } from "date-fns";
 import { Text } from "@chakra-ui/react";
 function RecentCard(props) {
+  //   let duration = data.items[0].contentDetails.duration.slice(2, 8);
+  //   duration = duration.replace(/\D/g, ":");
+  //   duration = duration.slice(0, -1);
+
+
+
+  const [deta, setDeta] = useState()
+    async function Detailed(id) {
+        const response = await fetch(
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${id}&key=${props.api_key}`
+        );
+        const data = await response.json();
+    
+        console.log("Video", data.pageInfo.totalResults);
+        // props.set;
+        return data;
+      }
+
+     useEffect( ()=>{
+       async function go() {
+
+           setDeta(await Detailed(props.id));
+           console.log(deta)
+        }
+        go();
+     },[]) 
+ 
+
   const data = props.data;
-
-//   let duration = data.items[0].contentDetails.duration.slice(2, 8);
-//   duration = duration.replace(/\D/g, ":");
-//   duration = duration.slice(0, -1);
-
   let date = data.snippet.publishedAt;
   date = new Date(date);
   date = date.toISOString().substring(0, 10);
@@ -25,11 +48,10 @@ function RecentCard(props) {
       : Math.abs(Number(labelValue));
   }
 
-  
   return (
-    <div className="card2 smallCard" style={{width:"200px"}}>
+    <div className="card2 smallCard" style={{ width: "200px" }}>
       <div className="card-image">
-        <img src={data.snippet.thumbnails.medium.url} alt="" />
+        <img src={data. snippet.thumbnails.medium.url} alt="" />
         <Text
           fontSize="xs"
           style={{
@@ -43,7 +65,6 @@ function RecentCard(props) {
             borderRadius: "5px",
           }}
         >
-          {" "}
           {/* {duration} */}
         </Text>
       </div>
@@ -69,7 +90,7 @@ function RecentCard(props) {
             textAlign: "center",
           }}
         >
-          {/* {data.items[0].statistics.likeCount} */}
+          {/* {data. statistics.likeCount} */}
           <Text color="black" fontSize="xm">
             {" "}
             {/* Likes{" "} */}
@@ -85,7 +106,7 @@ function RecentCard(props) {
             textAlign: "center",
           }}
         >
-          {/* {data.items[0].statistics.commentCount} */}
+          {/* {data. statistics.commentCount} */}
           <Text color="black" fontSize="xs">
             {" "}
             {/* Comments{" "} */}

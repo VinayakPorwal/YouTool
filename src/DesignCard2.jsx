@@ -24,8 +24,19 @@ function DesignCard2(props) {
       ? (Math.abs(Number(labelValue)) / 1.0e3).toFixed(2) + "K"
       : Math.abs(Number(labelValue));
   }
+
+  function Details() {
+    var metadata = document.getElementById(`${data.items[0].id}`);
+    var button = document.getElementById(`${data.items[0].id}button`);
+    if ( metadata.style.display===  "none") 
+    {metadata.style.display=  "block";
+    button.style.transform ="rotate(0)"}
+    else {metadata.style.display=  "none";
+    button.style.transform ="rotate(180deg)"}
+    console.log("done")
+  }
   return (
-    <div className="card2">
+    <div className="card2" style={{ width: props.wd }} key={props.key}>
       <div className="card-image">
         <img src={data.items[0].snippet.thumbnails.standard.url} alt="" />
         <Text
@@ -45,55 +56,63 @@ function DesignCard2(props) {
           {duration}
         </Text>
       </div>
-      <div className="category">
+      <div
+        className="category"
+        style={{ display: "flex", justifyContent: "space-between",alignItems:"center", height:"2vh" ,    margin: "4px 0"}}
+      >
         {" "}
-        {convertToInternational(data.items[0].statistics.viewCount)} Views{" "}
+        <div>
+          {convertToInternational(data.items[0].statistics.viewCount)} Views{" "}
+        </div>
+        <button onClick={Details} style={{fontSize: "small", color:"black",transform:"rotate(180deg)", transition:"0.5s"}} id={`${data.items[0].id}button`}>^</button>
       </div>
       <div className="heading"> {data.items[0].snippet.localized.title}</div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          padding: "5px",
-        }}
-      >
-        <Text
-          color="blue.600"
-          fontSize="xs"
-          as="b"
+      <div id={`${data.items[0].id}`} key={props.key} style={{display:"none"}}>
+        <div
           style={{
             display: "flex",
-            flexDirection: "column",
-            textAlign: "center",
+            justifyContent: "space-evenly",
+            padding: "5px",
           }}
         >
-          {data.items[0].statistics.likeCount}
-          <Text color="black" fontSize="xm">
-            {" "}
-            Likes{" "}
+          <Text
+            color="blue.600"
+            fontSize="xs"
+            as="b"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              textAlign: "center",
+            }}
+          >
+            {data.items[0].statistics.likeCount}
+            <Text color="black" fontSize="xm">
+              {" "}
+              Likes{" "}
+            </Text>
           </Text>
-        </Text>
-        <Text
-          color="blue.600"
-          fontSize="xs"
-          as="b"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            textAlign: "center",
-          }}
-        >
-          {data.items[0].statistics.commentCount}
-          <Text color="black" fontSize="xs">
-            {" "}
-            Comments{" "}
+          <Text
+            color="blue.600"
+            fontSize="xs"
+            as="b"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              textAlign: "center",
+            }}
+          >
+            {data.items[0].statistics.commentCount}
+            <Text color="black" fontSize="xs">
+              {" "}
+              Comments{" "}
+            </Text>
           </Text>
-        </Text>
-      </div>
-      <div className="heading">
-        <div className="author">
-          <span className="name">Published At : </span> {date}
-          {/* By <span class="name">Abi</span> 4 days ago */}
+        </div>
+        <div className="heading">
+          <div className="author">
+            <span className="name">Published At : </span> {date}
+            {/* By <span class="name">Abi</span> 4 days ago */}
+          </div>
         </div>
       </div>
     </div>

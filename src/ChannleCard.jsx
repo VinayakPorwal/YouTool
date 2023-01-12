@@ -29,32 +29,44 @@ function ChannelCard(props) {
       : Math.abs(Number(labelValue));
   }
   return (
-    <div className="card2">
-      <div className="card-image" style={{ background: "none" }}>
-        <img
-          src={data.items[0].snippet.thumbnails.medium.url}
-          alt=""
-          style={{ margin: "auto" }}
-        />
-        <Text
+    <div className="card2" style={{ width: "80vw" }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <div
+          className="card-image"
+          style={{ background: "none", width: "150px" }}
+        >
+          <img
+            src={data.items[0].snippet.thumbnails.medium.url}
+            alt=""
+            style={{ margin: "auto" }}
+          />
+        </div>
+        <div style={{display:"flex", flexDirection:"column" ,padding:"0 2vh"}}>
+          <div className="heading" style={{ padding: "0 1vh" }} >
+            {data.items[0].snippet.localized.title}
+          </div>
+          <div className="category" style={{ padding: "0 1vh" }}>
+            {data.items[0].snippet.customUrl}
+          </div>
+          <Text
+          color="blue.600"
           fontSize="xs"
+          as="b"
           style={{
-            position: "absolute",
-            margin: "-45px 0px 0px 2vw",
-            background: "white",
-            color: "black",
-            padding: "2px 4px",
-            display: "inline-block",
-            fontWeight: "700",
-            borderRadius: "5px",
+            display: "flex",
+            textAlign: "center",
+            width:"120px",
+            padding:"6px",
+            justifyContent:"space-between"
           }}
         >
-          {" "}
+          <Text  fontSize="xm" className="subscriber">
+            {" "}
+            Subscriber{" "}
+          </Text>
+          {convertToInternational(data.items[0].statistics.subscriberCount)}
         </Text>
-      </div>
-      <div className="heading"> {data.items[0].snippet.localized.title}</div>
-      <div className="category">
-        {data.items[0].snippet.customUrl} 
+        </div>
       </div>
       <Accordion defaultIndex={[0]} allowMultiple>
         <AccordionItem>
@@ -67,7 +79,7 @@ function ChannelCard(props) {
                 textAlign="left"
                 color="black"
               >
-               Description
+                Description
               </Box>
               <AccordionIcon />
             </AccordionButton>
@@ -77,6 +89,12 @@ function ChannelCard(props) {
               {" "}
               {data.items[0].snippet.localized.description}
             </div>
+            <div className="heading">
+        <div className="author">
+          <span className="name">Created At : </span> {date}
+          {/* By <span class="name">Abi</span> 4 days ago */}
+        </div>
+      </div>
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
@@ -97,10 +115,10 @@ function ChannelCard(props) {
             textAlign: "center",
           }}
         >
-          {convertToInternational(data.items[0].statistics.subscriberCount)}
-          <Text color="black" fontSize="xm">
+          {data.items[0].statistics.videoCount}
+          <Text color="black" fontSize="xs">
             {" "}
-            Subscriber{" "}
+            Videos{" "}
           </Text>
         </Text>
         <Text
@@ -113,35 +131,14 @@ function ChannelCard(props) {
             textAlign: "center",
           }}
         >
-          {data.items[0].statistics.videoCount}
+          {" "}
+          {convertToInternational(data.items[0].statistics.viewCount)}
           <Text color="black" fontSize="xs">
-            {" "}
-            Videos{" "}
+            Channel Views{" "}
           </Text>
         </Text>
       </div>
-      <Text
-        color="blue.600"
-        fontSize="xs"
-        as="b"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          textAlign: "center",
-        }}
-      >
-        {" "}
-        {convertToInternational(data.items[0].statistics.viewCount)}
-        <Text color="black" fontSize="xs">
-          Channel Views{" "}
-        </Text>
-      </Text>
-      <div className="heading">
-        <div className="author">
-          <span className="name">Created At : </span> {date}
-          {/* By <span class="name">Abi</span> 4 days ago */}
-        </div>
-      </div>
+      
     </div>
   );
 }

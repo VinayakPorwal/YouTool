@@ -7,23 +7,20 @@ import {
   Card,
   Text,
   Heading,
-  Switch,
-  Select,
-  FormControl,
-  FormLabel,
   Tabs,
   TabList,
   Tab,
 } from "@chakra-ui/react";
 import "./App.css";
 import DesignCard2 from "./DesignCard2";
-import ChannelCard from "./Designcard";
+import ChannelCard from "./ChannleCard";
 import RecentCard from "./smallCard";
 
 function Component(props) {
   const [array, setArray] = useState([]);
-  const [recent, setRecent] = useState([]);
   const [check, setCheck] = useState();
+  const [deta, setDeta] = useState();
+
   const [toggle, setToggle] = useState(false);
   const [input, setInput] = useState(
     "https://www.youtube.com/channel/UCqwUrj10mAEsqezcItqvwEw"
@@ -31,11 +28,14 @@ function Component(props) {
   const [placeHolder, setPlaceHolder] = useState("");
   const count = 8;
   var mainData = [];
+  var recData = [];
   const api_key = "AIzaSyC6iuW5Oz08bv_e8pGIRTkyERDlTH5mWAc";
+  const api_key2 = "AIzaSyC6Q6QFsLZWlEJfmOUYgEXbh19m9NVIjpw";
 
   const loading = document.getElementById("loading");
   async function keySearch() {
     setArray([]);
+    setDeta([]);
     loading.style.display = "block";
     if (toggle === 1) {
       const response = await fetch(
@@ -55,6 +55,7 @@ function Component(props) {
         // console.log(i, load.id.videoId);
       });
     }
+
     // Channel Id
     else if (toggle === 2) {
       var inputFilter = input.replace("https://www.youtube.com/channel/", "");
@@ -63,14 +64,15 @@ function Component(props) {
         console.log(inputFilter);
         await ChannelByUsername(inputFilter);
       } else {
-        console.log(inputFilter);
+        console.log("channel ID", inputFilter);
         await ChannelById(inputFilter);
-        setRecent(await RecentVideos(inputFilter));
-        console.log(recent);
+        console.log(await RecentVideos(inputFilter));
+        // console.log("recent 10 videos",recent);
         setCheck(2);
       }
       setArray(mainData);
-      console.log(array);
+
+      // console.log("channel data",array);
       loading.style.display = "none";
     }
     // Video Id
@@ -84,6 +86,17 @@ function Component(props) {
       console.log(array);
       loading.style.display = "none";
     }
+  }
+
+  async function Detailed2(id) {
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${id}&key=${api_key}`
+    );
+    const data = await response.json();
+    recData.push(data);
+    console.log("Video", data.pageInfo.totalResults);
+
+    return data;
   }
   async function Detailed(id) {
     const response = await fetch(
@@ -120,19 +133,27 @@ function Component(props) {
   }
   async function RecentVideos(channelID) {
     const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelID}&maxResults=10&order=date&type=video&key=${api_key}`
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelID}&maxResults=10&order=date&type=video&key=${api_key2}`
     );
-    const data = await response.json();
+    var data = await response.json();
     // setRecent(data);
+    recData = [];
+    data = data.items;
+    console.log("Recents 10 video id", data);
+    data.map(async (load, i) => {
+      await Detailed2(load.id.videoId);
+      if (recData.length === data.length) {
+        setDeta(recData);
+        console.log(deta);
+      }
+    });
 
-    console.log("Recents", data);
-    // props.set;
-    return data.items;
+    return deta;
   }
 
   return (
     <>
-      <Heading size="lg" style={{ textAlign: "center" }}>
+      <Heading size="lg" style={{ textAlign: "center" ,margin:"2vh" }}>
         Search Your Youtube Video
       </Heading>
       Search By:
@@ -144,7 +165,7 @@ function Component(props) {
               // setInput("");
               setPlaceHolder("BB ki Vines");
             }}
-            _selected={{ color: "white", bg: "green.500" }}
+            _selected={{ color: "white", bg: "#252525" }}
           >
             Keyword
           </Tab>
@@ -154,7 +175,7 @@ function Component(props) {
               // setInput("");
               setPlaceHolder("https://www.youtube.com/channel/");
             }}
-            _selected={{ color: "white", bg: "green.500" }}
+            _selected={{ color: "white", bg: "#252525" }}
             // isDisabled
           >
             Channel Link
@@ -165,7 +186,7 @@ function Component(props) {
               // setInput("");
               setPlaceHolder("https://www.youtube.com/watch?v=");
             }}
-            _selected={{ color: "white", bg: "green.500" }}
+            _selected={{ color: "white", bg: "#252525" }}
           >
             Video Link
           </Tab>
@@ -179,7 +200,7 @@ function Component(props) {
           margin: "auto",
           position: "sticky",
           top: "0px",
-          background: "#6b46c1",
+          background: "#ececec",
           borderRadius: "10px",
           // background: "#3f79e6",
           zIndex: "2",
@@ -190,6 +211,7 @@ function Component(props) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
+        <button style={{width:"30px", fontSize:"large", fontWeight:"600"}} onClick={()=>setInput("")}>x</button>
         <Button colorScheme="blue" onClick={keySearch}>
           Button
         </Button>
@@ -213,19 +235,27 @@ function Component(props) {
           maxWidth: "1100px",
         }}
       >
-        {check !== 2
-          ? array.map((data, i) => (
-              <>
-                {data.pageInfo.totalResults === 1 ? (
-                  <div key={i} className="mainCardDiv">
-                    <DesignCard2 data={data} />
-                  </div>
-                ) : (
-                  <div style={{ display: "none" }}> </div>
-                )}
-              </>
-            ))
-          : array.map((data, i) => (
+        {/* // Keyword Search Or Single Video search  */}
+        {check !== 2 ? (
+          array.map((data, i) => (
+            <>
+              {data.pageInfo.totalResults === 1 ? (
+                <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
+                  <DesignCard2 data={data} wd={"200px"} />
+                </div>
+              ) : (
+                <div style={{ display: "none" }}> </div>
+              )}
+            </>
+          ))
+        ) : (
+          <></>
+        )}
+
+        {/* // Channel Section */}
+        {check === 2 ? (
+          <>
+            {array.map((data, i) => (
               <>
                 {data.pageInfo.totalResults === 1 ? (
                   <div
@@ -240,24 +270,39 @@ function Component(props) {
                 )}
               </>
             ))}
-             <Heading size="md" m="3" style={{ textAlign: "left" }}>
-        Recent Videos
-      </Heading>
-        <div
-          style={{
-            margin: "auto",
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-evenly",
-            maxWidth: "1100px",
-          }}
-        >
-          {recent.map((data, i) => (
-            <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
-              <RecentCard data={data} />
+            <Heading size="md" m="3" style={{ textAlign: "left" }}>
+              Recent Videos
+            </Heading>
+
+            <div
+              style={{
+                margin: "auto",
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-evenly",
+                maxWidth: "1100px",
+              }}
+            >
+              {deta ? (
+                deta.map((data, i) => (
+                  <>
+                    <div
+                      key={i}
+                      className="mainCardDiv"
+                      style={{ width: "auto" }}
+                    >
+                      <DesignCard2 data={data} wd={"200px"} key={i} />
+                    </div>
+                  </>
+                ))
+              ) : (
+                <></>
+              )}
             </div>
-          ))}
-        </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
       <div>
         <Text fontSize="xl" style={{ textAlign: "center", padding: "2vh" }}>
