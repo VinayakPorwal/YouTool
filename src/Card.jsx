@@ -14,7 +14,6 @@ import {
 import "./App.css";
 import DesignCard2 from "./DesignCard2";
 import ChannelCard from "./ChannleCard";
-import RecentCard from "./smallCard";
 
 function Component(props) {
   const [array, setArray] = useState([]);
@@ -42,6 +41,11 @@ function Component(props) {
         `https://www.googleapis.com/youtube/v3/search?q=${input}&maxResults=${count}&key=${api_key}`
       );
       let data = await response.json();
+      if (data.pageInfo.totalResults === 0) {
+        alert("Results Not Found");
+        loading.style.display = "none";
+        return;
+      }
       mainData = [];
       data = data.items;
       data.map(async (load, i) => {
@@ -79,6 +83,11 @@ function Component(props) {
     else if (toggle === 3) {
       console.log("jbaksn", input);
       var inputFilter = input.replace("https://www.youtube.com/watch?v=", "");
+      if (input === inputFilter) {
+        alert("please insert Correct Url");
+        loading.style.display = "none";
+        return;
+      }
       console.log(inputFilter);
       await Detailed(inputFilter);
       setCheck(3);
@@ -93,6 +102,7 @@ function Component(props) {
       `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${id}&key=${api_key}`
     );
     const data = await response.json();
+
     recData.push(data);
     console.log("Video", data.pageInfo.totalResults);
 
@@ -103,8 +113,11 @@ function Component(props) {
       `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${id}&key=${api_key}`
     );
     const data = await response.json();
+    if (data.pageInfo.totalResults === 0) {
+      alert("incorrect Url or Video Id");
+      return;
+    }
     mainData.push(data);
-
     console.log("Video", data.pageInfo.totalResults);
     // props.set;
     return data;
@@ -137,6 +150,10 @@ function Component(props) {
     );
     var data = await response.json();
     // setRecent(data);
+    if (data.pageInfo.totalResults === 0) {
+      alert("incorrect Url or Channel Id");
+      return;
+    }
     recData = [];
     data = data.items;
     console.log("Recents 10 video id", data);
@@ -153,7 +170,7 @@ function Component(props) {
 
   return (
     <>
-      <Heading size="lg" style={{ textAlign: "center" ,margin:"2vh" }}>
+      <Heading size="lg" style={{ textAlign: "center", margin: "2vh" }}>
         Search Your Youtube Video
       </Heading>
       Search By:
@@ -211,7 +228,12 @@ function Component(props) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
-        <button style={{width:"30px", fontSize:"large", fontWeight:"600"}} onClick={()=>setInput("")}>x</button>
+        <button
+          style={{ width: "30px", fontSize: "large", fontWeight: "600" }}
+          onClick={() => setInput("")}
+        >
+          x
+        </button>
         <Button colorScheme="blue" onClick={keySearch}>
           Button
         </Button>
@@ -220,7 +242,7 @@ function Component(props) {
         id="loading"
         maxW="lg"
         borderRadius="lg"
-        style={{ background: "white", margin: "2vh", display: "none" }}
+        style={{ background: "white", margin: "2vh auto", display: "none" }}
       >
         <CardBody>
           <span className="loader"></span>
@@ -236,12 +258,27 @@ function Component(props) {
         }}
       >
         {/* // Keyword Search Or Single Video search  */}
-        {check !== 2 ? (
+        {check === 1 ? (
           array.map((data, i) => (
             <>
               {data.pageInfo.totalResults === 1 ? (
                 <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
                   <DesignCard2 data={data} wd={"200px"} />
+                </div>
+              ) : (
+                <div style={{ display: "none" }}> </div>
+              )}
+            </>
+          ))
+        ) : (
+          <></>
+        )}
+        {check === 3 ? (
+          array.map((data, i) => (
+            <>
+              {data.pageInfo.totalResults === 1 ? (
+                <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
+                  <DesignCard2 data={data} wd={"auto"} />
                 </div>
               ) : (
                 <div style={{ display: "none" }}> </div>
@@ -258,21 +295,23 @@ function Component(props) {
             {array.map((data, i) => (
               <>
                 {data.pageInfo.totalResults === 1 ? (
-                  <div
-                    key={i}
-                    className="mainCardDiv"
-                    style={{ width: "auto" }}
-                  >
-                    <ChannelCard data={data} />
-                  </div>
+                  <>
+                    <div
+                      key={i}
+                      className="mainCardDiv"
+                      style={{ width: "auto" }}
+                    >
+                      <ChannelCard data={data} />
+                    </div>
+                    <Heading size="md" m="3" style={{ textAlign: "left" }}>
+                      Recent Videos
+                    </Heading>
+                  </>
                 ) : (
                   <div style={{ display: "none" }}> </div>
                 )}
               </>
             ))}
-            <Heading size="md" m="3" style={{ textAlign: "left" }}>
-              Recent Videos
-            </Heading>
 
             <div
               style={{
