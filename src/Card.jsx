@@ -178,16 +178,6 @@ function Component(props) {
         <TabList>
           <Tab
             onClick={() => {
-              setToggle(1);
-              // setInput("");
-              setPlaceHolder("BB ki Vines");
-            }}
-            _selected={{ color: "white", bg: "#252525" }}
-          >
-            Keyword
-          </Tab>
-          <Tab
-            onClick={() => {
               setToggle(2);
               // setInput("");
               setPlaceHolder("https://www.youtube.com/channel/");
@@ -196,6 +186,16 @@ function Component(props) {
             // isDisabled
           >
             Channel Link
+          </Tab>
+          <Tab
+            onClick={() => {
+              setToggle(1);
+              // setInput("");
+              setPlaceHolder("BB ki Vines");
+            }}
+            _selected={{ color: "white", bg: "#252525" }}
+          >
+            Keyword
           </Tab>
           <Tab
             onClick={() => {
