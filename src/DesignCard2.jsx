@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { format } from "date-fns";
-import { Text, Kbd, useToast, Code, background } from "@chakra-ui/react";
+import {
+  Text,
+  Kbd,
+  useToast,
+  Code,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+  Button,
+} from "@chakra-ui/react";
 function DesignCard2(props) {
+  const [Download, setDownload] = useState();
   const data = props.data;
   const toast = useToast();
 
@@ -38,6 +53,16 @@ function DesignCard2(props) {
     }
     console.log("done");
   }
+
+  async function download() {
+    console.log(data.items[0].id);
+    const response = await fetch(
+      `https://server-ten-iota.vercel.app/download/?url=https://www.youtube.com/watch?v=${data.items[0].id}`
+    );
+    const data2 = await response.json();
+    console.log(data2.info);
+    setDownload(data2.info);
+  }
   return (
     <div className="card2" style={{ width: props.wd }} key={props.key}>
       <div className="card-image">
@@ -73,18 +98,43 @@ function DesignCard2(props) {
         <div>
           {convertToInternational(data.items[0].statistics.viewCount)} Views{" "}
         </div>
-        <button
-          onClick={Details}
-          style={{
-            fontSize: "small",
-            color: "black",
-            transform: "rotate(180deg)",
-            transition: "0.5s",
-          }}
-          id={`${data.items[0].id}button`}
-        >
-          ^
-        </button>
+        <div>
+          <Menu>
+            <MenuButton onClick={download}>
+              <i
+                className="fa fa-download"
+                style={{ color: "black", margin: "0 8px" }}
+              ></i>
+            </MenuButton>
+            <MenuList style={{height:"50vh", overflow:"scroll"}}>
+              {Download &&
+                Download.map((format, i) => (
+                  <MenuItem key={i}>
+                    Download
+                    <a class="dropdown-item" href={format.url}>
+                      {format.mimeType.split(";")[0]}{" "}
+                      {format.hasVideo ? format.height + "p" : ""}
+                      {!format.hasAudio && (
+                        <i class="fas fa-volume-mute text-danger"></i>
+                      )}
+                    </a>
+                  </MenuItem>
+                ))}
+            </MenuList>
+          </Menu>
+          <button
+            onClick={Details}
+            style={{
+              fontSize: "small",
+              color: "black",
+              transform: "rotate(180deg)",
+              transition: "0.5s",
+            }}
+            id={`${data.items[0].id}button`}
+          >
+            <i className="fa fa-chevron-down"></i>
+          </button>
+        </div>
       </div>
       <div className="heading"> {data.items[0].snippet.localized.title}</div>
       <div
