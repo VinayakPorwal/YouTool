@@ -123,10 +123,7 @@ function Component(props) {
       `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${id}&key=${api_key}`
     );
     const data = await response.json();
-    if (data.pageInfo.totalResults === 0) {
-      alert("incorrect Url or Video Id");
-      return;
-    }
+ 
     mainData.push(data);
     console.log("Video", data.pageInfo.totalResults);
     // props.set;
@@ -243,7 +240,7 @@ function Component(props) {
           placeholder={placeHolder}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-        />
+        /> 
         <button
           style={{ width: "30px", fontSize: "large", fontWeight: "600" }}
           onClick={() => setInput("")}
@@ -251,7 +248,7 @@ function Component(props) {
           x
         </button>
         <Button colorScheme="blue" onClick={keySearch}>
-          Button
+          Search
         </Button>
       </div>
       <Card
@@ -277,9 +274,9 @@ function Component(props) {
         {check === 1 ? (
           array.map((data, i) => (
             <>
-              {data.pageInfo.totalResults === 1 ? (
+              {data.pageInfo.totalResults >= 1 ? (
                 <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
-                  <DesignCard2 data={data} wd={"200px"} key={i} />
+                  <DesignCard2 toggle={toggle}   fun={toggle3} data={data} wd={"220px"} ht={"135px"} key={i} />
                 </div>
               ) : (
                 <div style={{ display: "none" }}> </div>
@@ -295,7 +292,7 @@ function Component(props) {
             <>
               {data.pageInfo.totalResults === 1 ? (
                 <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
-                  <DesignCard2 data={data} wd={"auto"} />
+                  <DesignCard2 toggle={toggle} data={data} wd={"72vw"} ht={"41vw"} />
                 </div>
               ) : (
                 <div style={{ display: "none" }}> </div>
@@ -347,7 +344,7 @@ function Component(props) {
                       className="mainCardDiv"
                       style={{ width: "auto" }}
                     >
-                      <DesignCard2 fun={toggle3} data={data} wd={"200px"} />
+                      <DesignCard2 toggle={toggle} fun={toggle3} data={data} wd={"240px"} ht={"135px"} />
                     </div>
                   </>
                 ))

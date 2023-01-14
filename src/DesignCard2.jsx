@@ -21,6 +21,7 @@ function DesignCard2(props) {
   const [video, setVideo] = useState(false);
   const data = props.data;
   const toast = useToast();
+  const [styling, setStyling] = useState({});
 
   const StringWithColons = (string) => {
     //PT02S
@@ -104,40 +105,94 @@ function DesignCard2(props) {
     console.log(urlPlayer);
   }
   useEffect(() => {
+    if (props.toggle === 3) {
+      setStyling({
+        height: "60vw",
+        width: "85vw",
+      });
+    } else {
+      setStyling({
+        width: props.wd,
+        height: "fit-content",
+      });
+    }
+    console.log(props.toggle);
+
     download();
   }, []);
   return (
     <div className="card2" style={{ width: props.wd }}>
       <div className="card-image">
-       { !video && <img
-          src={data.items[0].snippet.thumbnails.standard.url}
-          alt=""
-          onClick={() => props.fun(data.items[0].id)}
-        />}
-       
-      {video && 
-         <iframe
-         className="d-flex"
-         width={props.wd}
-         src={urlPlayer}
-         ></iframe>
-        }
-        <Text
-          fontSize="xs"
-          style={{
-            position: "absolute",
-            margin: "-45px 0px 0px 2vw",
-            background: "white",
-            color: "black",
-            padding: "2px 4px",
-            display: "inline-block",
-            fontWeight: "700",
-            borderRadius: "5px",
-          }}
-        >
-          {" "}
-          {StringWithColons(data.items[0].contentDetails.duration)}
-        </Text>
+        {!video && (
+          <>
+            <img
+              src={data.items[0].snippet.thumbnails.standard.url}
+              alt=""
+              onClick={() => {
+                setVideo(true);
+              }}
+              onMouseOver={() => {
+                document.getElementById(
+                  `${data.items[0].id}expand`
+                ).style.display = "block";
+              }}
+              onMouseOut={() => {
+                document.getElementById(
+                  `${data.items[0].id}expand`
+                ).style.display = "none";
+              }}
+              style={{ width: props.wd, height: props.ht, objectFit: "cover" }}
+            />
+            <Text
+              fontSize="xs"
+              style={{
+                position: "absolute",
+                margin: "-45px 0px 0px 2vw",
+                background: "white",
+                color: "black",
+                padding: "2px 4px",
+                display: "inline-block",
+                fontWeight: "700",
+                borderRadius: "5px",
+              }}
+            >
+              {" "}
+              {StringWithColons(data.items[0].contentDetails.duration)}
+            </Text>
+          </>
+        )}
+
+        {video && (
+          <iframe
+            className="d-flex"
+            style={{ width: props.wd, height: props.ht }}
+            //for video not from Youtube
+            // src={Download[0].url}
+            // for video from Youtube
+            src={urlPlayer}
+          ></iframe>
+        )}
+
+        {!video && (
+          <i
+            id={`${data.items[0].id}expand`}
+            class="fa fa-play expand"
+            onClick={() => {
+              setVideo(true);
+            }}
+          >
+            {" "}
+            <Text
+              fontSize="xs"
+              style={{
+                margin: "3px -30px",
+                fontFamily: "monospace",
+              }}
+            >
+              Click To Play
+            </Text>
+          </i>
+        )}
       </div>
       <div
         className="category"
@@ -153,15 +208,28 @@ function DesignCard2(props) {
           <i class="fa fa-solid fa-eye" style={{ margin: "0 4px 0 0" }}></i>
           {convertToInternational(data.items[0].statistics.viewCount)} {""}
         </div>
-        <div>
-        <i class="fa fa-play" onClick={()=>{
-          setVideo(true)
-        }}></i>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "80px",
+          }}
+        >
+          <i
+            class="fa fa-expand"
+            title="Open In Large"
+            onClick={() => {
+              props.fun(data.items[0].id);
+            }}
+          ></i>
+
           <Menu>
             <MenuButton onClick={download}>
               <i
                 className="fa fa-download"
-                style={{ color: "black", margin: "0 8px" }}
+                title="Download"
+                style={{ color: "black" }}
               ></i>
             </MenuButton>
             <MenuList style={{ height: "50vh", overflow: "scroll" }}>
@@ -180,27 +248,34 @@ function DesignCard2(props) {
                 ))}
             </MenuList>
           </Menu>
-          <button
+
+          <i
+            className="fa fa-chevron-up"
+            title="More Details"
             onClick={Details}
             style={{
               fontSize: "small",
               color: "black",
-              display: "inline-flex",
+              // display: "inline-flex",
               transform: "rotate(180deg)",
               transition: "0.5s",
             }}
             id={`${data.items[0].id}button`}
-          >
-            <i className="fa fa-chevron-up"></i>
-          </button>
+          ></i>
         </div>
       </div>
       <div className="heading"> {data.items[0].snippet.localized.title}</div>
       <div
         id={`${data.items[0].id}`}
         key={props.key}
-        style={{ display: "none" }}
+        style={{ display: "none", height: "150px", overflow: "scroll" }}
       >
+        <div className="heading">
+          <div className="author" style={{ padding: "0" }}>
+            <span className="name">Published At : </span> {date}
+            {/* By <span class="name">Abi</span> 4 days ago */}
+          </div>
+        </div>
         <div
           style={{
             display: "flex",
@@ -241,7 +316,10 @@ function DesignCard2(props) {
             </Text>
           </Text>
         </div>
-
+        <Text fontSize="sm">
+          {" "}
+          {data.items[0].snippet.localized.description}
+        </Text>
         <Text color="black" fontSize="sm">
           Channel Link :
           {/* <Kbd>
@@ -323,12 +401,6 @@ function DesignCard2(props) {
             </div>
           </div>
         </Text>
-        <div className="heading">
-          <div className="author">
-            <span className="name">Published At : </span> {date}
-            {/* By <span class="name">Abi</span> 4 days ago */}
-          </div>
-        </div>
       </div>
     </div>
   );

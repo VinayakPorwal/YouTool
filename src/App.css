@@ -7,12 +7,12 @@
   height: 100vh;
   width: 100vw;
 }
-*{
+* {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
 }
-.duration{
+.duration {
   position: relative;
   margin-left: auto;
   bottom: 118px;
@@ -21,27 +21,31 @@
   padding: 2px 4px;
 }
 
-
 .loader {
   width: px;
   height: 215px;
   display: block;
   margin: auto;
   position: relative;
-  background: #FFF;
+  background: #fff;
   box-sizing: border-box;
 }
 .loader::after {
-  content: '';
+  content: "";
   width: calc(100% - 30px);
   height: calc(100% - 15px);
   top: 15px;
   left: 15px;
   position: absolute;
-  background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5) 50%, transparent 100%),
-   linear-gradient(#DDD 100px, transparent 0),
-   linear-gradient(#DDD 16px, transparent 0),
-   linear-gradient(#DDD 50px, transparent 0);
+  background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.5) 50%,
+      transparent 100%
+    ),
+    linear-gradient(#ddd 100px, transparent 0),
+    linear-gradient(#ddd 16px, transparent 0),
+    linear-gradient(#ddd 50px, transparent 0);
   background-repeat: no-repeat;
   background-size: 75px 175px, 100% 100px, 100% 16px, 100% 30px;
   background-position: -185px 0, center 0, center 115px, center 142px;
@@ -55,89 +59,86 @@
   }
 }
 
-
 /* // Design card */
 
 .card {
   width: 190px;
   height: 254px;
-  padding: .8em;
+  padding: 0.8em;
   background: #f5f5f5;
   position: relative;
   overflow: visible;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   color: black;
- }
- 
- .card-img {
+}
+
+.card-img {
   background-color: #ffcaa6;
   height: 40%;
   width: 100%;
-  border-radius: .5rem;
-  transition: .3s ease;
- }
- 
- .card-info {
+  border-radius: 0.5rem;
+  transition: 0.3s ease;
+}
+
+.card-info {
   padding-top: 10%;
- }
- 
- svg {
+}
+
+svg {
   width: 20px;
   height: 20px;
- }
- 
- .card-footer {
+}
+
+.card-footer {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 10px;
   border-top: 1px solid #ddd;
- }
- 
- /*Text*/
- .text-title {
+}
+
+/*Text*/
+.text-title {
   font-weight: 900;
   font-size: 1.2em;
   line-height: 1.5;
- }
- 
- .text-body {
-  font-size: .9em;
+}
+
+.text-body {
+  font-size: 0.9em;
   padding-bottom: 10px;
- }
- 
- /*Button*/
- .card-button {
+}
+
+/*Button*/
+.card-button {
   border: 1px solid #252525;
   display: flex;
-  padding: .3em;
+  padding: 0.3em;
   cursor: pointer;
   border-radius: 50px;
-  transition: .3s ease-in-out;
- }
- 
- /*Hover*/
- .card-img:hover {
+  transition: 0.3s ease-in-out;
+}
+
+/*Hover*/
+.card-img:hover {
   transform: translateY(-25%);
-  box-shadow: rgba(226, 196, 63, 0.25) 0px 13px 47px -5px, rgba(180, 71, 71, 0.3) 0px 8px 16px -8px;
- }
- 
- .card-button:hover {
+  box-shadow: rgba(226, 196, 63, 0.25) 0px 13px 47px -5px,
+    rgba(180, 71, 71, 0.3) 0px 8px 16px -8px;
+}
+
+.card-button:hover {
   border: 1px solid #ffcaa6;
   background-color: #ffcaa6;
- }
- 
+}
 
-
-
- /* // Design card 2 */
- .card2 {
+/* // Design card 2 */
+.card2 {
   width: auto;
   height: auto;
   /* max-width: 50%; */
   background: white;
-  padding: .4em;
+  padding: 0.4em;
   border-radius: 6px;
 }
 
@@ -147,8 +148,19 @@
   border-radius: 6px 6px 0 0;
 }
 
-.card-image:hover {
-  transform: scale(0.98);
+.card-image img:hover {
+  transition: 1s;
+  /* transform: scale(0.98); */
+  cursor: pointer;
+  /* filter: grayscale(0.8); */
+}
+.expand {
+  position: absolute;
+display: none;
+  font-size: x-large;
+  margin: -79px 0 0 110px;
+  color: whitesmoke;
+  text-shadow: 3px 4px 3px black;
 }
 
 .category {
@@ -163,13 +175,13 @@
   cursor: pointer;
 }
 
-.subscriber{
+.subscriber {
   background: red;
-    color: white;
-    border-radius: 6px;
-    padding: 1px 4px;
-    display: flex;
-    align-items: center;
+  color: white;
+  border-radius: 6px;
+  padding: 1px 4px;
+  display: flex;
+  align-items: center;
 }
 .heading {
   font-weight: 600;
@@ -196,15 +208,17 @@
   cursor: pointer;
 }
 
-
-.mainCardDiv{
+.mainCardDiv {
   margin: 2vh;
   width: 40%;
-  
 }
-@media(max-width : 500px) {
-  .mainCardDiv{
-
-  width: 80%;
+@media (max-width: 500px) {
+  .mainCardDiv {
+    width: 80%;
   }
+}
+
+::-webkit-scrollbar {
+  /* width: 0px; */
+  display: none;
 }
