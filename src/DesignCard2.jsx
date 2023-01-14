@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import {
   Text,
@@ -17,12 +17,50 @@ import {
 } from "@chakra-ui/react";
 function DesignCard2(props) {
   const [Download, setDownload] = useState();
+  const [urlPlayer, setUrlPlayer] = useState();
+  const [video, setVideo] = useState(false);
   const data = props.data;
   const toast = useToast();
 
-  let duration = data.items[0].contentDetails.duration.slice(2, 8);
-  duration = duration.replace(/\D/g, ":");
-  duration = duration.slice(0, -1);
+  const StringWithColons = (string) => {
+    //PT02S
+    let hours, minutes, seconds;
+    if (string.includes("H")) {
+      hours = string.slice(2, string.indexOf("H"));
+    } else {
+      hours = false;
+    }
+    if (string.includes("S")) {
+      // checks if number is one-digit and inserts 0 in front of it
+      if (isNaN(parseInt(string.charAt(string.indexOf("S") - 2)))) {
+        seconds = "0" + string.charAt(string.indexOf("S") - 1);
+      } else {
+        seconds = string.slice(-3, -1);
+      }
+    } else {
+      seconds = "00";
+    }
+    // determines how minutes are displayed, based on existence of hours and minutes
+    if (hours) {
+      if (string.includes("M")) {
+        if (string.indexOf("M") - string.indexOf("H") === 3) {
+          minutes = string.slice(string.indexOf("H") + 1, string.indexOf("M"));
+        } else {
+          minutes = "0" + string.charAt(string.indexOf("M") - 1);
+        }
+      } else {
+        minutes = "00";
+      }
+    } else {
+      if (string.includes("M")) {
+        minutes = string.slice(2, string.indexOf("M"));
+      } else {
+        minutes = "0";
+      }
+    }
+
+    return `${hours ? hours + ":" : ""}${minutes}:${seconds}`;
+  };
 
   let date = data.items[0].snippet.publishedAt;
   date = new Date(date);
@@ -62,11 +100,28 @@ function DesignCard2(props) {
     const data2 = await response.json();
     console.log(data2.info);
     setDownload(data2.info);
+    setUrlPlayer(data2.url);
+    console.log(urlPlayer);
   }
+  useEffect(() => {
+    download();
+  }, []);
   return (
-    <div className="card2" style={{ width: props.wd }} key={props.key}>
+    <div className="card2" style={{ width: props.wd }}>
       <div className="card-image">
-        <img src={data.items[0].snippet.thumbnails.standard.url} alt="" />
+       { !video && <img
+          src={data.items[0].snippet.thumbnails.standard.url}
+          alt=""
+          onClick={() => props.fun(data.items[0].id)}
+        />}
+       
+      {video && 
+         <iframe
+         className="d-flex"
+         width={props.wd}
+         src={urlPlayer}
+         ></iframe>
+        }
         <Text
           fontSize="xs"
           style={{
@@ -81,7 +136,7 @@ function DesignCard2(props) {
           }}
         >
           {" "}
-          {duration}
+          {StringWithColons(data.items[0].contentDetails.duration)}
         </Text>
       </div>
       <div
@@ -94,11 +149,14 @@ function DesignCard2(props) {
           margin: "4px 0",
         }}
       >
-        {" "}
         <div>
-          {convertToInternational(data.items[0].statistics.viewCount)} Views{" "}
+          <i class="fa fa-solid fa-eye" style={{ margin: "0 4px 0 0" }}></i>
+          {convertToInternational(data.items[0].statistics.viewCount)} {""}
         </div>
         <div>
+        <i class="fa fa-play" onClick={()=>{
+          setVideo(true)
+        }}></i>
           <Menu>
             <MenuButton onClick={download}>
               <i
@@ -106,16 +164,16 @@ function DesignCard2(props) {
                 style={{ color: "black", margin: "0 8px" }}
               ></i>
             </MenuButton>
-            <MenuList style={{height:"50vh", overflow:"scroll"}}>
+            <MenuList style={{ height: "50vh", overflow: "scroll" }}>
               {Download &&
                 Download.map((format, i) => (
                   <MenuItem key={i}>
                     Download
-                    <a class="dropdown-item" href={format.url}>
+                    <a href={format.url} download>
                       {format.mimeType.split(";")[0]}{" "}
                       {format.hasVideo ? format.height + "p" : ""}
                       {!format.hasAudio && (
-                        <i class="fas fa-volume-mute text-danger"></i>
+                        <i className="fas fa-volume-mute text-danger"></i>
                       )}
                     </a>
                   </MenuItem>
@@ -127,12 +185,13 @@ function DesignCard2(props) {
             style={{
               fontSize: "small",
               color: "black",
+              display: "inline-flex",
               transform: "rotate(180deg)",
               transition: "0.5s",
             }}
             id={`${data.items[0].id}button`}
           >
-            <i className="fa fa-chevron-down"></i>
+            <i className="fa fa-chevron-up"></i>
           </button>
         </div>
       </div>
@@ -189,66 +248,80 @@ function DesignCard2(props) {
             https://www.youtube.com/channel/
             {data.items[0].snippet.channelId}
           </Kbd> */}
-          <Code
-            style={{ width: "-webkit-fill-available", fontSize: "x-small" }}
-            children={`https://www.youtube.com/channel/${data.items[0].snippet.channelId}`}
-          />
-          <button
-            style={{
-              padding: "0 3px",
-              margin: "3px",
-              fontStyle: "italic",
-              background: "#4299e199",
-              borderRadius: "4px",
-              fontSize: "Smaller",
-            }}
-            onClick={() => {
-              navigator.clipboard.writeText(
-                `https://www.youtube.com/channel/${data.items[0].snippet.channelId}`
-              );
-              toast({
-                title: "Link Copied.",
-                description: "We've Copied your Link for you.",
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-              });
-            }}
-          >
-            copy
-          </button>
+          <div style={{ display: "flex", width: "160px" }}>
+            <button
+              style={{
+                padding: "0 3px",
+                margin: "3px",
+                fontStyle: "italic",
+                // background: "#4299e199",
+                borderRadius: "4px",
+                fontSize: "Smaller",
+              }}
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `https://www.youtube.com/channel/${data.items[0].snippet.channelId}`
+                );
+                toast({
+                  title: "Link Copied.",
+                  description: "We've Copied your Link for you.",
+                  status: "success",
+                  duration: 3000,
+                  isClosable: true,
+                });
+              }}
+            >
+              <i class="fa fa-copy" style={{ fontSize: "large" }}></i>
+            </button>
+            <div
+              style={{
+                width: "-webkit-fill-available",
+                fontSize: "x-small",
+                background: "#f0f0f0",
+              }}
+            >
+              {`https://www.youtube.com/channel/${data.items[0].snippet.channelId}`}
+            </div>
+          </div>
         </Text>
         <Text color="black" fontSize="sm">
           Video Link :{" "}
           {/* <Kbd>https://www.youtube.com/watch?v={data.items[0].id}</Kbd> */}
-          <Code
-            style={{ width: "-webkit-fill-available", fontSize: "x-small" }}
-            children={`https://www.youtube.com/watch?v=${data.items[0].id}`}
-          />
-          <button
-            style={{
-              padding: "0 3px",
-              margin: "3px",
-              fontStyle: "italic",
-              background: "#4299e199",
-              borderRadius: "4px",
-              fontSize: "Smaller",
-            }}
-            onClick={() => {
-              navigator.clipboard.writeText(
-                `https://www.youtube.com/watch?v=${data.items[0].id}`
-              );
-              toast({
-                title: "Link Copied.",
-                description: "We've Copied your Link for you.",
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-              });
-            }}
-          >
-            copy
-          </button>
+          <div style={{ display: "flex" }}>
+            <button
+              style={{
+                padding: "0 3px",
+                margin: "3px",
+                fontStyle: "italic",
+                // background: "#4299e199",
+                borderRadius: "4px",
+                // fontSize: "",
+              }}
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `https://www.youtube.com/watch?v=${data.items[0].id}`
+                );
+                toast({
+                  title: "Link Copied.",
+                  description: "We've Copied your Link for you.",
+                  status: "success",
+                  duration: 3000,
+                  isClosable: true,
+                });
+              }}
+            >
+              <i class="fa fa-copy" style={{ fontSize: "large" }}></i>
+            </button>
+            <div
+              style={{
+                width: "-webkit-fill-available",
+                fontSize: "x-small",
+                background: "#f0f0f0",
+              }}
+            >
+              {`https://www.youtube.com/watch?v=${data.items[0].id}`}
+            </div>
+          </div>
         </Text>
         <div className="heading">
           <div className="author">

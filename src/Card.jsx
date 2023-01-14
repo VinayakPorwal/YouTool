@@ -38,6 +38,8 @@ function Component(props) {
     setArray([]);
     setDeta([]);
     loading.style.display = "block";
+
+    //keyword
     if (toggle === 1) {
       const response = await fetch(
         `https://www.googleapis.com/youtube/v3/search?q=${input}&maxResults=${count}&key=${api_key}`
@@ -56,6 +58,7 @@ function Component(props) {
         if (mainData.length === data.length) {
           setCheck(1);
           setArray(mainData);
+          mainData = [];
           loading.style.display = "none";
         }
         // console.log(i, load.id.videoId);
@@ -77,10 +80,11 @@ function Component(props) {
         setCheck(2);
       }
       setArray(mainData);
-
+      mainData = [];
       // console.log("channel data",array);
       loading.style.display = "none";
     }
+
     // Video Id
     else if (toggle === 3) {
       console.log("jbaksn", input);
@@ -90,14 +94,18 @@ function Component(props) {
         loading.style.display = "none";
         return;
       }
-      console.log(inputFilter);
-      await Detailed(inputFilter);
-      setCheck(3);
-      setArray(mainData);
-      console.log(array);
-      loading.style.display = "none";
+      toggle3(inputFilter);
     }
   }
+
+  const toggle3 = async (inputFilter) => {
+    await Detailed(inputFilter);
+    setCheck(3);
+    setArray(mainData);
+    mainData = [];
+    console.log(array);
+    loading.style.display = "none";
+  };
 
   async function Detailed2(id) {
     const response = await fetch(
@@ -175,11 +183,14 @@ function Component(props) {
       <Heading size="lg" style={{ textAlign: "center", margin: "2vh" }}>
         Search Your Youtube Video
       </Heading>
-      <div style={{textAlign:"center"}}>
-      Search By:
-      </div>
-        
-      <Tabs colorScheme="green" mb="2" isFitted variant="enclosed" style={{margin:"2vh auto", maxWidth:"1220px"}}>
+      <div style={{ textAlign: "center" }}>Search By:</div>
+
+      <Tabs
+        mb="2"
+        isFitted
+        variant="enclosed"
+        style={{ margin: "2vh auto", maxWidth: "1220px" }}
+      >
         <TabList>
           <Tab
             onClick={() => {
@@ -262,13 +273,13 @@ function Component(props) {
           maxWidth: "1100px",
         }}
       >
-        {/* // Keyword Search Or Single Video search  */}
+        {/* // Keyword Search Section */}
         {check === 1 ? (
           array.map((data, i) => (
             <>
               {data.pageInfo.totalResults === 1 ? (
                 <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
-                  <DesignCard2 data={data} wd={"200px"} />
+                  <DesignCard2 data={data} wd={"200px"} key={i} />
                 </div>
               ) : (
                 <div style={{ display: "none" }}> </div>
@@ -278,6 +289,7 @@ function Component(props) {
         ) : (
           <></>
         )}
+        {/* // Video Full view Section */}
         {check === 3 ? (
           array.map((data, i) => (
             <>
@@ -335,7 +347,7 @@ function Component(props) {
                       className="mainCardDiv"
                       style={{ width: "auto" }}
                     >
-                      <DesignCard2 data={data} wd={"200px"} key={i} />
+                      <DesignCard2 fun={toggle3} data={data} wd={"200px"} />
                     </div>
                   </>
                 ))
