@@ -14,6 +14,9 @@ import {
   MenuOptionGroup,
   MenuDivider,
   Button,
+  Avatar,
+  AvatarBadge,
+  AvatarGroup,
 } from "@chakra-ui/react";
 function DesignCard2(props) {
   const [Download, setDownload] = useState();
@@ -63,9 +66,14 @@ function DesignCard2(props) {
     return `${hours ? hours + ":" : ""}${minutes}:${seconds}`;
   };
 
+  var title = data.items[0].snippet.localized.title;
+  if (title.length > 65) {
+    title = title.slice(0, 65) + "...";
+  }
+
   let date = data.items[0].snippet.publishedAt;
   date = new Date(date);
-  date = date.toISOString().substring(0, 10);
+  var ActualDate = date.toISOString().substring(0, 10);
 
   function convertToInternational(labelValue) {
     // Nine Zeroes for Billions
@@ -78,6 +86,23 @@ function DesignCard2(props) {
       Math.abs(Number(labelValue)) >= 1.0e3
       ? (Math.abs(Number(labelValue)) / 1.0e3).toFixed(2) + "K"
       : Math.abs(Number(labelValue));
+  }
+  var date2 = new Date();
+
+  var time_difference = date2.getTime() - date.getTime();
+
+  //calculate days difference by dividing total milliseconds in a day
+  var days_difference = time_difference / (1000 * 60 * 60 * 24);
+  days_difference = Math.floor(days_difference);
+
+  if (days_difference > 365) {
+    date = Math.floor(days_difference / 365) + " year ago";
+  } else if (days_difference > 30) {
+    date = Math.floor(days_difference / 30) + " month ago";
+  } else if (days_difference > 7) {
+    date = Math.floor(days_difference / 7) + " week ago";
+  } else {
+    date = days_difference + " day ago";
   }
 
   function Details() {
@@ -94,17 +119,15 @@ function DesignCard2(props) {
   }
 
   async function download() {
-    console.log(data.items[0].id);
     const response = await fetch(
       `https://server-ten-iota.vercel.app/download/?url=https://www.youtube.com/watch?v=${data.items[0].id}`
     );
     const data2 = await response.json();
-    console.log(data2.info);
     setDownload(data2.info);
     setUrlPlayer(data2.url);
-    console.log(urlPlayer);
   }
   useEffect(() => {
+    console.log(props.toggle);
     if (props.toggle === 3) {
       setStyling({
         height: "60vw",
@@ -116,13 +139,13 @@ function DesignCard2(props) {
         height: "fit-content",
       });
     }
-    console.log(props.toggle);
 
     download();
   }, []);
   return (
     <div className="card2" style={{ width: props.wd }}>
       <div className="card-image">
+        {/* -------------------Image Section ------------------ */}
         {!video && (
           <>
             <img
@@ -133,35 +156,30 @@ function DesignCard2(props) {
               }}
               onMouseOver={() => {
                 document.getElementById(
-                  `${data.items[0].id}expand`
-                ).style.display = "block";
+                  `${data.items[0].id}hover`
+                ).style.display = "flex";
               }}
               onMouseOut={() => {
                 document.getElementById(
-                  `${data.items[0].id}expand`
+                  `${data.items[0].id}hover`
                 ).style.display = "none";
               }}
               style={{ width: props.wd, height: props.ht, objectFit: "cover" }}
             />
+
+            {/* ----------------------Duration Stamp -------------- */}
             <Text
               fontSize="xs"
-              style={{
-                position: "absolute",
-                margin: "-45px 0px 0px 2vw",
-                background: "white",
-                color: "black",
-                padding: "2px 4px",
-                display: "inline-block",
-                fontWeight: "700",
-                borderRadius: "5px",
-              }}
+              className="duration"
+              style={{ width: props.wd }}
             >
               {" "}
-              {StringWithColons(data.items[0].contentDetails.duration)}
+              <p>{StringWithColons(data.items[0].contentDetails.duration)}</p>
             </Text>
           </>
         )}
 
+        {/* --------------------- Video Section ------------------ */}
         {video && (
           <iframe
             className="d-flex"
@@ -173,27 +191,32 @@ function DesignCard2(props) {
           ></iframe>
         )}
 
+        {/* ----------------------On Hover 'Click to play' Display ---------------- */}
         {!video && (
-          <i
-            id={`${data.items[0].id}expand`}
-            class="fa fa-play expand"
-            onClick={() => {
-              setVideo(true);
+          <div
+            onClick={() => setVideo(true)}
+            id={`${data.items[0].id}hover`}
+            className="hoverButton"
+            style={{
+              width: props.wd,
+              height: props.ht,
+              margin: `-${props.ht} 0 0 -3px`,
             }}
           >
-            {" "}
+            <i class="fa fa-play"></i>
             <Text
               fontSize="xs"
               style={{
-                margin: "3px -30px",
                 fontFamily: "monospace",
               }}
             >
               Click To Play
             </Text>
-          </i>
+          </div>
         )}
       </div>
+
+      {/* ------------------Stats And Tool Buttons Group -------------- */}
       <div
         className="category"
         style={{
@@ -204,18 +227,23 @@ function DesignCard2(props) {
           margin: "4px 0",
         }}
       >
+        {/* --------------------------View Count-----------------  */}
         <div>
           <i class="fa fa-solid fa-eye" style={{ margin: "0 4px 0 0" }}></i>
-          {convertToInternational(data.items[0].statistics.viewCount)} {""}
+          {convertToInternational(data.items[0].statistics.viewCount)} {"views"}{" "}
+          • {date}
         </div>
+
+        {/* ------------------Right button group - download , details , expand-------------  */}
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            width: "80px",
+            width: "40px",
           }}
         >
+          {/* -------------------------Extend View Open in Large--------------------*/}
           <i
             class="fa fa-expand"
             title="Open In Large"
@@ -224,13 +252,10 @@ function DesignCard2(props) {
             }}
           ></i>
 
+          {/* -------------------------Download Button----------------------  */}
           <Menu>
-            <MenuButton onClick={download}>
-              <i
-                className="fa fa-download"
-                title="Download"
-                style={{ color: "black" }}
-              ></i>
+            <MenuButton onClick={download} title="Download">
+              <i className="fa fa-download" style={{ color: "black" }}></i>
             </MenuButton>
             <MenuList style={{ height: "50vh", overflow: "scroll" }}>
               {Download &&
@@ -248,39 +273,211 @@ function DesignCard2(props) {
                 ))}
             </MenuList>
           </Menu>
-
-          <i
-            className="fa fa-chevron-up"
-            title="More Details"
-            onClick={Details}
-            style={{
-              fontSize: "small",
-              color: "black",
-              // display: "inline-flex",
-              transform: "rotate(180deg)",
-              transition: "0.5s",
-            }}
-            id={`${data.items[0].id}button`}
-          ></i>
         </div>
       </div>
-      <div className="heading"> {data.items[0].snippet.localized.title}</div>
+
+      {/* --------------------------------- Title logo and Links --------------------------- */}
+      <div style={{ display: "flex", width: props.wd, padding: "0 10px 0 0" }}>
+        <div>
+          {/* --------------------------------- Channel logo !pending --------------------------- */}
+          <Avatar
+            mt="2"
+            size="sm"
+            name="Dan Abrahmov"
+            src="https://bit.ly/dan-abramov"
+          />
+        </div>
+        <div style={{ width: "95%" }}>
+          {/* --------------------------------- Channel Title --------------------------- */}
+          <div className="channelName">
+            {data.items[0].snippet.channelTitle}
+          </div>
+          {/* --------------------------------- Title --------------------------- */}
+          <div className="heading" style={{ paddingTop: "0px" }}>
+            {title}
+          </div>
+        </div>
+        {/* ----------------------Details Acordian button-----------------  */}
+        <div style={{ width: "5%", textAlign: "end" }}>
+          <Menu>
+            {props.toggle !== 3 && (
+              <MenuButton title="Download">
+                <i
+                  className="fa fa-chevron-up detailsButton"
+                  title="More Details"
+                  id={`${data.items[0].id}button`}
+                ></i>
+              </MenuButton>
+            )}
+            {props.toggle === 3 && (
+              <i
+                className="fa fa-chevron-up detailsButton"
+                title="More Details"
+                onClick={Details}
+                id={`${data.items[0].id}button`}
+              ></i>
+            )}
+
+            {/* ------------------------------ Details Container ----------------------- */}
+
+            <MenuList
+              style={{ height: "40vh", width: props.wd, overflow: "scroll" }}
+            >
+              {/* ---------------------------- Published Date ---------------------------- */}
+              <MenuItem>
+                <div className="heading">
+                  <div className="author" style={{ padding: "0" }}>
+                    <span className="name">Published At : </span> {ActualDate}
+                  </div>
+                </div>
+              </MenuItem>
+              {/* ---------------------------- like and Comment Count -------------------- */}
+              <MenuItem>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-evenly",
+                    padding: "5px",
+                    width: props.wd,
+                  }}
+                >
+                  <Text
+                    color="blue.600"
+                    fontSize="xs"
+                    as="b"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      textAlign: "center",
+                    }}
+                  >
+                    {data.items[0].statistics.likeCount}
+                    <Text color="black" fontSize="xm">
+                      Likes
+                    </Text>
+                  </Text>
+                  <Text
+                    color="blue.600"
+                    fontSize="xs"
+                    as="b"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      textAlign: "center",
+                    }}
+                  >
+                    {data.items[0].statistics.commentCount}
+                    <Text color="black" fontSize="xs">
+                      Comments
+                    </Text>
+                  </Text>
+                </div>
+              </MenuItem>
+              {/* ---------------------- Description ------------------ */}
+              <MenuItem>
+                {props.toggle === 3 && (
+                  <Text fontSize="sm">
+                    {" "}
+                    {data.items[0].snippet.localized.description}
+                  </Text>
+                )}
+              </MenuItem>
+              {/* -------------------------Copy Link buttons-----------------------  */}
+              {/* ---------------------------- Channel Link ------------------------ */}
+              <Text color="black" fontSize="sm" m={2} textAlign="start">
+                Channel Link :
+                <div style={{ display: "flex" }}>
+                  <i
+                    class="fa fa-copy"
+                    style={{
+                      margin: "5px",
+                      cursor: "pointer",
+                      fontSize: "large",
+                    }}
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        `https://www.youtube.com/channel/${data.items[0].snippet.channelId}`
+                      );
+                      toast({
+                        title: "Link Copied.",
+                        description: "We've Copied your Link for you.",
+                        status: "success",
+                        duration: 3000,
+                        isClosable: true,
+                      });
+                    }}
+                  ></i>
+                  <div
+                    style={{
+                      width: "90%",
+                      fontSize: "x-small",
+                      background: "#f0f0f0",
+                    }}
+                  >
+                    {`https://www.youtube.com/channel/${data.items[0].snippet.channelId}`}
+                  </div>
+                </div>
+              </Text>
+
+              {/* ---------------------------- Video Link ------------------------ */}
+              <Text color="black" fontSize="sm" m={2} textAlign="start">
+                Video Link :{" "}
+                <div style={{ display: "flex" }}>
+                  <i
+                    class="fa fa-copy"
+                    style={{
+                      margin: "5px",
+                      cursor: "pointer",
+                      fontSize: "large",
+                    }}
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        `https://www.youtube.com/watch?v=${data.items[0].id}`
+                      );
+                      toast({
+                        title: "Link Copied.",
+                        description: "We've Copied your Link for you.",
+                        status: "success",
+                        duration: 3000,
+                        isClosable: true,
+                      });
+                    }}
+                  ></i>
+                  <div
+                    style={{
+                      display: "flex",
+                      width: "90%",
+                      alignItems: "center",
+                      fontSize: "x-small",
+                      background: "#f0f0f0",
+                    }}
+                  >
+                    {`https://www.youtube.com/watch?v=${data.items[0].id}`}
+                  </div>
+                </div>
+              </Text>
+            </MenuList>
+          </Menu>
+        </div>
+      </div>
       <div
         id={`${data.items[0].id}`}
         key={props.key}
-        style={{ display: "none", height: "150px", overflow: "scroll" }}
+        style={{ display: "none", height: "auto", padding:"1vw 2vw", overflow: "scroll" }}
       >
+        {/* ---------------------------- Published Date ---------------------------- */}
         <div className="heading">
           <div className="author" style={{ padding: "0" }}>
-            <span className="name">Published At : </span> {date}
-            {/* By <span class="name">Abi</span> 4 days ago */}
+            <span className="name">Published At : </span> {ActualDate}
           </div>
         </div>
+        {/* ---------------------------- like and Comment Count -------------------- */}
         <div
           style={{
             display: "flex",
             justifyContent: "space-evenly",
             padding: "5px",
+            width: props.wd,
           }}
         >
           <Text
@@ -295,8 +492,7 @@ function DesignCard2(props) {
           >
             {data.items[0].statistics.likeCount}
             <Text color="black" fontSize="xm">
-              {" "}
-              Likes{" "}
+              Likes
             </Text>
           </Text>
           <Text
@@ -311,30 +507,28 @@ function DesignCard2(props) {
           >
             {data.items[0].statistics.commentCount}
             <Text color="black" fontSize="xs">
-              {" "}
-              Comments{" "}
+              Comments
             </Text>
           </Text>
         </div>
-        <Text fontSize="sm">
-          {" "}
-          {data.items[0].snippet.localized.description}
-        </Text>
-        <Text color="black" fontSize="sm">
+        {/* ---------------------- Description ------------------ */}
+        {props.toggle === 3 && (
+          <Text fontSize="sm">
+            {" "}
+            {data.items[0].snippet.localized.description}
+          </Text>
+        )}
+        {/* -------------------------Copy Link buttons-----------------------  */}
+        {/* ---------------------------- Channel Link ------------------------ */}
+        <Text color="black" fontSize="sm" m={2} textAlign="start">
           Channel Link :
-          {/* <Kbd>
-            https://www.youtube.com/channel/
-            {data.items[0].snippet.channelId}
-          </Kbd> */}
-          <div style={{ display: "flex", width: "160px" }}>
-            <button
+          <div style={{ display: "flex" }}>
+            <i
+              class="fa fa-copy"
               style={{
-                padding: "0 3px",
-                margin: "3px",
-                fontStyle: "italic",
-                // background: "#4299e199",
-                borderRadius: "4px",
-                fontSize: "Smaller",
+                margin: "5px",
+                cursor: "pointer",
+                fontSize: "large",
               }}
               onClick={() => {
                 navigator.clipboard.writeText(
@@ -348,12 +542,10 @@ function DesignCard2(props) {
                   isClosable: true,
                 });
               }}
-            >
-              <i class="fa fa-copy" style={{ fontSize: "large" }}></i>
-            </button>
+            ></i>
             <div
               style={{
-                width: "-webkit-fill-available",
+                width: "90%",
                 fontSize: "x-small",
                 background: "#f0f0f0",
               }}
@@ -362,18 +554,17 @@ function DesignCard2(props) {
             </div>
           </div>
         </Text>
-        <Text color="black" fontSize="sm">
+
+        {/* ---------------------------- Video Link ------------------------ */}
+        <Text color="black" fontSize="sm" m={2} textAlign="start">
           Video Link :{" "}
-          {/* <Kbd>https://www.youtube.com/watch?v={data.items[0].id}</Kbd> */}
           <div style={{ display: "flex" }}>
-            <button
+            <i
+              class="fa fa-copy"
               style={{
-                padding: "0 3px",
-                margin: "3px",
-                fontStyle: "italic",
-                // background: "#4299e199",
-                borderRadius: "4px",
-                // fontSize: "",
+                margin: "5px",
+                cursor: "pointer",
+                fontSize: "large",
               }}
               onClick={() => {
                 navigator.clipboard.writeText(
@@ -387,12 +578,12 @@ function DesignCard2(props) {
                   isClosable: true,
                 });
               }}
-            >
-              <i class="fa fa-copy" style={{ fontSize: "large" }}></i>
-            </button>
+            ></i>
             <div
               style={{
-                width: "-webkit-fill-available",
+                display: "flex",
+                width: "90%",
+                alignItems: "center",
                 fontSize: "x-small",
                 background: "#f0f0f0",
               }}

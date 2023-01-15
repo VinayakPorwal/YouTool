@@ -13,12 +13,50 @@
   box-sizing: border-box;
 }
 .duration {
-  position: relative;
-  margin-left: auto;
-  bottom: 118px;
-  right: 25px;
-  background: white;
-  padding: 2px 4px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin: -4vh 0px 0px -2vh;
+}
+.duration p {
+  font-weight: 700;
+  color: white;
+  background: rgba(0, 0, 0, 0.72);
+  padding: 0px 4px 2px 4px;
+  border-radius: 2px;
+}
+.channelName{
+  padding: 5px 7px 0 7px;
+  font-weight: bold;
+  font-size: x-small;
+  color: #393737ba;
+
+}
+
+.hoverButton {
+  display: none;
+  transition: 1s;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #00000078;
+  position: absolute;
+  font-size: x-large;
+  color: whitesmoke;
+  cursor: pointer;
+}
+.detailsButton {
+  height: fit-content;
+  padding: 9px 5px;
+  font-size: small;
+  color: black;
+  transform: rotate(180deg);
+  transition: all 0.5s ease 0s;
+}
+
+.expand {
+  text-shadow: 3px 4px 3px black;
 }
 
 .loader {
@@ -59,6 +97,41 @@
   }
 }
 
+.ChannelCardGroup {
+  padding: 4px 0;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  /* background-color:#252525; */
+  /* max-width: 1100px; */
+}
+
+.InputGroup {
+  display: flex;
+  padding: 2vh;
+  max-width: 1200px;
+  margin: auto;
+  position: sticky;
+  top: 0px;
+  background: rgb(236, 236, 236);
+  border-radius: 10px;
+  z-index: 2;
+}
+
+#loading {
+  background: white;
+  margin: 2vh auto;
+  display: none;
+}
+
+.CardGroup {
+  /* margin: auto; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  /* max-width: 1100px; */
+}
 /* // Design card */
 
 .card {
@@ -138,7 +211,7 @@ svg {
   height: auto;
   /* max-width: 50%; */
   background: white;
-  padding: 0.4em;
+  padding: 0.2em;
   border-radius: 6px;
 }
 
@@ -154,17 +227,9 @@ svg {
   cursor: pointer;
   /* filter: grayscale(0.8); */
 }
-.expand {
-  position: absolute;
-display: none;
-  font-size: x-large;
-  margin: -79px 0 0 110px;
-  color: whitesmoke;
-  text-shadow: 3px 4px 3px black;
-}
 
 .category {
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-size: 0.7em;
   font-weight: 600;
   color: rgb(63, 121, 230);
@@ -209,12 +274,18 @@ display: none;
 }
 
 .mainCardDiv {
-  margin: 2vh;
+  margin: 2vh 0;
   width: 40%;
 }
-@media (max-width: 500px) {
+@media screen and (max-width: 500px) {
   .mainCardDiv {
     width: 80%;
+  }
+  .sideBar{
+    display: none !important;
+  }
+  .MainContainer{
+    width: 100% !important;
   }
 }
 

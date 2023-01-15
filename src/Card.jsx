@@ -25,7 +25,7 @@ function Component(props) {
     "https://www.youtube.com/channel/UCqwUrj10mAEsqezcItqvwEw"
   );
   const [placeHolder, setPlaceHolder] = useState("");
-  const count = 8;
+  const count = 15;
   var mainData = [];
   var recData = [];
   // const api_key = "AIzaSyC6iuW5Oz08bv_e8pGIRTkyERDlTH5mWAc";
@@ -123,7 +123,7 @@ function Component(props) {
       `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${id}&key=${api_key}`
     );
     const data = await response.json();
- 
+
     mainData.push(data);
     console.log("Video", data.pageInfo.totalResults);
     // props.set;
@@ -182,180 +182,185 @@ function Component(props) {
       </Heading>
       <div style={{ textAlign: "center" }}>Search By:</div>
 
-      <Tabs
-        mb="2"
-        isFitted
-        variant="enclosed"
-        style={{ margin: "2vh auto", maxWidth: "1220px" }}
-      >
-        <TabList>
-          <Tab
-            onClick={() => {
-              setToggle(2);
-              // setInput("");
-              setPlaceHolder("https://www.youtube.com/channel/");
-            }}
-            _selected={{ color: "white", bg: "#252525" }}
-            // isDisabled
+      <div style={{ display: "flex" , margin:"0", padding:"0"}}>
+        <div className="sideBar"  style={{width:"15%", background:"grey"}}>jsj</div>
+        <div className="MainContainer" style={{width:"85%"}}>
+          {/* ------------------- Video Search Type Selection --------------- */}
+          <Tabs
+            mb="2"
+            isFitted
+            variant="enclosed"
+            style={{ margin: "2vh auto", maxWidth: "1220px" }}
           >
-            Channel Link
-          </Tab>
-          <Tab
-            onClick={() => {
-              setToggle(1);
-              // setInput("");
-              setPlaceHolder("BB ki Vines");
-            }}
-            _selected={{ color: "white", bg: "#252525" }}
-          >
-            Keyword
-          </Tab>
-          <Tab
-            onClick={() => {
-              setToggle(3);
-              // setInput("");
-              setPlaceHolder("https://www.youtube.com/watch?v=");
-            }}
-            _selected={{ color: "white", bg: "#252525" }}
-          >
-            Video Link
-          </Tab>
-        </TabList>
-      </Tabs>
-      <div
-        style={{
-          display: "flex",
-          padding: "2vh",
-          maxWidth: "1200px",
-          margin: "auto",
-          position: "sticky",
-          top: "0px",
-          background: "#ececec",
-          borderRadius: "10px",
-          // background: "#3f79e6",
-          zIndex: "2",
-        }}
-      >
-        <Input
-          placeholder={placeHolder}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        /> 
-        <button
-          style={{ width: "30px", fontSize: "large", fontWeight: "600" }}
-          onClick={() => setInput("")}
-        >
-          x
-        </button>
-        <Button colorScheme="blue" onClick={keySearch}>
-          Search
-        </Button>
-      </div>
-      <Card
-        id="loading"
-        maxW="lg"
-        borderRadius="lg"
-        style={{ background: "white", margin: "2vh auto", display: "none" }}
-      >
-        <CardBody>
-          <span className="loader"></span>
-        </CardBody>
-      </Card>
-      <div
-        style={{
-          margin: "auto",
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-evenly",
-          maxWidth: "1100px",
-        }}
-      >
-        {/* // Keyword Search Section */}
-        {check === 1 ? (
-          array.map((data, i) => (
-            <>
-              {data.pageInfo.totalResults >= 1 ? (
-                <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
-                  <DesignCard2 toggle={toggle}   fun={toggle3} data={data} wd={"220px"} ht={"135px"} key={i} />
-                </div>
-              ) : (
-                <div style={{ display: "none" }}> </div>
-              )}
-            </>
-          ))
-        ) : (
-          <></>
-        )}
-        {/* // Video Full view Section */}
-        {check === 3 ? (
-          array.map((data, i) => (
-            <>
-              {data.pageInfo.totalResults === 1 ? (
-                <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
-                  <DesignCard2 toggle={toggle} data={data} wd={"72vw"} ht={"41vw"} />
-                </div>
-              ) : (
-                <div style={{ display: "none" }}> </div>
-              )}
-            </>
-          ))
-        ) : (
-          <></>
-        )}
+            <TabList>
+              <Tab
+                onClick={() => {
+                  setToggle(2);
+                  // setInput("");
+                  setPlaceHolder("https://www.youtube.com/channel/");
+                }}
+                _selected={{ color: "white", bg: "#252525" }}
+                // isDisabled
+              >
+                Channel Link
+              </Tab>
+              <Tab
+                onClick={() => {
+                  setToggle(1);
+                  // setInput("");
+                  setPlaceHolder("BB ki Vines");
+                }}
+                _selected={{ color: "white", bg: "#252525" }}
+              >
+                Keyword
+              </Tab>
+              <Tab
+                onClick={() => {
+                  setToggle(3);
+                  // setInput("");
+                  setPlaceHolder("https://www.youtube.com/watch?v=");
+                }}
+                _selected={{ color: "white", bg: "#252525" }}
+              >
+                Video Link
+              </Tab>
+            </TabList>
+          </Tabs>
 
-        {/* // Channel Section */}
-        {check === 2 ? (
-          <>
-            {array.map((data, i) => (
-              <>
-                {data.pageInfo.totalResults === 1 ? (
-                  <>
-                    <div
-                      key={i}
-                      className="mainCardDiv"
-                      style={{ width: "auto" }}
-                    >
-                      <ChannelCard data={data} />
-                    </div>
-                    <Heading size="md" m="3" style={{ textAlign: "left" }}>
-                      Recent Videos
-                    </Heading>
-                  </>
-                ) : (
-                  <div style={{ display: "none" }}> </div>
-                )}
-              </>
-            ))}
-
-            <div
-              style={{
-                margin: "auto",
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-evenly",
-                maxWidth: "1100px",
-              }}
+          {/* ----------------------- Input Group---- ---------------- */}
+          <div className="InputGroup">
+            <Input
+              placeholder={placeHolder}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+            <button
+              style={{ width: "30px", fontSize: "large", fontWeight: "600" }}
+              onClick={() => setInput("")}
             >
-              {deta ? (
-                deta.map((data, i) => (
-                  <>
+              x
+            </button>
+            <Button colorScheme="blue" onClick={keySearch}>
+              Search
+            </Button>
+          </div>
+
+          {/* --------------- Skeleton Loader ------------ */}
+          <Card id="loading" maxW="lg" borderRadius="lg">
+            <CardBody>
+              <span className="loader"></span>
+            </CardBody>
+          </Card>
+
+          {/* --------------------Display Results------ ------------- */}
+          <div className="CardGroup">
+            {/* -------------------Keyword Search Section-------------------- */}
+            {check === 1 ? (
+              array.map((data, i) => (
+                <>
+                  {data.pageInfo.totalResults >= 1 ? (
                     <div
                       key={i}
                       className="mainCardDiv"
                       style={{ width: "auto" }}
                     >
-                      <DesignCard2 toggle={toggle} fun={toggle3} data={data} wd={"240px"} ht={"135px"} />
+                      <DesignCard2
+                        toggle={check}
+                        fun={toggle3}
+                        data={data}
+                        wd={"310px"}
+                        ht={"170px"}
+                        key={i}
+                      />
                     </div>
+                  ) : (
+                    <div style={{ display: "none" }}> </div>
+                  )}
+                </>
+              ))
+            ) : (
+              <></>
+            )}
+
+            {/* -----------------------------Channel Section------------------- */}
+            {check === 2 ? (
+              <>
+                {array.map((data, i) => (
+                  <>
+                    {data.pageInfo.totalResults === 1 ? (
+                      <>
+                        <div
+                          key={i}
+                          className="mainCardDiv"
+                          style={{ width: "auto" }}
+                        >
+                          <ChannelCard data={data} />
+                        </div>
+                        <Heading size="md" m="3" style={{ textAlign: "center", width:"100%" }}>
+                          Recent Videos
+                        </Heading>
+                      </>
+                    ) : (
+                      <div style={{ display: "none" }}> </div>
+                    )}
                   </>
-                ))
-              ) : (
-                <></>
-              )}
-            </div>
-          </>
-        ) : (
-          <></>
-        )}
+                ))}
+
+                <div className="ChannelCardGroup">
+                  {deta ? (
+                    deta.map((data, i) => (
+                      <>
+                        <div
+                          key={i}
+                          className="mainCardDiv"
+                          style={{ width: "auto"}}
+                        >
+                          <DesignCard2
+                            toggle={check}
+                            fun={toggle3}
+                            data={data}
+                            wd={"310px"}
+                            ht={"170px"}
+                          />
+                        </div>
+                      </>
+                    ))
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
+
+            {/* ------------------- Video Full view Section--------------------- */}
+            {check === 3 ? (
+              array.map((data, i) => (
+                <>
+                  {data.pageInfo.totalResults === 1 ? (
+                    <div
+                      key={i}
+                      className="mainCardDiv"
+                      style={{ width: "auto" }}
+                    >
+                      <DesignCard2
+                        toggle={check}
+                        data={data}
+                        wd={"69vw"}
+                        ht={"39vw"}
+                      />
+                    </div>
+                  ) : (
+                    <div style={{ display: "none" }}> </div>
+                  )}
+                </>
+              ))
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
       </div>
       <div>
         <Text fontSize="xl" style={{ textAlign: "center", padding: "2vh" }}>

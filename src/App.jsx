@@ -10,7 +10,9 @@ function App() {
     
    <Container maxW="5500px" bg="purple.600" color="white" style={{minHeight:"100vh",
           background: "#ffffff80",
-          color:"black"
+          color:"black",
+          margin:"0",
+          padding:"0"
         }}>
       <Component/>
    </Container>
