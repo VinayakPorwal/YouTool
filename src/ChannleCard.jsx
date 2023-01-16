@@ -38,7 +38,7 @@ function ChannelCard(props) {
           <img
             src={data.items[0].snippet.thumbnails.medium.url}
             alt=""
-            style={{ margin: "auto" }}
+            style={{ margin: "auto" , borderRadius:"100px"}}
           />
         </div>
         <div style={{display:"flex", flexDirection:"column" ,padding:"0 2vh"}}>
@@ -77,7 +77,6 @@ function ChannelCard(props) {
                 flex="1"
                 fontSize="sm"
                 textAlign="left"
-                color="black"
               >
                 Description
               </Box>

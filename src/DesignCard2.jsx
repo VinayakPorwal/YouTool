@@ -22,7 +22,7 @@ function DesignCard2(props) {
   const [Download, setDownload] = useState();
   const [urlPlayer, setUrlPlayer] = useState();
   const [video, setVideo] = useState(false);
-  const data = props.data;
+  const data = props.info;
   const toast = useToast();
   const [styling, setStyling] = useState({});
 
@@ -66,12 +66,12 @@ function DesignCard2(props) {
     return `${hours ? hours + ":" : ""}${minutes}:${seconds}`;
   };
 
-  var title = data.items[0].snippet.localized.title;
+  var title = data.title;
   if (title.length > 165) {
     title = title.slice(0, 65) + "...";
   }
 
-  let date = data.items[0].snippet.publishedAt;
+  let date = data.date;
   date = new Date(date);
   var ActualDate = date.toISOString().substring(0, 10);
 
@@ -106,8 +106,8 @@ function DesignCard2(props) {
   }
 
   function Details() {
-    var metadata = document.getElementById(`${data.items[0].id}`);
-    var button = document.getElementById(`${data.items[0].id}button`);
+    var metadata = document.getElementById(`${data.id}`);
+    var button = document.getElementById(`${data.id}button`);
     if (metadata.style.display === "none") {
       metadata.style.display = "block";
       button.style.transform = "rotate(0)";
@@ -120,7 +120,7 @@ function DesignCard2(props) {
 
   async function download() {
     const response = await fetch(
-      `https://server-ten-iota.vercel.app/download/?url=https://www.youtube.com/watch?v=${data.items[0].id}`
+      `https://server-ten-iota.vercel.app/download/?url=https://www.youtube.com/watch?v=${data.id}`
     );
     const data2 = await response.json();
     setDownload(data2.info);
@@ -149,19 +149,19 @@ function DesignCard2(props) {
         {!video && (
           <>
             <img
-              src={data.items[0].snippet.thumbnails.medium.url}
+              src={data.url}
               alt=""
               onClick={() => {
                 setVideo(true);
               }}
               onMouseOver={() => {
                 document.getElementById(
-                  `${data.items[0].id}hover`
+                  `${data.id}hover`
                 ).style.display = "flex";
               }}
               onMouseOut={() => {
                 document.getElementById(
-                  `${data.items[0].id}hover`
+                  `${data.id}hover`
                 ).style.display = "none";
               }}
               style={{ width: props.wd, height: props.ht, objectFit: "cover" }}
@@ -174,7 +174,7 @@ function DesignCard2(props) {
               style={{ width: props.wd }}
             >
               {" "}
-              <p>{StringWithColons(data.items[0].contentDetails.duration)}</p>
+              <p>{StringWithColons(data.duration)}</p>
             </Text>
           </>
         )}
@@ -195,7 +195,7 @@ function DesignCard2(props) {
         {!video && (
           <div
             onClick={() => setVideo(true)}
-            id={`${data.items[0].id}hover`}
+            id={`${data.id}hover`}
             className="hoverButton"
             style={{
               width: props.wd,
@@ -233,7 +233,7 @@ function DesignCard2(props) {
             class="fa fa-solid fa-eye"
             style={{ margin: "0 4px 0 0", color: "inherit" }}
           ></i>
-          {convertToInternational(data.items[0].statistics.viewCount)} {"views"}{" "}
+          {convertToInternational(data.views)} {"views"}{" "}
           • {date}
         </div>
 
@@ -251,7 +251,7 @@ function DesignCard2(props) {
             class="fa fa-expand"
             title="Open In Large"
             onClick={() => {
-              props.fun(data.items[0].id);
+              props.fun(data.id);
             }}
           ></i>
 
@@ -300,9 +300,9 @@ function DesignCard2(props) {
           {/* --------------------------------- Channel Title --------------------------- */}
           <div
             className="channelName"
-            title={data.items[0].snippet.channelTitle}
+            title={data.channelTitle}
           >
-            {data.items[0].snippet.channelTitle}
+            {data.channelTitle}
           </div>
           {/* --------------------------------- Title --------------------------- */}
           <div
@@ -323,7 +323,7 @@ function DesignCard2(props) {
                 title="Details"
                 onClick={() => {
                   var button = document.getElementById(
-                    `${data.items[0].id}button`
+                    `${data.id}button`
                   );
                   if (button.style.transform === "rotate(0deg)") {
                     button.style.transform = "rotate(180deg)";
@@ -336,7 +336,7 @@ function DesignCard2(props) {
                 <i
                   className="fa fa-chevron-up detailsButton"
                   title="More Details"
-                  id={`${data.items[0].id}button`}
+                  id={`${data.id}button`}
                 ></i>
               </MenuButton>
             )}
@@ -345,7 +345,7 @@ function DesignCard2(props) {
                 className="fa fa-chevron-up detailsButton"
                 title="More Details"
                 onClick={Details}
-                id={`${data.items[0].id}button`}
+                id={`${data.id}button`}
               ></i>
             )}
 
@@ -382,7 +382,7 @@ function DesignCard2(props) {
                       textAlign: "center",
                     }}
                   >
-                    {data.items[0].statistics.likeCount}
+                    {data.likes}
                     <Text color="black" fontSize="xm">
                       Likes
                     </Text>
@@ -397,7 +397,7 @@ function DesignCard2(props) {
                       textAlign: "center",
                     }}
                   >
-                    {data.items[0].statistics.commentCount}
+                    {data.comments}
                     <Text color="black" fontSize="xs">
                       Comments
                     </Text>
@@ -409,7 +409,7 @@ function DesignCard2(props) {
                 {props.toggle === 3 && (
                   <Text fontSize="sm">
                     {" "}
-                    {data.items[0].snippet.localized.description}
+                    {data.description}
                   </Text>
                 )}
               </MenuItem>
@@ -428,7 +428,7 @@ function DesignCard2(props) {
                     }}
                     onClick={() => {
                       navigator.clipboard.writeText(
-                        `https://www.youtube.com/channel/${data.items[0].snippet.channelId}`
+                        `https://www.youtube.com/channel/${data.channelId}`
                       );
                       toast({
                         title: "Link Copied.",
@@ -446,7 +446,7 @@ function DesignCard2(props) {
                       background: "#f0f0f0",
                     }}
                   >
-                    {`https://www.youtube.com/channel/${data.items[0].snippet.channelId}`}
+                    {`https://www.youtube.com/channel/${data.channelId}`}
                   </div>
                 </div>
               </Text>
@@ -465,7 +465,7 @@ function DesignCard2(props) {
                     }}
                     onClick={() => {
                       navigator.clipboard.writeText(
-                        `https://www.youtube.com/watch?v=${data.items[0].id}`
+                        `https://www.youtube.com/watch?v=${data.id}`
                       );
                       toast({
                         title: "Link Copied.",
@@ -485,7 +485,7 @@ function DesignCard2(props) {
                       background: "#f0f0f0",
                     }}
                   >
-                    {`https://www.youtube.com/watch?v=${data.items[0].id}`}
+                    {`https://www.youtube.com/watch?v=${data.id}`}
                   </div>
                 </div>
               </Text>
@@ -530,7 +530,7 @@ function DesignCard2(props) {
                 textAlign: "center",
               }}
             >
-              {data.items[0].statistics.likeCount}
+              {data.likes}
               <Text color="black" fontSize="xm">
                 Likes
               </Text>
@@ -545,7 +545,7 @@ function DesignCard2(props) {
                 textAlign: "center",
               }}
             >
-              {data.items[0].statistics.commentCount}
+              {data.comments}
               <Text color="black" fontSize="xs">
                 Comments
               </Text>
@@ -555,7 +555,7 @@ function DesignCard2(props) {
           {props.toggle === 3 && (
             <Text fontSize="sm">
               {" "}
-              {data.items[0].snippet.localized.description}
+              {data.description}
             </Text>
           )}
           {/* -------------------------Copy Link buttons-----------------------  */}
@@ -572,7 +572,7 @@ function DesignCard2(props) {
                 }}
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `https://www.youtube.com/channel/${data.items[0].snippet.channelId}`
+                    `https://www.youtube.com/channel/${data.channelId}`
                   );
                   toast({
                     title: "Link Copied.",
@@ -593,7 +593,7 @@ function DesignCard2(props) {
                   fontSize: "x-small",
                 }}
               >
-                {`https://www.youtube.com/channel/${data.items[0].snippet.channelId}`}
+                {`https://www.youtube.com/channel/${data.channelId}`}
               </div>
             </div>
           </Text>
@@ -611,7 +611,7 @@ function DesignCard2(props) {
                 }}
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `https://www.youtube.com/watch?v=${data.items[0].id}`
+                    `https://www.youtube.com/watch?v=${data.id}`
                   );
                   toast({
                     title: "Link Copied.",
@@ -632,7 +632,7 @@ function DesignCard2(props) {
                   background: "var(--secondaryBlack)",
                 }}
               >
-                {`https://www.youtube.com/watch?v=${data.items[0].id}`}
+                {`https://www.youtube.com/watch?v=${data.id}`}
               </div>
             </div>
           </Text>

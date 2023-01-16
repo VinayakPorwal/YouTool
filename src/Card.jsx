@@ -13,6 +13,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Divider,
 } from "@chakra-ui/react";
 import "./App.css";
 import DesignCard2 from "./DesignCard2";
@@ -24,13 +25,14 @@ function Component(props) {
   const [check, setCheck] = useState();
   const [deta, setDeta] = useState();
   const [tab, setTab] = useState("Filter");
+  const country = "IN";
 
   const [toggle, setToggle] = useState(2);
   const [input, setInput] = useState(
     "https://www.youtube.com/channel/UCqwUrj10mAEsqezcItqvwEw"
   );
   const [placeHolder, setPlaceHolder] = useState("");
-  const count = 15;
+  const count = 16;
   var mainData = [];
   var recData = [];
   // const api_key = "AIzaSyC6iuW5Oz08bv_e8pGIRTkyERDlTH5mWAc";
@@ -180,92 +182,160 @@ function Component(props) {
     return deta;
   }
 
+  async function trending() {
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet,statistics&chart=mostPopular&regionCode=${country}&key=${api_key}&maxResults=${count}`
+    );
+    let data = await response.json();
+    if (data.pageInfo.totalResults === 0) {
+      alert("Results Not Found");
+      loading.style.display = "none";
+      return;
+    }
+    setCheck(4);
+    setArray(data.items);
+    loading.style.display = "none";
+    console.log(data);
+  }
+
   return (
     <>
       <div style={{ display: "flex", margin: "0", padding: "0" }}>
         <div className="sideBar">
-          <div className="logo">
-            <img src={img} alt="" />
-            <p>YouTool</p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              marginBottom: "2vh",
+              alignItems: "center",
+            }}
+          >
+            <i
+              className="fa fa-bars"
+              style={{
+                display: "flex",
+                width: "30%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            ></i>
+
+            <div className="logo">
+              <div className="youtube">
+                <img src={img} alt="" />
+              </div>
+
+              <p>YouTool</p>
+            </div>
+          </div>
+
+          {/* ---------------------------- filter --------------------------- */}
+          <Divider />
+          <Menu>
+            <MenuButton
+              style={{ display: "flex", margin: "1rem auto", color: "white" }}
+              onClick={() => {
+                var button = document.getElementById(`tabselect`);
+                if (button.style.transform === "rotate(0deg)") {
+                  button.style.transform = "rotate(180deg)";
+                } else {
+                  button.style.transform = "rotate(0deg)";
+                }
+              }}
+            >
+              <i
+                className="fa fa-chevron-down"
+                style={{
+                  fontSize: "xx-small",
+                  margin: "0 5px",
+                  transform: "rotate(0deg)",
+                }}
+                title="Filter"
+                id="tabselect"
+              ></i>
+              <i
+                className="fa fa-filter"
+                style={{ fontSize: "smaller", margin: "0 10px 0 0" }}
+              ></i>
+              {tab}{" "}
+            </MenuButton>
+            <div style={{ zIndex: "2" }}>
+              <MenuList
+                style={{
+                  background: "var(--secondaryBlack)",
+                  zIndex: "77",
+                  position: "absolute",
+                  color: "white",
+                }}
+              >
+                <MenuItem
+                  className="Tab"
+                  onClick={() => {
+                    setToggle(1);
+                    setTab("Search by : Keyword");
+                    // setInput("");
+                    setPlaceHolder("BB ki Vines");
+                  }}
+                >
+                  Keyword
+                </MenuItem>
+                <MenuItem
+                  className="Tab"
+                  onClick={() => {
+                    setToggle(2);
+                    setTab("Search by : Channel");
+                    // setInput("");
+                    setPlaceHolder("https://www.youtube.com/channel/");
+                  }}
+                >
+                  Channel Link
+                </MenuItem>
+                <MenuItem
+                  className="Tab"
+                  onClick={() => {
+                    setToggle(3);
+                    // setInput("");
+                    setTab("Search by : Video");
+                    setPlaceHolder("https://www.youtube.com/watch?v=");
+                  }}
+                >
+                  Video Link
+                </MenuItem>
+              </MenuList>
+            </div>
+          </Menu>
+          <Divider />
+          <div>
+            <div className="sideTab">
+              <i className="fa fa-home sideTab-i" style={{ color: "grey" }}></i>
+              <p className="sideTab-p" style={{ color: "grey" }}>
+                Home
+              </p>
+            </div>
+            <div className="sideTab" onClick={() => trending()}>
+              <i className="fa fa-fire sideTab-i"></i>
+              <p className="sideTab-p">Trending</p>
+            </div>
+            <div className="sideTab">
+              <i
+                className="fa fa-history sideTab-i"
+                style={{ color: "grey" }}
+              ></i>
+              <p className="sideTab-p" style={{ color: "grey" }}>
+                History
+              </p>
+            </div>
           </div>
         </div>
-        <div className="MainContainer" style={{ width: "85%" }}>
-          <Heading
+        <div className="MainContainer" style={{ width: "84%" }}>
+          {/* <Heading
             size="lg"
             style={{ textAlign: "center", margin: "2vh", color: "white" }}
           >
             Search Your Youtube Video
-          </Heading>
+          </Heading> */}
           {/* ------------------- Video Search Type Selection --------------- */}
-          <div style={{ display: "flex" , flexWrap:"wrap"}}>
-            <Menu>
-              <MenuButton
-                onClick={() => {
-                  var button = document.getElementById(`tabselect`);
-                  if (button.style.transform === "rotate(180deg)") {
-                    button.style.transform = "rotate(0deg)";
-                  } else {
-                    button.style.transform = "rotate(180deg)";
-                  }
-                  console.log("done");
-                }}
-              >
-                <i
-                  className="fa fa-filter"
-                  style={{ fontSize: "smaller", margin: "0 5px" }}
-                ></i>
-                {tab}{" "}
-                <i
-                  className="fa fa-chevron-down"
-                  style={{ fontSize: "smaller", margin: "0 5px" }}
-                  title="Filter"
-                  id="tabselect"
-                ></i>
-              </MenuButton>
-              <div style={{ zIndex: "2" }}>
-                <MenuList
-                  style={{
-                    background: "var(--secondaryBlack)",
-                    zIndex: "77",
-                    position: "absolute",
-                  }}
-                >
-                  <MenuItem
-                    className="Tab"
-                    onClick={() => {
-                      setToggle(1);
-                      setTab("Search by : Keyword")
-                      // setInput("");
-                      setPlaceHolder("BB ki Vines");
-                    }}
-                  >
-                    Keyword
-                  </MenuItem>
-                  <MenuItem
-                    className="Tab"
-                    onClick={() => {
-                      setToggle(2);
-                      setTab("Search by : Channel")
-                      // setInput("");
-                      setPlaceHolder("https://www.youtube.com/channel/");
-                    }}
-                  >
-                    Channel Link
-                  </MenuItem>
-                  <MenuItem
-                    className="Tab"
-                    onClick={() => {
-                      setToggle(3);
-                      // setInput("");
-                      setTab("Search by : Video")
-                      setPlaceHolder("https://www.youtube.com/watch?v=");
-                    }}
-                  >
-                    Video Link
-                  </MenuItem>
-                </MenuList>
-              </div>
-            </Menu>
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
             {/* ----------------------- Input Group---- ---------------- */}
             <div className="InputGroup">
               <input
@@ -387,6 +457,20 @@ function Component(props) {
                         wd={"310px"}
                         ht={"170px"}
                         key={i}
+                        info={{
+                          date: data.items[0].snippet.publishedAt,
+                          url: data.items[0].snippet.thumbnails.medium.url,
+                          views: data.items[0].statistics.viewCount,
+                          duration: data.items[0].contentDetails.duration,
+                          id: data.items[0].id,
+                          channelTitle: data.items[0].snippet.channelTitle,
+                          likes: data.items[0].statistics.likeCount,
+                          comments: data.items[0].statistics.commentCount,
+                          description:
+                            data.items[0].snippet.localized.description,
+                          channelId: data.items[0].snippet.channelId,
+                          title: data.items[0].snippet.localized.title,
+                        }}
                       />
                     </div>
                   ) : (
@@ -441,6 +525,21 @@ function Component(props) {
                             data={data}
                             wd={"310px"}
                             ht={"170px"}
+                            info={{
+                              date: data.items[0].snippet.publishedAt,
+                              url: data.items[0].snippet.thumbnails.medium.url,
+                              views: data.items[0].statistics.viewCount,
+                              duration: data.items[0].contentDetails.duration,
+
+                              id: data.items[0].id,
+                              channelTitle: data.items[0].snippet.channelTitle,
+                              likes: data.items[0].statistics.likeCount,
+                              comments: data.items[0].statistics.commentCount,
+                              description:
+                                data.items[0].snippet.localized.description,
+                              channelId: data.items[0].snippet.channelId,
+                              title: data.items[0].snippet.localized.title,
+                            }}
                           />
                         </div>
                       </>
@@ -455,7 +554,7 @@ function Component(props) {
             )}
 
             {/* ------------------- Video Full view Section--------------------- */}
-            {check === 3 ? (
+            {check === 3 &&
               array.map((data, i) => (
                 <>
                   {data.pageInfo.totalResults === 1 ? (
@@ -469,15 +568,89 @@ function Component(props) {
                         data={data}
                         wd={"69vw"}
                         ht={"39vw"}
+                        info={{
+                          date: data.items[0].snippet.publishedAt,
+                          url: data.items[0].snippet.thumbnails.medium.url,
+                          views: data.items[0].statistics.viewCount,
+                          id: data.items[0].id,
+                          channelTitle: data.items[0].snippet.channelTitle,
+                          duration: data.items[0].contentDetails.duration,
+
+                          likes: data.items[0].statistics.likeCount,
+                          comments: data.items[0].statistics.commentCount,
+                          description:
+                            data.items[0].snippet.localized.description,
+                          channelId: data.items[0].snippet.channelId,
+                          title: data.items[0].snippet.localized.title,
+                        }}
                       />
                     </div>
                   ) : (
                     <div style={{ display: "none" }}> </div>
                   )}
                 </>
-              ))
-            ) : (
-              <></>
+              ))}
+
+            {check === 4 && (
+              <>
+                <Heading
+                  size="lg"
+                  m="3"
+                  style={{
+                    alignItems: "center",
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <h1
+                    style={{
+                      fontSize: "xxx-large",
+                      display: "flex",
+                      alignItems: "center",
+                      color: "#3f79e6",
+                      padding: "5px",
+                    }}
+                  >
+                    #15{" "}
+                  </h1>
+                  <p>Trending</p>
+                </Heading>
+                {array.map((data, i) => (
+                  <>
+                    {data && (
+                      <div
+                        key={i}
+                        className="mainCardDiv"
+                        style={{ width: "auto" }}
+                      >
+                        <DesignCard2
+                          key={i}
+                          fun={toggle3}
+                          toggle={check}
+                          data={data}
+                          wd={"310px"}
+                          ht={"170px"}
+                          info={{
+                            date: data.snippet.publishedAt,
+                            url: data.snippet.thumbnails.medium.url,
+                            views: data.statistics.viewCount,
+                            id: data.id,
+                            channelTitle: data.snippet.channelTitle,
+                            duration: data.contentDetails.duration,
+
+                            likes: data.statistics.likeCount,
+                            comments: data.statistics.commentCount,
+                            description: data.snippet.localized.description,
+                            channelId: data.snippet.channelId,
+                            title: data.snippet.localized.title,
+                          }}
+                        />
+                      </div>
+                    )}
+                  </>
+                ))}
+              </>
             )}
           </div>
           <div>

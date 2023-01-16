@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400&family=Poppins&display=swap");
 :root {
   --primaryBlack: #181818;
-  --secondaryBlack: #202020;
+  --secondaryBlack: #212121;
   --secondaryGrey: #373737;
 
   --fontColor: rgb(88, 87, 87);
@@ -288,34 +288,6 @@ i {
   width: 40%;
 }
 
-.sideBar {
-  height: 100vh;
-  width: 15%;
-  background: var(--secondaryBlack);
-  position: sticky;
-  top: 0px;
-}
-.logo img {
-  height: 25px;
-  background-color: red;
-  /* margin: auto; */
-
-  padding: 1px 7px;
-  margin: 4px;
-  border-radius: 10px;
-}
-.logo {
-  font-family: "Oswald", sans-serif;
-  margin: 2vh 0;
-  align-items: center;
-  font-size: larger;
-  color: white;
-  font-weight: bold;
-  /* text-align: center; */
-  justify-content: center;
-  display: flex;
-}
-
 .MainContainer {
   background: var(--secondaryGrey);
   color: white !important;
@@ -415,4 +387,79 @@ i {
 
   border-color: #3898ec;
   outline: none;
+}
+
+/* sidebar  */
+
+.sideBar {
+  height: 100vh;
+  width: 16%;
+  min-width:200px;
+  background: var(--secondaryBlack);
+  position: sticky;
+  top: 0px;
+}
+.logo img {
+  height: 20px;
+  position: absolute;
+  margin: 0px 0px 0px -10px;
+  filter: drop-shadow(2px 4px 6px black);;
+}
+
+.logo {
+  font-family: "Oswald", sans-serif;
+  margin: 2vh 0;
+  width: 70%;
+  align-items: center;
+  font-size: x-large;
+  color: white;
+  font-weight: 500;
+  /* text-align: center; */
+  justify-content: start;
+  display: flex;
+}
+
+.youtube{
+   width: 15px;
+  height:20px; 
+  margin: 0 5px;
+  position: relative;
+  background-color: #e21;
+  padding: 0 15px;
+  border-radius: 50% / 11%;
+}
+.youtube::before{
+  content: "";
+  position: absolute;
+  background: inherit;
+  top: 10%;
+  bottom: 10%;
+  right: -5%;
+  left: -4.5%;
+  border-radius: 5% / 50%;
+}
+
+
+
+.sideTab{
+  display: flex;
+  justify-content: space-evenly;
+  padding:0.8rem;
+  cursor: pointer;
+}
+
+
+.sideTab-i{
+  display: flex;
+  width: 30%;
+  justify-content: center;
+  align-items: center;
+}
+
+.sideTab-p{
+  display: block;
+  margin: auto;
+  width: 70%;
+  color:white;
+  font-weight: 500;
 }
