@@ -319,21 +319,23 @@ function DesignCard2(props) {
         <div style={{ width: "5%", textAlign: "end" }}>
           <Menu>
             {props.toggle !== 3 && (
-              <MenuButton title="Details" onClick={() => {
-                var button = document.getElementById(
-                  `${data.items[0].id}button`
-                );
-                if ( button.style.transform === "rotate(0deg)") {
-                  button.style.transform = "rotate(180deg)";
-                } else {
-                  button.style.transform = "rotate(0deg)";
-                }
-                console.log("done");
-              }} >
+              <MenuButton
+                title="Details"
+                onClick={() => {
+                  var button = document.getElementById(
+                    `${data.items[0].id}button`
+                  );
+                  if (button.style.transform === "rotate(0deg)") {
+                    button.style.transform = "rotate(180deg)";
+                  } else {
+                    button.style.transform = "rotate(0deg)";
+                  }
+                  console.log("done");
+                }}
+              >
                 <i
                   className="fa fa-chevron-up detailsButton"
                   title="More Details"
-                  
                   id={`${data.items[0].id}button`}
                 ></i>
               </MenuButton>
@@ -420,6 +422,7 @@ function DesignCard2(props) {
                     class="fa fa-copy"
                     style={{
                       margin: "5px",
+                      color: "black",
                       cursor: "pointer",
                       fontSize: "large",
                     }}
@@ -456,6 +459,7 @@ function DesignCard2(props) {
                     class="fa fa-copy"
                     style={{
                       margin: "5px",
+                      color: "black",
                       cursor: "pointer",
                       fontSize: "large",
                     }}
@@ -489,144 +493,151 @@ function DesignCard2(props) {
           </Menu>
         </div>
       </div>
-      <div
-        id={`${data.items[0].id}`}
-        key={props.key}
-        style={{
-          display: "none",
-          height: "auto",
-          padding: "1vw 2vw",
-          overflow: "scroll",
-        }}
-      >
-        {/* ---------------------------- Published Date ---------------------------- */}
-        <div className="heading">
-          <div className="author" style={{ padding: "0" }}>
-            <span className="name">Published At : </span> {ActualDate}
-          </div>
-        </div>
-        {/* ---------------------------- like and Comment Count -------------------- */}
+
+      {props.toggle === 3 && (
         <div
+          id={`${data.items[0].id}`}
+          key={props.key}
           style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            padding: "5px",
-            width: props.wd,
+            // display: "none",
+            height: "auto",
+            padding: "1vw 2vw",
+            overflow: "scroll",
           }}
         >
-          <Text
-            color="blue.600"
-            fontSize="xs"
-            as="b"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              textAlign: "center",
-            }}
-          >
-            {data.items[0].statistics.likeCount}
-            <Text color="black" fontSize="xm">
-              Likes
-            </Text>
-          </Text>
-          <Text
-            color="blue.600"
-            fontSize="xs"
-            as="b"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              textAlign: "center",
-            }}
-          >
-            {data.items[0].statistics.commentCount}
-            <Text color="black" fontSize="xs">
-              Comments
-            </Text>
-          </Text>
-        </div>
-        {/* ---------------------- Description ------------------ */}
-        {props.toggle === 3 && (
-          <Text fontSize="sm">
-            {" "}
-            {data.items[0].snippet.localized.description}
-          </Text>
-        )}
-        {/* -------------------------Copy Link buttons-----------------------  */}
-        {/* ---------------------------- Channel Link ------------------------ */}
-        <Text color="black" fontSize="sm" m={2} textAlign="start">
-          Channel Link :
-          <div style={{ display: "flex" }}>
-            <i
-              class="fa fa-copy"
-              style={{
-                margin: "5px",
-                cursor: "pointer",
-                fontSize: "large",
-              }}
-              onClick={() => {
-                navigator.clipboard.writeText(
-                  `https://www.youtube.com/channel/${data.items[0].snippet.channelId}`
-                );
-                toast({
-                  title: "Link Copied.",
-                  description: "We've Copied your Link for you.",
-                  status: "success",
-                  duration: 3000,
-                  isClosable: true,
-                });
-              }}
-            ></i>
-            <div
-              style={{
-                width: "90%",
-                fontSize: "x-small",
-                background: "#f0f0f0",
-              }}
-            >
-              {`https://www.youtube.com/channel/${data.items[0].snippet.channelId}`}
+          {/* ---------------------------- Published Date ---------------------------- */}
+          <div className="heading">
+            <div className="author" style={{ padding: "0" }}>
+              <span className="name">Published At : </span> {ActualDate}
             </div>
           </div>
-        </Text>
-
-        {/* ---------------------------- Video Link ------------------------ */}
-        <Text color="black" fontSize="sm" m={2} textAlign="start">
-          Video Link :{" "}
-          <div style={{ display: "flex" }}>
-            <i
-              class="fa fa-copy"
-              style={{
-                margin: "5px",
-                cursor: "pointer",
-                fontSize: "large",
-              }}
-              onClick={() => {
-                navigator.clipboard.writeText(
-                  `https://www.youtube.com/watch?v=${data.items[0].id}`
-                );
-                toast({
-                  title: "Link Copied.",
-                  description: "We've Copied your Link for you.",
-                  status: "success",
-                  duration: 3000,
-                  isClosable: true,
-                });
-              }}
-            ></i>
-            <div
+          {/* ---------------------------- like and Comment Count -------------------- */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              padding: "5px",
+              width: props.wd,
+            }}
+          >
+            <Text
+              color="blue.600"
+              fontSize="xs"
+              as="b"
               style={{
                 display: "flex",
-                width: "90%",
-                alignItems: "center",
-                fontSize: "x-small",
-                background: "#f0f0f0",
+                flexDirection: "column",
+                textAlign: "center",
               }}
             >
-              {`https://www.youtube.com/watch?v=${data.items[0].id}`}
-            </div>
+              {data.items[0].statistics.likeCount}
+              <Text color="black" fontSize="xm">
+                Likes
+              </Text>
+            </Text>
+            <Text
+              color="blue.600"
+              fontSize="xs"
+              as="b"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                textAlign: "center",
+              }}
+            >
+              {data.items[0].statistics.commentCount}
+              <Text color="black" fontSize="xs">
+                Comments
+              </Text>
+            </Text>
           </div>
-        </Text>
-      </div>
+          {/* ---------------------- Description ------------------ */}
+          {props.toggle === 3 && (
+            <Text fontSize="sm">
+              {" "}
+              {data.items[0].snippet.localized.description}
+            </Text>
+          )}
+          {/* -------------------------Copy Link buttons-----------------------  */}
+          {/* ---------------------------- Channel Link ------------------------ */}
+          <Text color="white" fontSize="sm" m={2} textAlign="start">
+            Channel Link :
+            <div style={{ display: "flex" }}>
+              <i
+                class="fa fa-copy"
+                style={{
+                  margin: "5px",
+                  cursor: "pointer",
+                  fontSize: "large",
+                }}
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `https://www.youtube.com/channel/${data.items[0].snippet.channelId}`
+                  );
+                  toast({
+                    title: "Link Copied.",
+                    description: "We've Copied your Link for you.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  });
+                }}
+              ></i>
+              <div
+                style={{
+                  display: "flex",
+                  width: "90%",
+                  alignItems: "center",
+                  background: "var(--secondaryBlack)",
+                  color: "white",
+                  fontSize: "x-small",
+                }}
+              >
+                {`https://www.youtube.com/channel/${data.items[0].snippet.channelId}`}
+              </div>
+            </div>
+          </Text>
+
+          {/* ---------------------------- Video Link ------------------------ */}
+          <Text color="white" fontSize="sm" m={2} textAlign="start">
+            Video Link :{" "}
+            <div style={{ display: "flex" }}>
+              <i
+                class="fa fa-copy"
+                style={{
+                  margin: "5px",
+                  cursor: "pointer",
+                  fontSize: "large",
+                }}
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `https://www.youtube.com/watch?v=${data.items[0].id}`
+                  );
+                  toast({
+                    title: "Link Copied.",
+                    description: "We've Copied your Link for you.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  });
+                }}
+              ></i>
+              <div
+                style={{
+                  display: "flex",
+                  width: "90%",
+                  alignItems: "center",
+                  fontSize: "x-small",
+                  color: "white",
+                  background: "var(--secondaryBlack)",
+                }}
+              >
+                {`https://www.youtube.com/watch?v=${data.items[0].id}`}
+              </div>
+            </div>
+          </Text>
+        </div>
+      )}
     </div>
   );
 }
