@@ -116,7 +116,7 @@ function ChannelCard(props) {
           }}
         >
           {data.items[0].statistics.videoCount}
-          <Text color="black" fontSize="xs">
+          <Text color="white" fontSize="xs">
             {" "}
             Videos{" "}
           </Text>
@@ -133,7 +133,7 @@ function ChannelCard(props) {
         >
           {" "}
           {convertToInternational(data.items[0].statistics.viewCount)}
-          <Text color="black" fontSize="xs">
+          <Text color="white" fontSize="xs">
             Channel Views{" "}
           </Text>
         </Text>

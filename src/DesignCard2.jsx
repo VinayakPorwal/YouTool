@@ -67,7 +67,7 @@ function DesignCard2(props) {
   };
 
   var title = data.items[0].snippet.localized.title;
-  if (title.length > 65) {
+  if (title.length > 165) {
     title = title.slice(0, 65) + "...";
   }
 
@@ -149,7 +149,7 @@ function DesignCard2(props) {
         {!video && (
           <>
             <img
-              src={data.items[0].snippet.thumbnails.standard.url}
+              src={data.items[0].snippet.thumbnails.medium.url}
               alt=""
               onClick={() => {
                 setVideo(true);
@@ -229,7 +229,10 @@ function DesignCard2(props) {
       >
         {/* --------------------------View Count-----------------  */}
         <div>
-          <i class="fa fa-solid fa-eye" style={{ margin: "0 4px 0 0" }}></i>
+          <i
+            class="fa fa-solid fa-eye"
+            style={{ margin: "0 4px 0 0", color: "inherit" }}
+          ></i>
           {convertToInternational(data.items[0].statistics.viewCount)} {"views"}{" "}
           • {date}
         </div>
@@ -255,20 +258,26 @@ function DesignCard2(props) {
           {/* -------------------------Download Button----------------------  */}
           <Menu>
             <MenuButton onClick={download} title="Download">
-              <i className="fa fa-download" style={{ color: "black" }}></i>
+              {/* <i className="fa fa-download"></i> */}
+              <i
+                class="fa fa-arrow-down"
+                style={{ borderBottom: "2px solid white" }}
+              ></i>
             </MenuButton>
             <MenuList style={{ height: "50vh", overflow: "scroll" }}>
               {Download &&
                 Download.map((format, i) => (
                   <MenuItem key={i}>
                     Download
-                    <a href={format.url} download>
-                      {format.mimeType.split(";")[0]}{" "}
-                      {format.hasVideo ? format.height + "p" : ""}
-                      {!format.hasAudio && (
-                        <i className="fas fa-volume-mute text-danger"></i>
-                      )}
-                    </a>
+                    {format && (
+                      <a href={format.url} download>
+                        {format.mimeType.split(";")[0]}{" "}
+                        {format.hasVideo ? format.height + "p" : ""}
+                        {!format.hasAudio && (
+                          <i className="fas fa-volume-mute text-danger"></i>
+                        )}
+                      </a>
+                    )}
                   </MenuItem>
                 ))}
             </MenuList>
@@ -289,11 +298,20 @@ function DesignCard2(props) {
         </div>
         <div style={{ width: "95%" }}>
           {/* --------------------------------- Channel Title --------------------------- */}
-          <div className="channelName">
+          <div
+            className="channelName"
+            title={data.items[0].snippet.channelTitle}
+          >
             {data.items[0].snippet.channelTitle}
           </div>
           {/* --------------------------------- Title --------------------------- */}
-          <div className="heading" style={{ paddingTop: "0px" }}>
+          <div
+            className="heading title"
+            style={{
+              paddingTop: "0px",
+            }}
+            title={title}
+          >
             {title}
           </div>
         </div>
@@ -301,10 +319,21 @@ function DesignCard2(props) {
         <div style={{ width: "5%", textAlign: "end" }}>
           <Menu>
             {props.toggle !== 3 && (
-              <MenuButton title="Download">
+              <MenuButton title="Details" onClick={() => {
+                var button = document.getElementById(
+                  `${data.items[0].id}button`
+                );
+                if ( button.style.transform === "rotate(0deg)") {
+                  button.style.transform = "rotate(180deg)";
+                } else {
+                  button.style.transform = "rotate(0deg)";
+                }
+                console.log("done");
+              }} >
                 <i
                   className="fa fa-chevron-up detailsButton"
                   title="More Details"
+                  
                   id={`${data.items[0].id}button`}
                 ></i>
               </MenuButton>
@@ -463,7 +492,12 @@ function DesignCard2(props) {
       <div
         id={`${data.items[0].id}`}
         key={props.key}
-        style={{ display: "none", height: "auto", padding:"1vw 2vw", overflow: "scroll" }}
+        style={{
+          display: "none",
+          height: "auto",
+          padding: "1vw 2vw",
+          overflow: "scroll",
+        }}
       >
         {/* ---------------------------- Published Date ---------------------------- */}
         <div className="heading">

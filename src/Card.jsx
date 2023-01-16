@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Input } from "@chakra-ui/react";
 import {
   Button,
   Image,
@@ -10,15 +9,21 @@ import {
   Tabs,
   TabList,
   Tab,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import "./App.css";
 import DesignCard2 from "./DesignCard2";
 import ChannelCard from "./ChannleCard";
+import img from "./logopng.png";
 
 function Component(props) {
   const [array, setArray] = useState([]);
   const [check, setCheck] = useState();
   const [deta, setDeta] = useState();
+  const [tab, setTab] = useState("Filter");
 
   const [toggle, setToggle] = useState(2);
   const [input, setInput] = useState(
@@ -177,16 +182,118 @@ function Component(props) {
 
   return (
     <>
-      <Heading size="lg" style={{ textAlign: "center", margin: "2vh" }}>
-        Search Your Youtube Video
-      </Heading>
-      <div style={{ textAlign: "center" }}>Search By:</div>
-
-      <div style={{ display: "flex" , margin:"0", padding:"0"}}>
-        <div className="sideBar"  style={{width:"15%", background:"grey"}}>jsj</div>
-        <div className="MainContainer" style={{width:"85%"}}>
+      <div style={{ display: "flex", margin: "0", padding: "0" }}>
+        <div className="sideBar">
+          <div className="logo">
+            <img src={img} alt="" />
+            <p>YouTool</p>
+          </div>
+        </div>
+        <div className="MainContainer" style={{ width: "85%" }}>
+          <Heading
+            size="lg"
+            style={{ textAlign: "center", margin: "2vh", color: "white" }}
+          >
+            Search Your Youtube Video
+          </Heading>
           {/* ------------------- Video Search Type Selection --------------- */}
-          <Tabs
+          <div style={{ display: "flex" , flexWrap:"wrap"}}>
+            <Menu>
+              <MenuButton
+                onClick={() => {
+                  var button = document.getElementById(`tabselect`);
+                  if (button.style.transform === "rotate(180deg)") {
+                    button.style.transform = "rotate(0deg)";
+                  } else {
+                    button.style.transform = "rotate(180deg)";
+                  }
+                  console.log("done");
+                }}
+              >
+                <i
+                  className="fa fa-filter"
+                  style={{ fontSize: "smaller", margin: "0 5px" }}
+                ></i>
+                {tab}{" "}
+                <i
+                  className="fa fa-chevron-down"
+                  style={{ fontSize: "smaller", margin: "0 5px" }}
+                  title="Filter"
+                  id="tabselect"
+                ></i>
+              </MenuButton>
+              <div style={{ zIndex: "2" }}>
+                <MenuList
+                  style={{
+                    background: "var(--secondaryBlack)",
+                    zIndex: "77",
+                    position: "absolute",
+                  }}
+                >
+                  <MenuItem
+                    className="Tab"
+                    onClick={() => {
+                      setToggle(1);
+                      setTab("Search by : Keyword")
+                      // setInput("");
+                      setPlaceHolder("BB ki Vines");
+                    }}
+                  >
+                    Keyword
+                  </MenuItem>
+                  <MenuItem
+                    className="Tab"
+                    onClick={() => {
+                      setToggle(2);
+                      setTab("Search by : Channel")
+                      // setInput("");
+                      setPlaceHolder("https://www.youtube.com/channel/");
+                    }}
+                  >
+                    Channel Link
+                  </MenuItem>
+                  <MenuItem
+                    className="Tab"
+                    onClick={() => {
+                      setToggle(3);
+                      // setInput("");
+                      setTab("Search by : Video")
+                      setPlaceHolder("https://www.youtube.com/watch?v=");
+                    }}
+                  >
+                    Video Link
+                  </MenuItem>
+                </MenuList>
+              </div>
+            </Menu>
+            {/* ----------------------- Input Group---- ---------------- */}
+            <div className="InputGroup">
+              <input
+                className="input"
+                placeholder={placeHolder}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+              />
+              <button
+                style={{
+                  width: "50px",
+                  fontSize: "large",
+                  transform: "rotate(45deg)",
+                }}
+                onClick={() => setInput("")}
+              >
+                <i className="fa fa-plus"></i>
+              </button>
+              <Button
+                colorScheme="blue"
+                className="button--submit"
+                onClick={keySearch}
+              >
+                <i className="fa fa-search"></i>
+              </Button>
+            </div>
+          </div>
+          {/* <Tabs
             mb="2"
             isFitted
             variant="enclosed"
@@ -225,25 +332,34 @@ function Component(props) {
                 Video Link
               </Tab>
             </TabList>
-          </Tabs>
+          </Tabs> */}
 
           {/* ----------------------- Input Group---- ---------------- */}
-          <div className="InputGroup">
-            <Input
+          {/* <div className="InputGroup">
+            <input
+              className="input"
               placeholder={placeHolder}
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
             <button
-              style={{ width: "30px", fontSize: "large", fontWeight: "600" }}
+              style={{
+                width: "50px",
+                fontSize: "large",
+                transform: "rotate(45deg)",
+              }}
               onClick={() => setInput("")}
             >
-              x
+              <i className="fa fa-plus"></i>
             </button>
-            <Button colorScheme="blue" onClick={keySearch}>
-              Search
+            <Button
+              colorScheme="blue"
+              className="button--submit"
+              onClick={keySearch}
+            >
+              <i className="fa fa-search"></i>
             </Button>
-          </div>
+          </div> */}
 
           {/* --------------- Skeleton Loader ------------ */}
           <Card id="loading" maxW="lg" borderRadius="lg">
@@ -296,7 +412,11 @@ function Component(props) {
                         >
                           <ChannelCard data={data} />
                         </div>
-                        <Heading size="md" m="3" style={{ textAlign: "center", width:"100%" }}>
+                        <Heading
+                          size="md"
+                          m="3"
+                          style={{ textAlign: "center", width: "100%" }}
+                        >
                           Recent Videos
                         </Heading>
                       </>
@@ -313,7 +433,7 @@ function Component(props) {
                         <div
                           key={i}
                           className="mainCardDiv"
-                          style={{ width: "auto"}}
+                          style={{ width: "auto" }}
                         >
                           <DesignCard2
                             toggle={check}
@@ -360,12 +480,20 @@ function Component(props) {
               <></>
             )}
           </div>
+          <div>
+            <Text
+              fontSize="xl"
+              style={{
+                textAlign: "center",
+                padding: "2vh",
+                background: "var(--secondaryBlack)",
+                color: "white",
+              }}
+            >
+              More Features Coming Soon.. Site is Under Development
+            </Text>
+          </div>
         </div>
-      </div>
-      <div>
-        <Text fontSize="xl" style={{ textAlign: "center", padding: "2vh" }}>
-          More Features Coming Soon.. Site is Under Development
-        </Text>
       </div>
     </>
   );
