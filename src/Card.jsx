@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Image,
@@ -197,6 +197,9 @@ function Component(props) {
     loading.style.display = "none";
     console.log(data);
   }
+  useEffect(() => {
+    trending();
+  }, []);
 
   return (
     <>
