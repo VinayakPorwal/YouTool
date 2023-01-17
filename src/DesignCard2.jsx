@@ -25,6 +25,23 @@ function DesignCard2(props) {
   const data = props.info;
   const toast = useToast();
   const [styling, setStyling] = useState({});
+  var channelData = "";
+  const [Channelimg, setChannelimg] = useState("");
+  const ChannelById = async () => {
+   channelData = await props.chanFun(data.channelId);
+    setChannelimg(channelData.items[0].snippet.thumbnails.default.url);
+
+  };
+
+  // const ChannelById = async () => {
+  //   const response = await fetch(
+  //     `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${props.channelId}&key=${props.api_key}`
+  //   );
+
+  //   channelData = await response.json();
+  //   setChannelimg(channelData.items[0].snippet.thumbnails.default.url);
+  //   console.log(Channelimg);
+  // };
 
   const StringWithColons = (string) => {
     //PT02S
@@ -120,13 +137,20 @@ function DesignCard2(props) {
 
   async function download() {
     const response = await fetch(
-      `https://server-ten-iota.vercel.app/download/?url=https://www.youtube.com/watch?v=${data.id}`
+      `https://server-ten-iota.vercel.app/download/?url=https://www.youtube.com/watch?v=${data.id}`,{
+        // mode: "no-cors",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      }
     );
     const data2 = await response.json();
     setDownload(data2.info);
     setUrlPlayer(data2.url);
   }
   useEffect(() => {
+    ChannelById();
+    // Channelimg = channelData.items[0].snippet.thumbnails.medium.url;
+
     console.log(props.toggle);
     if (props.toggle === 3) {
       setStyling({
@@ -155,14 +179,12 @@ function DesignCard2(props) {
                 setVideo(true);
               }}
               onMouseOver={() => {
-                document.getElementById(
-                  `${data.id}hover`
-                ).style.display = "flex";
+                document.getElementById(`${data.id}hover`).style.display =
+                  "flex";
               }}
               onMouseOut={() => {
-                document.getElementById(
-                  `${data.id}hover`
-                ).style.display = "none";
+                document.getElementById(`${data.id}hover`).style.display =
+                  "none";
               }}
               style={{ width: props.wd, height: props.ht, objectFit: "cover" }}
             />
@@ -233,8 +255,7 @@ function DesignCard2(props) {
             class="fa fa-solid fa-eye"
             style={{ margin: "0 4px 0 0", color: "inherit" }}
           ></i>
-          {convertToInternational(data.views)} {"views"}{" "}
-          • {date}
+          {convertToInternational(data.views)} {"views"} • {date}
         </div>
 
         {/* ------------------Right button group - download , details , expand-------------  */}
@@ -293,25 +314,17 @@ function DesignCard2(props) {
             mt="2"
             size="sm"
             name="Dan Abrahmov"
-            src="https://bit.ly/dan-abramov"
+            // src="https://bit.ly/dan-abramov"
+            src={Channelimg}
           />
         </div>
-        <div style={{ width: "95%" }}>
+        <div style={{ width: "85%" }}>
           {/* --------------------------------- Channel Title --------------------------- */}
-          <div
-            className="channelName"
-            title={data.channelTitle}
-          >
+          <div className="channelName" title={data.channelTitle}>
             {data.channelTitle}
           </div>
           {/* --------------------------------- Title --------------------------- */}
-          <div
-            className="heading title"
-            style={{
-              paddingTop: "0px",
-            }}
-            title={title}
-          >
+          <div className="heading title" title={title}>
             {title}
           </div>
         </div>
@@ -322,9 +335,7 @@ function DesignCard2(props) {
               <MenuButton
                 title="Details"
                 onClick={() => {
-                  var button = document.getElementById(
-                    `${data.id}button`
-                  );
+                  var button = document.getElementById(`${data.id}button`);
                   if (button.style.transform === "rotate(0deg)") {
                     button.style.transform = "rotate(180deg)";
                   } else {
@@ -407,10 +418,7 @@ function DesignCard2(props) {
               {/* ---------------------- Description ------------------ */}
               <MenuItem>
                 {props.toggle === 3 && (
-                  <Text fontSize="sm">
-                    {" "}
-                    {data.description}
-                  </Text>
+                  <Text fontSize="sm"> {data.description}</Text>
                 )}
               </MenuItem>
               {/* -------------------------Copy Link buttons-----------------------  */}
@@ -496,7 +504,7 @@ function DesignCard2(props) {
 
       {props.toggle === 3 && (
         <div
-          id={`${data.items[0].id}`}
+          id={`${data.id}`}
           key={props.key}
           style={{
             // display: "none",
@@ -531,7 +539,7 @@ function DesignCard2(props) {
               }}
             >
               {data.likes}
-              <Text color="black" fontSize="xm">
+              <Text color="white" fontSize="xm">
                 Likes
               </Text>
             </Text>
@@ -546,18 +554,13 @@ function DesignCard2(props) {
               }}
             >
               {data.comments}
-              <Text color="black" fontSize="xs">
+              <Text color="white" fontSize="xs">
                 Comments
               </Text>
             </Text>
           </div>
           {/* ---------------------- Description ------------------ */}
-          {props.toggle === 3 && (
-            <Text fontSize="sm">
-              {" "}
-              {data.description}
-            </Text>
-          )}
+          {props.toggle === 3 && <Text fontSize="sm"> {data.description}</Text>}
           {/* -------------------------Copy Link buttons-----------------------  */}
           {/* ---------------------------- Channel Link ------------------------ */}
           <Text color="white" fontSize="sm" m={2} textAlign="start">

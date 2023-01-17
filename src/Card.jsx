@@ -26,6 +26,7 @@ function Component(props) {
   const [deta, setDeta] = useState();
   const [tab, setTab] = useState("Filter");
   const country = "IN";
+  var temp= "";
 
   const [toggle, setToggle] = useState(2);
   const [input, setInput] = useState(
@@ -61,7 +62,7 @@ function Component(props) {
       data = data.items;
       data.map(async (load, i) => {
         await Detailed(load.id.videoId);
-        console.log(mainData.length, mainData);
+        // console.log(mainData.length, mainData);
         if (mainData.length === data.length) {
           setCheck(1);
           setArray(mainData);
@@ -94,7 +95,6 @@ function Component(props) {
 
     // Video Id
     else if (toggle === 3) {
-      console.log("jbaksn", input);
       var inputFilter = input.replace("https://www.youtube.com/watch?v=", "");
       if (input === inputFilter) {
         alert("please insert Correct Url");
@@ -143,7 +143,16 @@ function Component(props) {
     const data = await response.json();
     mainData.push(data);
 
-    console.log("channel", data.pageInfo.totalResults);
+    // console.log("channel", data);
+    // props.set;
+    return data;
+  }
+  async function PassChannel(id) {
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,statistics&id=${id}&key=${api_key}`
+    );
+    const data = await response.json();
+
     // props.set;
     return data;
   }
@@ -195,7 +204,6 @@ function Component(props) {
     setCheck(4);
     setArray(data.items);
     loading.style.display = "none";
-    console.log(data);
   }
   useEffect(() => {
     trending();
@@ -338,7 +346,7 @@ function Component(props) {
             Search Your Youtube Video
           </Heading> */}
           {/* ------------------- Video Search Type Selection --------------- */}
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", flexWrap: "wrap",position:"sticky", zIndex:"2",top:"0px" , background:"var(--secondaryBlack)"}}>
             {/* ----------------------- Input Group---- ---------------- */}
             <div className="InputGroup">
               <input
@@ -456,6 +464,8 @@ function Component(props) {
                       <DesignCard2
                         toggle={check}
                         fun={toggle3}
+                        api_key ={api_key}
+                        chanFun={PassChannel}
                         data={data}
                         wd={"310px"}
                         ht={"170px"}
@@ -525,6 +535,8 @@ function Component(props) {
                           <DesignCard2
                             toggle={check}
                             fun={toggle3}
+                            api_key ={api_key}
+                            chanFun={PassChannel}
                             data={data}
                             wd={"310px"}
                             ht={"170px"}
@@ -569,6 +581,8 @@ function Component(props) {
                       <DesignCard2
                         toggle={check}
                         data={data}
+                        api_key ={api_key}
+                        chanFun={PassChannel}
                         wd={"69vw"}
                         ht={"39vw"}
                         info={{
@@ -594,6 +608,7 @@ function Component(props) {
                 </>
               ))}
 
+            {/* -------------------------------Trending Section ---------------------------- */}
             {check === 4 && (
               <>
                 <Heading
@@ -627,16 +642,19 @@ function Component(props) {
                         className="mainCardDiv"
                         style={{ width: "auto" }}
                       >
+                        
                         <DesignCard2
                           key={i}
                           fun={toggle3}
+                          api_key ={api_key}
+                          chanFun={PassChannel}
                           toggle={check}
                           data={data}
                           wd={"310px"}
                           ht={"170px"}
                           info={{
                             date: data.snippet.publishedAt,
-                            url: data.snippet.thumbnails.medium.url,
+                            url: data.snippet.thumbnails.standard.url,
                             views: data.statistics.viewCount,
                             id: data.id,
                             channelTitle: data.snippet.channelTitle,

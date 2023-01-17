@@ -263,7 +263,7 @@ i {
   color: white;
 }
 .title {
-  display: inline;
+  padding: 0px 0.5rem;
   -webkit-line-clamp: 2;
   line-height: 1.6rem;
   text-overflow: ellipsis;
@@ -331,7 +331,7 @@ i {
   background: var(--secondaryBlack) !important;
 }
 /* dropdown */
-.dropdown{
+.dropdown {
   background: var(--secondaryBlack);
   min-height: 40px;
 }
@@ -348,7 +348,8 @@ i {
   background: var(--primaryBlack);
   border-radius: 50px;
   align-items: center;
-  width: -webkit-fill-available;
+  width: 80%;
+  /* width: -webkit-fill-available; */
 }
 
 .input {
@@ -369,7 +370,7 @@ i {
   min-height: 45px;
   border: none;
   border-radius: 0 50px 50px 0 !important;
-  background-color: var(--secondaryBlack) !important;
+  background-color: var(--secondaryGrey) !important;
   color: #fff;
   font-size: 15px;
   cursor: pointer;
@@ -394,7 +395,7 @@ i {
 .sideBar {
   height: 100vh;
   width: 16%;
-  min-width:200px;
+  min-width: 200px;
   background: var(--secondaryBlack);
   position: sticky;
   top: 0px;
@@ -403,7 +404,7 @@ i {
   height: 20px;
   position: absolute;
   margin: 0px 0px 0px -10px;
-  filter: drop-shadow(2px 4px 6px black);;
+  filter: drop-shadow(2px 4px 6px black);
 }
 
 .logo {
@@ -419,16 +420,16 @@ i {
   display: flex;
 }
 
-.youtube{
-   width: 15px;
-  height:20px; 
+.youtube {
+  width: 15px;
+  height: 20px;
   margin: 0 5px;
   position: relative;
   background-color: #e21;
   padding: 0 15px;
   border-radius: 50% / 11%;
 }
-.youtube::before{
+.youtube::before {
   content: "";
   position: absolute;
   background: inherit;
@@ -439,27 +440,24 @@ i {
   border-radius: 5% / 50%;
 }
 
-
-
-.sideTab{
+.sideTab {
   display: flex;
   justify-content: space-evenly;
-  padding:0.8rem;
+  padding: 0.8rem;
   cursor: pointer;
 }
 
-
-.sideTab-i{
+.sideTab-i {
   display: flex;
   width: 30%;
   justify-content: center;
   align-items: center;
 }
 
-.sideTab-p{
+.sideTab-p {
   display: block;
   margin: auto;
   width: 70%;
-  color:white;
+  color: white;
   font-weight: 500;
 }
