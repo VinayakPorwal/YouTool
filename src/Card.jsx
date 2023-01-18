@@ -16,9 +16,11 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import "./App.css";
-import DesignCard2 from "./DesignCard2";
-import ChannelCard from "./ChannleCard";
+import DesignCard2 from "./DesignCards/DesignCard2";
 import img from "./logopng.png";
+import FullVideo from "./Components/FullVideo";
+import Trending from "./Components/Trending";
+import Channel from "./Components/Channel";
 
 function Component(props) {
   const [array, setArray] = useState([]);
@@ -26,7 +28,7 @@ function Component(props) {
   const [deta, setDeta] = useState();
   const [tab, setTab] = useState("Filter");
   const country = "IN";
-  var temp= "";
+  var temp = "";
 
   const [toggle, setToggle] = useState(2);
   const [input, setInput] = useState(
@@ -96,6 +98,9 @@ function Component(props) {
     // Video Id
     else if (toggle === 3) {
       var inputFilter = input.replace("https://www.youtube.com/watch?v=", "");
+      if (input === inputFilter) {
+      inputFilter = input.replace("https://youtu.be/", "");
+      }
       if (input === inputFilter) {
         alert("please insert Correct Url");
         loading.style.display = "none";
@@ -346,7 +351,16 @@ function Component(props) {
             Search Your Youtube Video
           </Heading> */}
           {/* ------------------- Video Search Type Selection --------------- */}
-          <div style={{ display: "flex", flexWrap: "wrap",position:"sticky", zIndex:"2",top:"0px" , background:"var(--secondaryBlack)"}}>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              position: "sticky",
+              zIndex: "2",
+              top: "0px",
+              background: "var(--secondaryBlack)",
+            }}
+          >
             {/* ----------------------- Input Group---- ---------------- */}
             <div className="InputGroup">
               <input
@@ -374,73 +388,6 @@ function Component(props) {
               </Button>
             </div>
           </div>
-          {/* <Tabs
-            mb="2"
-            isFitted
-            variant="enclosed"
-            style={{ margin: "2vh auto", maxWidth: "1220px" }}
-          >
-            <TabList>
-              <Tab
-                onClick={() => {
-                  setToggle(2);
-                  // setInput("");
-                  setPlaceHolder("https://www.youtube.com/channel/");
-                }}
-                _selected={{ color: "white", bg: "#252525" }}
-                // isDisabled
-              >
-                Channel Link
-              </Tab>
-              <Tab
-                onClick={() => {
-                  setToggle(1);
-                  // setInput("");
-                  setPlaceHolder("BB ki Vines");
-                }}
-                _selected={{ color: "white", bg: "#252525" }}
-              >
-                Keyword
-              </Tab>
-              <Tab
-                onClick={() => {
-                  setToggle(3);
-                  // setInput("");
-                  setPlaceHolder("https://www.youtube.com/watch?v=");
-                }}
-                _selected={{ color: "white", bg: "#252525" }}
-              >
-                Video Link
-              </Tab>
-            </TabList>
-          </Tabs> */}
-
-          {/* ----------------------- Input Group---- ---------------- */}
-          {/* <div className="InputGroup">
-            <input
-              className="input"
-              placeholder={placeHolder}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
-            <button
-              style={{
-                width: "50px",
-                fontSize: "large",
-                transform: "rotate(45deg)",
-              }}
-              onClick={() => setInput("")}
-            >
-              <i className="fa fa-plus"></i>
-            </button>
-            <Button
-              colorScheme="blue"
-              className="button--submit"
-              onClick={keySearch}
-            >
-              <i className="fa fa-search"></i>
-            </Button>
-          </div> */}
 
           {/* --------------- Skeleton Loader ------------ */}
           <Card id="loading" maxW="lg" borderRadius="lg">
@@ -464,7 +411,7 @@ function Component(props) {
                       <DesignCard2
                         toggle={check}
                         fun={toggle3}
-                        api_key ={api_key}
+                        api_key={api_key}
                         chanFun={PassChannel}
                         data={data}
                         wd={"310px"}
@@ -496,182 +443,37 @@ function Component(props) {
             )}
 
             {/* -----------------------------Channel Section------------------- */}
-            {check === 2 ? (
-              <>
-                {array.map((data, i) => (
-                  <>
-                    {data.pageInfo.totalResults === 1 ? (
-                      <>
-                        <div
-                          key={i}
-                          className="mainCardDiv"
-                          style={{ width: "auto" }}
-                        >
-                          <ChannelCard data={data} />
-                        </div>
-                        <Heading
-                          size="md"
-                          m="3"
-                          style={{ textAlign: "center", width: "100%" }}
-                        >
-                          Recent Videos
-                        </Heading>
-                      </>
-                    ) : (
-                      <div style={{ display: "none" }}> </div>
-                    )}
-                  </>
-                ))}
-
-                <div className="ChannelCardGroup">
-                  {deta ? (
-                    deta.map((data, i) => (
-                      <>
-                        <div
-                          key={i}
-                          className="mainCardDiv"
-                          style={{ width: "auto" }}
-                        >
-                          <DesignCard2
-                            toggle={check}
-                            fun={toggle3}
-                            api_key ={api_key}
-                            chanFun={PassChannel}
-                            data={data}
-                            wd={"310px"}
-                            ht={"170px"}
-                            info={{
-                              date: data.items[0].snippet.publishedAt,
-                              url: data.items[0].snippet.thumbnails.medium.url,
-                              views: data.items[0].statistics.viewCount,
-                              duration: data.items[0].contentDetails.duration,
-
-                              id: data.items[0].id,
-                              channelTitle: data.items[0].snippet.channelTitle,
-                              likes: data.items[0].statistics.likeCount,
-                              comments: data.items[0].statistics.commentCount,
-                              description:
-                                data.items[0].snippet.localized.description,
-                              channelId: data.items[0].snippet.channelId,
-                              title: data.items[0].snippet.localized.title,
-                            }}
-                          />
-                        </div>
-                      </>
-                    ))
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </>
-            ) : (
-              <></>
+            {check === 2 && (
+              <Channel
+                array={array}
+                deta={deta}
+                check={check}
+                toggle3={toggle3}
+                api_key={api_key}
+                PassChannel={PassChannel}
+              />
             )}
 
             {/* ------------------- Video Full view Section--------------------- */}
-            {check === 3 &&
-              array.map((data, i) => (
-                <>
-                  {data.pageInfo.totalResults === 1 ? (
-                    <div
-                      key={i}
-                      className="mainCardDiv"
-                      style={{ width: "auto" }}
-                    >
-                      <DesignCard2
-                        toggle={check}
-                        data={data}
-                        api_key ={api_key}
-                        chanFun={PassChannel}
-                        wd={"69vw"}
-                        ht={"39vw"}
-                        info={{
-                          date: data.items[0].snippet.publishedAt,
-                          url: data.items[0].snippet.thumbnails.medium.url,
-                          views: data.items[0].statistics.viewCount,
-                          id: data.items[0].id,
-                          channelTitle: data.items[0].snippet.channelTitle,
-                          duration: data.items[0].contentDetails.duration,
+            {check === 3 && (
+              <FullVideo
+                array={array}
+                check={check}
+                api_key={api_key}
+                PassChannel={PassChannel}
+              />
+            )}
 
-                          likes: data.items[0].statistics.likeCount,
-                          comments: data.items[0].statistics.commentCount,
-                          description:
-                            data.items[0].snippet.localized.description,
-                          channelId: data.items[0].snippet.channelId,
-                          title: data.items[0].snippet.localized.title,
-                        }}
-                      />
-                    </div>
-                  ) : (
-                    <div style={{ display: "none" }}> </div>
-                  )}
-                </>
-              ))}
-
+            
             {/* -------------------------------Trending Section ---------------------------- */}
             {check === 4 && (
-              <>
-                <Heading
-                  size="lg"
-                  m="3"
-                  style={{
-                    alignItems: "center",
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <h1
-                    style={{
-                      fontSize: "xxx-large",
-                      display: "flex",
-                      alignItems: "center",
-                      color: "#3f79e6",
-                      padding: "5px",
-                    }}
-                  >
-                    #15{" "}
-                  </h1>
-                  <p>Trending</p>
-                </Heading>
-                {array.map((data, i) => (
-                  <>
-                    {data && (
-                      <div
-                        key={i}
-                        className="mainCardDiv"
-                        style={{ width: "auto" }}
-                      >
-                        
-                        <DesignCard2
-                          key={i}
-                          fun={toggle3}
-                          api_key ={api_key}
-                          chanFun={PassChannel}
-                          toggle={check}
-                          data={data}
-                          wd={"310px"}
-                          ht={"170px"}
-                          info={{
-                            date: data.snippet.publishedAt,
-                            url: data.snippet.thumbnails.standard.url,
-                            views: data.statistics.viewCount,
-                            id: data.id,
-                            channelTitle: data.snippet.channelTitle,
-                            duration: data.contentDetails.duration,
-
-                            likes: data.statistics.likeCount,
-                            comments: data.statistics.commentCount,
-                            description: data.snippet.localized.description,
-                            channelId: data.snippet.channelId,
-                            title: data.snippet.localized.title,
-                          }}
-                        />
-                      </div>
-                    )}
-                  </>
-                ))}
-              </>
+              <Trending
+                array={array}
+                check={check}
+                toggle3={toggle3}
+                api_key={api_key}
+                PassChannel={PassChannel}
+              />
             )}
           </div>
           <div>

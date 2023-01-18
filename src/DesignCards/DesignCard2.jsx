@@ -28,9 +28,8 @@ function DesignCard2(props) {
   var channelData = "";
   const [Channelimg, setChannelimg] = useState("");
   const ChannelById = async () => {
-   channelData = await props.chanFun(data.channelId);
+    channelData = await props.chanFun(data.channelId);
     setChannelimg(channelData.items[0].snippet.thumbnails.default.url);
-
   };
 
   // const ChannelById = async () => {
@@ -113,13 +112,30 @@ function DesignCard2(props) {
   days_difference = Math.floor(days_difference);
 
   if (days_difference > 365) {
-    date = Math.floor(days_difference / 365) + " year ago";
+    if (Math.floor(days_difference / 365) === 1) {
+      date = Math.floor(days_difference / 365) + " year ago";
+    } else {
+      date = Math.floor(days_difference / 365) + " years ago";
+    }
   } else if (days_difference > 30) {
-    date = Math.floor(days_difference / 30) + " month ago";
+    if (Math.floor(days_difference / 30) === 1) {
+      date = Math.floor(days_difference / 30) + " month ago";
+    } else {
+      date = Math.floor(days_difference / 30) + " months ago";
+    }
   } else if (days_difference > 7) {
-    date = Math.floor(days_difference / 7) + " week ago";
+    if (Math.floor(days_difference / 7) === 1) {
+      date = Math.floor(days_difference / 7) + " week ago";
+    } else {
+      date = Math.floor(days_difference / 7) + " weeks ago";
+    }
   } else {
-    date = days_difference + " day ago";
+    if (days_difference === 0) date = "Today";
+    else if (days_difference === 1) {
+      date = days_difference + " day ago";
+    } else {
+      date = days_difference + " days ago";
+    }
   }
 
   function Details() {
@@ -137,7 +153,8 @@ function DesignCard2(props) {
 
   async function download() {
     const response = await fetch(
-      `https://server-ten-iota.vercel.app/download/?url=https://www.youtube.com/watch?v=${data.id}`,{
+      `https://server-ten-iota.vercel.app/download/?url=https://www.youtube.com/watch?v=${data.id}`,
+      {
         // mode: "no-cors",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials": true,
@@ -168,7 +185,14 @@ function DesignCard2(props) {
   }, []);
   return (
     <div className="card2" style={{ width: props.wd }}>
-      <div className="card-image">
+      <div className="card-image"  onMouseOver={() => {
+                document.getElementById(`${data.id}hover`).style.display =
+                  "flex";
+              }}
+              onMouseOut={() => {
+                document.getElementById(`${data.id}hover`).style.display =
+                  "none";
+              }}>
         {/* -------------------Image Section ------------------ */}
         {!video && (
           <>
@@ -178,14 +202,7 @@ function DesignCard2(props) {
               onClick={() => {
                 setVideo(true);
               }}
-              onMouseOver={() => {
-                document.getElementById(`${data.id}hover`).style.display =
-                  "flex";
-              }}
-              onMouseOut={() => {
-                document.getElementById(`${data.id}hover`).style.display =
-                  "none";
-              }}
+             
               style={{ width: props.wd, height: props.ht, objectFit: "cover" }}
             />
 
@@ -309,12 +326,11 @@ function DesignCard2(props) {
       {/* --------------------------------- Title logo and Links --------------------------- */}
       <div style={{ display: "flex", width: props.wd, padding: "0 10px 0 0" }}>
         <div>
-          {/* --------------------------------- Channel logo !pending --------------------------- */}
+          {/* --------------------------------- Channel logo --------------------------- */}
           <Avatar
             mt="2"
             size="sm"
             name="Dan Abrahmov"
-            // src="https://bit.ly/dan-abramov"
             src={Channelimg}
           />
         </div>

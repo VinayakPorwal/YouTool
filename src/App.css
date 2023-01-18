@@ -38,6 +38,7 @@
 
 .hoverButton {
   display: none;
+  /* visibility: hidden; */
   transition: 1s;
   flex-direction: column;
   align-items: center;
@@ -264,6 +265,7 @@ i {
 }
 .title {
   padding: 0px 0.5rem;
+  color: white;
   -webkit-line-clamp: 2;
   line-height: 1.6rem;
   text-overflow: ellipsis;
