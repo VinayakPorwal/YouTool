@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route,useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 import Component from "./Card";
 import { Container } from "@chakra-ui/react";
@@ -26,7 +26,6 @@ import img from "./logopng.png";
 import FullVideo from "./Components/FullVideo";
 import Trending from "./Components/Trending";
 import Channel from "./Components/Channel";
-import { nn } from "date-fns/locale";
 
 function App() {
   const [array, setArray] = useState([]);
@@ -220,10 +219,20 @@ function App() {
     trending();
   }, []);
 
+  useEffect(() => {
+    if (check === 1) {
+      setTab("Search by : Keyword");
+    } else if (check === 2) {
+      setTab("Search by : Channel");
+    } else if (check === 3) {
+      setTab("Search by : Video");
+    } else {
+      setTab("Trending");
+    }
+  }, [check]);
+
   const navigate = useNavigate();
   return (
-
-
     <>
       {/* <Container
         maxW="5500px"
@@ -346,15 +355,24 @@ function App() {
           </Menu>
           <Divider />
           <div>
-            <div className="sideTab">
-              <i className="fa fa-home sideTab-i" style={{ color: "grey" }}></i>
-              <p className="sideTab-p" style={{ color: "grey" }}>
-                Home
-              </p>
+            <div
+              className="sideTab"
+              onClick={() => {
+                navigate("/");
+                setTab("Filter");
+              }}
+            >
+              <i className="fa fa-home sideTab-i"></i>
+              <p className="sideTab-p">Home</p>
             </div>
-            <div className="sideTab" onClick={() => {trending()
-            navigate("/trending")
-            }}>
+            <div
+              className="sideTab"
+              onClick={() => {
+                trending();
+                setTab("Trending");
+                navigate("/trending");
+              }}
+            >
               <i className="fa fa-fire sideTab-i"></i>
               <p className="sideTab-p">Trending</p>
             </div>
@@ -492,29 +510,21 @@ function App() {
 
             {/* -------------------------------Trending Section ---------------------------- */}
             {check === 4 && (
-              // <Trending
-              //   array={array}
-              //   check={check}
-              //   toggle3={toggle3}
-              //   api_key={api_key}
-              //   PassChannel={PassChannel}
-              // />
-
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route
-                    path="/trending"
-                    element={
-                      <Trending
-                        array={array}
-                        check={check}
-                        toggle3={toggle3}
-                        api_key={api_key}
-                        PassChannel={PassChannel}
-                      />
-                    }
-                  />
-                </Routes>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route
+                  path="/trending"
+                  element={
+                    <Trending
+                      array={array}
+                      check={check}
+                      toggle3={toggle3}
+                      api_key={api_key}
+                      PassChannel={PassChannel}
+                    />
+                  }
+                />
+              </Routes>
             )}
           </div>
           <div>
