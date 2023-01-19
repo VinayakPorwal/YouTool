@@ -28,7 +28,7 @@
   justify-content: end;
   margin: -4vh 0px 0px -2vh;
 }
-.duration p {
+.duration span{
   font-weight: 700;
   color: white;
   background: rgba(0, 0, 0, 0.72);
@@ -204,15 +204,22 @@ svg {
   /* max-width: 50%; */
   /* background: white; */
   padding: 0.2em;
+  min-width: 310px;
   border-radius: 6px;
 }
 
 .card-image {
+  min-width: 310px;
   background-color: rgb(236, 236, 236);
   width: 100%;
   border-radius: 6px 6px 0 0;
 }
 
+.card-image img{
+
+  min-width: 310px;
+  min-height: 175px;
+}
 .card-image img:hover {
   transition: 1s;
   /* transform: scale(0.98); */
@@ -294,12 +301,34 @@ i {
   background: var(--secondaryGrey);
   color: white !important;
 }
+
+
+#navbarButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 4;
+  margin: 1.66rem 1.09rem;
+  width: auto;
+}
+@media screen and (min-width: 500px) {
+#navbarButton ,  .smallNav{
+  display: none;
+}
+}
 @media screen and (max-width: 500px) {
   .mainCardDiv {
     width: 80%;
   }
-  .sideBar {
-    display: none !important;
+  #sidenavbar {
+    position: fixed;
+    z-index: 3;
+    display: none;
+    /* display: none !important; */
+  }
+  #navbarButton{
+    display: flex;
   }
   .MainContainer {
     width: 100% !important;

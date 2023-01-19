@@ -4,28 +4,14 @@ import Component from "./Card";
 import { Container } from "@chakra-ui/react";
 import Home from "./Home";
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Image,
-  CardBody,
-  Card,
-  Text,
-  Heading,
-  Tabs,
-  TabList,
-  Tab,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Divider,
-} from "@chakra-ui/react";
+import { Button, CardBody, Card, Text } from "@chakra-ui/react";
 import "./App.css";
 import DesignCard2 from "./DesignCards/DesignCard2";
-import img from "./logopng.png";
 import FullVideo from "./Components/FullVideo";
 import Trending from "./Components/Trending";
 import Channel from "./Components/Channel";
+import Sidebar from "./Components/Sidebar";
+import img from "./logopng.png";
 
 function App() {
   const [array, setArray] = useState([]);
@@ -208,12 +194,17 @@ function App() {
     let data = await response.json();
     if (data.pageInfo.totalResults === 0) {
       alert("Results Not Found");
-      loading.style.display = "none";
+      // loading.style.display = "none";
       return;
     }
     setCheck(4);
     setArray(data.items);
-    loading.style.display = "none";
+    // loading.style.display = "none";
+  }
+
+  async function home() {
+    console.log("home");
+    setCheck(4);
   }
   useEffect(() => {
     trending();
@@ -250,143 +241,14 @@ function App() {
       </Container> */}
 
       <div style={{ display: "flex", margin: "0", padding: "0" }}>
-        <div className="sideBar">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              marginBottom: "2vh",
-              alignItems: "center",
-            }}
-          >
-            <i
-              className="fa fa-bars"
-              style={{
-                display: "flex",
-                width: "30%",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            ></i>
-
-            <div className="logo">
-              <div className="youtube">
-                <img src={img} alt="" />
-              </div>
-
-              <p>YouTool</p>
-            </div>
-          </div>
-
-          {/* ---------------------------- filter --------------------------- */}
-          <Divider />
-          <Menu>
-            <MenuButton
-              style={{ display: "flex", margin: "1rem auto", color: "white" }}
-              onClick={() => {
-                var button = document.getElementById(`tabselect`);
-                if (button.style.transform === "rotate(0deg)") {
-                  button.style.transform = "rotate(180deg)";
-                } else {
-                  button.style.transform = "rotate(0deg)";
-                }
-              }}
-            >
-              <i
-                className="fa fa-chevron-down"
-                style={{
-                  fontSize: "xx-small",
-                  margin: "0 5px",
-                  transform: "rotate(0deg)",
-                }}
-                title="Filter"
-                id="tabselect"
-              ></i>
-              <i
-                className="fa fa-filter"
-                style={{ fontSize: "smaller", margin: "0 10px 0 0" }}
-              ></i>
-              {tab}{" "}
-            </MenuButton>
-            <div style={{ zIndex: "2" }}>
-              <MenuList
-                style={{
-                  background: "var(--secondaryBlack)",
-                  zIndex: "77",
-                  position: "absolute",
-                  color: "white",
-                }}
-              >
-                <MenuItem
-                  className="Tab"
-                  onClick={() => {
-                    setToggle(1);
-                    setTab("Search by : Keyword");
-                    // setInput("");
-                    setPlaceHolder("BB ki Vines");
-                  }}
-                >
-                  Keyword
-                </MenuItem>
-                <MenuItem
-                  className="Tab"
-                  onClick={() => {
-                    setToggle(2);
-                    setTab("Search by : Channel");
-                    // setInput("");
-                    setPlaceHolder("https://www.youtube.com/channel/");
-                  }}
-                >
-                  Channel Link
-                </MenuItem>
-                <MenuItem
-                  className="Tab"
-                  onClick={() => {
-                    setToggle(3);
-                    // setInput("");
-                    setTab("Search by : Video");
-                    setPlaceHolder("https://www.youtube.com/watch?v=");
-                  }}
-                >
-                  Video Link
-                </MenuItem>
-              </MenuList>
-            </div>
-          </Menu>
-          <Divider />
-          <div>
-            <div
-              className="sideTab"
-              onClick={() => {
-                navigate("/");
-                setTab("Filter");
-              }}
-            >
-              <i className="fa fa-home sideTab-i"></i>
-              <p className="sideTab-p">Home</p>
-            </div>
-            <div
-              className="sideTab"
-              onClick={() => {
-                trending();
-                setTab("Trending");
-                navigate("/trending");
-              }}
-            >
-              <i className="fa fa-fire sideTab-i"></i>
-              <p className="sideTab-p">Trending</p>
-            </div>
-            <div className="sideTab">
-              <i
-                className="fa fa-history sideTab-i"
-                style={{ color: "grey" }}
-              ></i>
-              <p className="sideTab-p" style={{ color: "grey" }}>
-                History
-              </p>
-            </div>
-          </div>
-        </div>
+          <Sidebar
+            tab={tab}
+            setToggle={setToggle}
+            setTab={setTab}
+            setPlaceHolder={setPlaceHolder}
+            trending={trending}
+            home={home}
+          />
         <div className="MainContainer" style={{ width: "84%" }}>
           {/* <Heading
             size="lg"
@@ -394,7 +256,8 @@ function App() {
           >
             Search Your Youtube Video
           </Heading> */}
-          {/* ------------------- Video Search Type Selection --------------- */}
+
+          {/* ------------------- Search Group --------------- */}
           <div
             style={{
               display: "flex",
@@ -403,8 +266,20 @@ function App() {
               zIndex: "2",
               top: "0px",
               background: "var(--secondaryBlack)",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
+            {/* ---------------------hamburger-------------  */}
+            <i
+              className="fa fa-bars smallNav"
+              style={{
+                margin: "0 1rem",
+                opacity:"0.4"
+              }}
+              
+            ></i>
+
             {/* ----------------------- Input Group---- ---------------- */}
             <div className="InputGroup">
               <input
@@ -431,6 +306,11 @@ function App() {
                 <i className="fa fa-search"></i>
               </Button>
             </div>
+
+            {/* ---------------------- logo ------------------- */}
+            {/* <div className="youtube smallNav">
+              <img src={img} alt="" />
+            </div> */}
           </div>
 
           {/* --------------- Skeleton Loader ------------ */}

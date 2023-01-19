@@ -185,14 +185,15 @@ function DesignCard2(props) {
   }, []);
   return (
     <div className="card2" style={{ width: props.wd }}>
-      <div className="card-image"  onMouseOver={() => {
-                document.getElementById(`${data.id}hover`).style.display =
-                  "flex";
-              }}
-              onMouseOut={() => {
-                document.getElementById(`${data.id}hover`).style.display =
-                  "none";
-              }}>
+      <div
+        className="card-image"
+        onMouseOver={() => {
+          document.getElementById(`${data.id}hover`).style.display = "flex";
+        }}
+        onMouseOut={() => {
+          document.getElementById(`${data.id}hover`).style.display = "none";
+        }}
+      >
         {/* -------------------Image Section ------------------ */}
         {!video && (
           <>
@@ -202,7 +203,6 @@ function DesignCard2(props) {
               onClick={() => {
                 setVideo(true);
               }}
-             
               style={{ width: props.wd, height: props.ht, objectFit: "cover" }}
             />
 
@@ -213,7 +213,7 @@ function DesignCard2(props) {
               style={{ width: props.wd }}
             >
               {" "}
-              <p>{StringWithColons(data.duration)}</p>
+              <span>{StringWithColons(data.duration)}</span>
             </Text>
           </>
         )}
@@ -222,7 +222,7 @@ function DesignCard2(props) {
         {video && (
           <iframe
             className="d-flex"
-            style={{ width: props.wd, height: props.ht }}
+            style={{ width: props.wd, height: props.ht , minWidth:"310px" , minHeight:"175px" }}
             //for video not from Youtube
             // src={Download[0].url}
             // for video from Youtube
@@ -239,10 +239,11 @@ function DesignCard2(props) {
             style={{
               width: props.wd,
               height: props.ht,
+              minWidth:"310px",
               margin: `-${props.ht} 0 0 -3px`,
             }}
           >
-            <i class="fa fa-play"></i>
+            <i className="fa fa-play"></i>
             <Text
               fontSize="xs"
               style={{
@@ -269,7 +270,7 @@ function DesignCard2(props) {
         {/* --------------------------View Count-----------------  */}
         <div>
           <i
-            class="fa fa-solid fa-eye"
+            className="fa fa-solid fa-eye"
             style={{ margin: "0 4px 0 0", color: "inherit" }}
           ></i>
           {convertToInternational(data.views)} {"views"} • {date}
@@ -286,7 +287,7 @@ function DesignCard2(props) {
         >
           {/* -------------------------Extend View Open in Large--------------------*/}
           <i
-            class="fa fa-expand"
+            className="fa fa-expand"
             title="Open In Large"
             onClick={() => {
               props.fun(data.id);
@@ -298,7 +299,7 @@ function DesignCard2(props) {
             <MenuButton onClick={download} title="Download">
               {/* <i className="fa fa-download"></i> */}
               <i
-                class="fa fa-arrow-down"
+                className="fa fa-arrow-down"
                 style={{ borderBottom: "2px solid white" }}
               ></i>
             </MenuButton>
@@ -324,15 +325,10 @@ function DesignCard2(props) {
       </div>
 
       {/* --------------------------------- Title logo and Links --------------------------- */}
-      <div style={{ display: "flex", width: props.wd, padding: "0 10px 0 0" }}>
+      <div style={{ display: "flex", width: props.wd,minWidth:"310px", padding: "0 10px 0 0" }}>
         <div>
           {/* --------------------------------- Channel logo --------------------------- */}
-          <Avatar
-            mt="2"
-            size="sm"
-            name="Dan Abrahmov"
-            src={Channelimg}
-          />
+          <Avatar mt="2" size="sm" name="Dan Abrahmov" src={Channelimg} />
         </div>
         <div style={{ width: "85%" }}>
           {/* --------------------------------- Channel Title --------------------------- */}
@@ -410,9 +406,9 @@ function DesignCard2(props) {
                     }}
                   >
                     {data.likes}
-                    <Text color="black" fontSize="xm">
+                    <span style={{ color: "black", fontSize: "x-small" }}>
                       Likes
-                    </Text>
+                    </span>
                   </Text>
                   <Text
                     color="blue.600"
@@ -425,9 +421,9 @@ function DesignCard2(props) {
                     }}
                   >
                     {data.comments}
-                    <Text color="black" fontSize="xs">
+                    <span style={{ color: "black", fontSize: "x-small" }}>
                       Comments
-                    </Text>
+                    </span>
                   </Text>
                 </div>
               </MenuItem>
@@ -439,11 +435,18 @@ function DesignCard2(props) {
               </MenuItem>
               {/* -------------------------Copy Link buttons-----------------------  */}
               {/* ---------------------------- Channel Link ------------------------ */}
-              <Text color="black" fontSize="sm" m={2} textAlign="start">
+              <div
+                style={{
+                  fontSize: "small",
+                  color: "black",
+                  textAlign: "start",
+                  margin: "1rem",
+                }}
+              >
                 Channel Link :
                 <div style={{ display: "flex" }}>
                   <i
-                    class="fa fa-copy"
+                    className="fa fa-copy"
                     style={{
                       margin: "5px",
                       color: "black",
@@ -466,6 +469,7 @@ function DesignCard2(props) {
                   <div
                     style={{
                       width: "90%",
+                      wordBreak: "break-all",
                       fontSize: "x-small",
                       background: "#f0f0f0",
                     }}
@@ -473,14 +477,21 @@ function DesignCard2(props) {
                     {`https://www.youtube.com/channel/${data.channelId}`}
                   </div>
                 </div>
-              </Text>
+              </div>
 
               {/* ---------------------------- Video Link ------------------------ */}
-              <Text color="black" fontSize="sm" m={2} textAlign="start">
+              <div
+                style={{
+                  fontSize: "small",
+                  color: "black",
+                  textAlign: "start",
+                  margin: "1rem",
+                }}
+              >
                 Video Link :{" "}
                 <div style={{ display: "flex" }}>
                   <i
-                    class="fa fa-copy"
+                    className="fa fa-copy"
                     style={{
                       margin: "5px",
                       color: "black",
@@ -502,9 +513,8 @@ function DesignCard2(props) {
                   ></i>
                   <div
                     style={{
-                      display: "flex",
                       width: "90%",
-                      alignItems: "center",
+                      wordBreak: "break-all",
                       fontSize: "x-small",
                       background: "#f0f0f0",
                     }}
@@ -512,12 +522,13 @@ function DesignCard2(props) {
                     {`https://www.youtube.com/watch?v=${data.id}`}
                   </div>
                 </div>
-              </Text>
+              </div>
             </MenuList>
           </Menu>
         </div>
       </div>
 
+      {/* ---------------------------------------Full Video View---------------------------------  */}
       {props.toggle === 3 && (
         <div
           id={`${data.id}`}
@@ -525,8 +536,7 @@ function DesignCard2(props) {
           style={{
             // display: "none",
             height: "auto",
-            padding: "1vw 2vw",
-            overflow: "scroll",
+            padding: "1vw 1vw",
           }}
         >
           {/* ---------------------------- Published Date ---------------------------- */}
@@ -540,8 +550,9 @@ function DesignCard2(props) {
             style={{
               display: "flex",
               justifyContent: "space-evenly",
-              padding: "5px",
+              padding: "10px 5px",
               width: props.wd,
+              minWidth:"310px"
             }}
           >
             <Text
@@ -555,9 +566,7 @@ function DesignCard2(props) {
               }}
             >
               {data.likes}
-              <Text color="white" fontSize="xm">
-                Likes
-              </Text>
+              <span style={{ color: "white", fontSize: "x-small" }}>Likes</span>
             </Text>
             <Text
               color="blue.600"
@@ -570,20 +579,34 @@ function DesignCard2(props) {
               }}
             >
               {data.comments}
-              <Text color="white" fontSize="xs">
+              <span style={{ color: "white", fontSize: "x-small" }}>
                 Comments
-              </Text>
+              </span>
             </Text>
           </div>
           {/* ---------------------- Description ------------------ */}
-          {props.toggle === 3 && <Text fontSize="sm"> {data.description}</Text>}
+          {props.toggle === 3 && (
+            <>
+              <span className="author" style={{ fontWeight: "bold" }}>
+                Description :{" "}
+              </span>
+              <Text fontSize="xs"> {data.description}</Text>
+            </>
+          )}
           {/* -------------------------Copy Link buttons-----------------------  */}
           {/* ---------------------------- Channel Link ------------------------ */}
-          <Text color="white" fontSize="sm" m={2} textAlign="start">
+          <div
+            style={{
+              fontSize: "small",
+              color: "white",
+              textAlign: "start",
+              margin: "2rem",
+            }}
+          >
             Channel Link :
             <div style={{ display: "flex" }}>
               <i
-                class="fa fa-copy"
+                className="fa fa-copy"
                 style={{
                   margin: "5px",
                   cursor: "pointer",
@@ -610,19 +633,27 @@ function DesignCard2(props) {
                   background: "var(--secondaryBlack)",
                   color: "white",
                   fontSize: "x-small",
+                  wordBreak:"break-all"
                 }}
               >
                 {`https://www.youtube.com/channel/${data.channelId}`}
               </div>
             </div>
-          </Text>
+          </div>
 
           {/* ---------------------------- Video Link ------------------------ */}
-          <Text color="white" fontSize="sm" m={2} textAlign="start">
+          <div
+            style={{
+              fontSize: "small",
+              color: "white",
+              textAlign: "start",
+              margin: "2rem",
+            }}
+          >
             Video Link :{" "}
             <div style={{ display: "flex" }}>
               <i
-                class="fa fa-copy"
+                className="fa fa-copy"
                 style={{
                   margin: "5px",
                   cursor: "pointer",
@@ -654,7 +685,7 @@ function DesignCard2(props) {
                 {`https://www.youtube.com/watch?v=${data.id}`}
               </div>
             </div>
-          </Text>
+          </div>
         </div>
       )}
     </div>

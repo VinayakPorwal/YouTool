@@ -15,7 +15,7 @@ function Trending(props) {
           justifyContent: "center",
         }}
       >
-        <h1
+        <span
           style={{
             fontSize: "xxx-large",
             display: "flex",
@@ -25,15 +25,14 @@ function Trending(props) {
           }}
         >
           #15{" "}
-        </h1>
-        <p>Trending</p>
+        </span>
+        Trending
       </Heading>
       {props.array.map((data, i) => (
-        <>
+        <div key={data.id}>
           {data && (
-            <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
+            <div className="mainCardDiv" style={{ width: "auto" }}>
               <DesignCard2
-                key={i}
                 fun={props.toggle3}
                 api_key={props.api_key}
                 chanFun={props.PassChannel}
@@ -57,7 +56,7 @@ function Trending(props) {
               />
             </div>
           )}
-        </>
+        </div>
       ))}
     </>
   );

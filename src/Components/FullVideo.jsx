@@ -8,9 +8,12 @@ function FullVideo(props) {
     <>
       {" "}
       {/* {props.array.map((data, i) => ( */}
-      <div style={{display:"flex"}}>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
         {data && (
-          <div className="mainCardDiv" style={{ width: "auto" }}>
+          <div
+            className="mainCardDiv"
+            style={{ width: "auto", margin: "0 auto" }}
+          >
             <DesignCard2
               toggle={props.check}
               api_key={props.api_key}
@@ -18,7 +21,7 @@ function FullVideo(props) {
               // wd={"69vw"}
               // ht={"39vw"}
               wd={"49vw"}
-              ht={"29vw"}
+              ht={"28vw"}
               info={{
                 date: data.items[0].snippet.publishedAt,
                 url: data.items[0].snippet.thumbnails.medium.url,
@@ -35,13 +38,12 @@ function FullVideo(props) {
             />
           </div>
         )}
-        <div style={{margin:"1rem 2rem "}}>
-          
-       <RelatedVideosCard wd={"175px"} ht={"100px"} />
-       <RelatedVideosCard wd={"175px"} ht={"100px"} />
-       <RelatedVideosCard wd={"175px"} ht={"100px"} />
-       <RelatedVideosCard wd={"175px"} ht={"100px"} />
-       <RelatedVideosCard wd={"175px"} ht={"100px"} />
+        <div style={{ margin: "1rem auto" }}>
+          <RelatedVideosCard wd={"149px"} ht={"60px"} id={data.items[0].id} />
+          {/* <RelatedVideosCard wd={"175px"} ht={"100px"} /> */}
+          {/* <RelatedVideosCard wd={"175px"} ht={"100px"} /> */}
+          {/* <RelatedVideosCard wd={"175px"} ht={"100px"} /> */}
+          {/* <RelatedVideosCard wd={"175px"} ht={"100px"} /> */}
         </div>
       </div>
       {/* ))} */}
