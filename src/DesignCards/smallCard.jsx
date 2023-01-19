@@ -14,7 +14,7 @@ import {
 function RelatedVideosCard(props) {
   const [deta, setDeta] = useState();
   const [related, setRelated] = useState();
-  const [click, setClick] = useState(true);
+  // const [click, setClick] = useState(true);
 
   // const data = props.data;
 
@@ -49,8 +49,7 @@ function RelatedVideosCard(props) {
   }
   useState(() => {
     RelatedVideos(props.id);
-    console.log("yez");
-  }, [click]);
+  }, []);
   return (
     <div>
       <Heading
@@ -97,9 +96,9 @@ function RelatedVideosCard(props) {
                     //   setVideo(true);
                     // }}
                     onClick={() => {
-                      if (click) setClick(false);
-                      else setClick(true);
-                      RelatedVideos(props.id);
+                      // if (click) setClick(false);
+                      // else setClick(true);
+                      RelatedVideos(data.id);
 
                       props.fun(data.id);
                     }}
