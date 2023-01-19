@@ -4,6 +4,7 @@ import RelatedVideosCard from "../DesignCards/smallCard";
 
 function FullVideo(props) {
   var data = props.array[0];
+  var toggle = props.fun
   return (
     <>
       {" "}
@@ -39,7 +40,7 @@ function FullVideo(props) {
           </div>
         )}
         <div style={{ margin: "1rem auto" }}>
-          <RelatedVideosCard wd={"149px"} ht={"60px"} id={data.items[0].id} />
+          <RelatedVideosCard wd={"149px"} ht={"60px"} id={data.items[0].id}  fun={toggle}/>
           {/* <RelatedVideosCard wd={"175px"} ht={"100px"} /> */}
           {/* <RelatedVideosCard wd={"175px"} ht={"100px"} /> */}
           {/* <RelatedVideosCard wd={"175px"} ht={"100px"} /> */}

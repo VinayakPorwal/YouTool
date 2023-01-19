@@ -223,7 +223,7 @@ function App() {
   }, [check]);
 
   const navigate = useNavigate();
-  const [logo,setLogo]=useState(true)
+  const [logo,setLogo]=useState(false)
   return (
     <>
       {/* <Container
@@ -402,6 +402,7 @@ function App() {
                 check={check}
                 api_key={api_key}
                 PassChannel={PassChannel}
+                fun={toggle3}
               />
             )}
 

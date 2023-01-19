@@ -16,15 +16,14 @@ function Sidebar(props) {
       {" "}
       <i
         className="fa fa-bars"
-       
         id="navbarButton"
         onClick={() => {
           if (document.getElementById("sidenavbar").style.display === "none") {
             document.getElementById("sidenavbar").style.display = "block";
-            props.setLogo(false)
+            props.setLogo(false);
           } else {
             document.getElementById("sidenavbar").style.display = "none";
-            props.setLogo(true)
+            props.setLogo(true);
           }
         }}
       ></i>
@@ -44,9 +43,8 @@ function Sidebar(props) {
               width: "30%",
               justifyContent: "center",
               alignItems: "center",
-              opacity:"0"
+              opacity: "0",
             }}
-            
           ></i>
 
           <div className="logo">
@@ -164,6 +162,15 @@ function Sidebar(props) {
             ></i>
             <p className="sideTab-p" style={{ color: "grey" }}>
               History
+            </p>
+          </div>
+          <div className="sideTab">
+            <i
+              className="fa fa-download sideTab-i"
+              style={{ color: "white" }}
+            ></i>
+            <p className="sideTab-p" style={{ color: "grey" }}>
+              Downloads
             </p>
           </div>
         </div>

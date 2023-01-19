@@ -14,6 +14,7 @@ import {
 function RelatedVideosCard(props) {
   const [deta, setDeta] = useState();
   const [related, setRelated] = useState();
+  const [click, setClick] = useState(true);
 
   // const data = props.data;
 
@@ -27,10 +28,10 @@ function RelatedVideosCard(props) {
       hr = Math.floor(min / 60);
       min = min % 60;
     }
-    if (sec<10) sec="0"+sec;
-    if (min<10) min="0"+min;
+    if (sec < 10) sec = "0" + sec;
+    if (min < 10) min = "0" + min;
     // if (sec<10) sec="0"+sec;
-    if (hr===0)return min + ":" + sec;
+    if (hr === 0) return min + ":" + sec;
     else return hr + ":" + min + ":" + sec;
   }
   async function RelatedVideos(id) {
@@ -48,7 +49,8 @@ function RelatedVideosCard(props) {
   }
   useState(() => {
     RelatedVideos(props.id);
-  }, []);
+    console.log("yez");
+  }, [click]);
   return (
     <div>
       <Heading
@@ -94,7 +96,13 @@ function RelatedVideosCard(props) {
                     // onClick={() => {
                     //   setVideo(true);
                     // }}
+                    onClick={() => {
+                      if (click) setClick(false);
+                      else setClick(true);
+                      RelatedVideos(props.id);
 
+                      props.fun(data.id);
+                    }}
                     style={{
                       minWidth: props.wd,
                       width: props.wd,
@@ -132,7 +140,7 @@ function RelatedVideosCard(props) {
                       {data.title}
                     </div>
                     {/* --------------------------------- Channel Title --------------------------- */}
-                    <div className="channelName" title= {data.author.name}>
+                    <div className="channelName" title={data.author.name}>
                       {data.author.name}
                     </div>
                   </div>
@@ -160,7 +168,7 @@ function RelatedVideosCard(props) {
                   {/* --------------------------View Count-----------------  */}
                   <div>
                     <i
-                      class="fa fa-solid fa-eye"
+                      className="fa fa-solid fa-eye"
                       style={{ margin: "0 4px 0 0", color: "inherit" }}
                     ></i>
                     {data.short_view_count_text}
