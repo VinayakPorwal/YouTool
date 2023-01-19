@@ -223,6 +223,7 @@ function App() {
   }, [check]);
 
   const navigate = useNavigate();
+  const [logo,setLogo]=useState(true)
   return (
     <>
       {/* <Container
@@ -240,16 +241,27 @@ function App() {
         <Component />
       </Container> */}
 
-      <div style={{ display: "flex", margin: "0", padding: "0" }}>
-          <Sidebar
-            tab={tab}
-            setToggle={setToggle}
-            setTab={setTab}
-            setPlaceHolder={setPlaceHolder}
-            trending={trending}
-            home={home}
-          />
-        <div className="MainContainer" style={{ width: "84%" }}>
+      <div
+        style={{
+          display: "flex",
+          margin: "0",
+          padding: "0",
+          // overflow: "hidden",
+        }}
+      >
+        <Sidebar
+          tab={tab}
+          setToggle={setToggle}
+          setTab={setTab}
+          setPlaceHolder={setPlaceHolder}
+          trending={trending}
+          home={home}
+          setLogo={setLogo}
+        />
+        <div
+          className="MainContainer"
+          style={{ width: "-webkit-fill-available" }}
+        >
           {/* <Heading
             size="lg"
             style={{ textAlign: "center", margin: "2vh", color: "white" }}
@@ -266,8 +278,9 @@ function App() {
               zIndex: "2",
               top: "0px",
               background: "var(--secondaryBlack)",
-              justifyContent: "space-between",
+              justifyContent: "space-around",
               alignItems: "center",
+              width:"100%"
             }}
           >
             {/* ---------------------hamburger-------------  */}
@@ -275,11 +288,19 @@ function App() {
               className="fa fa-bars smallNav"
               style={{
                 margin: "0 1rem",
-                opacity:"0.4"
+                opacity: "0.4",
               }}
-              
             ></i>
+            { logo &&
 
+              <div className="logo BigNavlogo" style={{width:"auto"}}>
+              <div className="youtube">
+                <img src={img} alt="" />
+              </div>
+
+              <p>YouTool</p>
+            </div>
+            } 
             {/* ----------------------- Input Group---- ---------------- */}
             <div className="InputGroup">
               <input
@@ -288,7 +309,7 @@ function App() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
               />
-              <button
+              {/* <button
                 style={{
                   width: "50px",
                   fontSize: "large",
@@ -297,7 +318,7 @@ function App() {
                 onClick={() => setInput("")}
               >
                 <i className="fa fa-plus"></i>
-              </button>
+              </button> */}
               <Button
                 colorScheme="blue"
                 className="button--submit"
@@ -325,13 +346,9 @@ function App() {
             {/* -------------------Keyword Search Section-------------------- */}
             {check === 1 ? (
               array.map((data, i) => (
-                <>
+                <div key={i}>
                   {data.pageInfo.totalResults >= 1 ? (
-                    <div
-                      key={i}
-                      className="mainCardDiv"
-                      style={{ width: "auto" }}
-                    >
+                    <div className="mainCardDiv" style={{ width: "auto" }}>
                       <DesignCard2
                         toggle={check}
                         fun={toggle3}
@@ -360,7 +377,7 @@ function App() {
                   ) : (
                     <div style={{ display: "none" }}> </div>
                   )}
-                </>
+                </div>
               ))
             ) : (
               <></>

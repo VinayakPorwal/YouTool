@@ -7,8 +7,8 @@ function Channel(props) {
   return (
     <>
       {props.array.map((data, i) => (
-        <>
-          {data.pageInfo.totalResults === 1 ? (
+        <div key={i}>
+          {data.pageInfo.totalResults === 1 && (
             <>
               <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
                 <ChannelCard data={data} />
@@ -21,17 +21,15 @@ function Channel(props) {
                 Recent Videos
               </Heading>
             </>
-          ) : (
-            <div style={{ display: "none" }}> </div>
           )}
-        </>
+        </div>
       ))}
 
       <div className="ChannelCardGroup">
         {props.deta ? (
           props.deta.map((data, i) => (
-            <>
-              <div key={i} className="mainCardDiv" style={{ width: "auto" }}>
+            <div key={i}>
+              <div  className="mainCardDiv" style={{ width: "auto" }}>
                 <DesignCard2
                   toggle={props.check}
                   fun={props.toggle3}
@@ -56,7 +54,7 @@ function Channel(props) {
                   }}
                 />
               </div>
-            </>
+            </div>
           ))
         ) : (
           <></>

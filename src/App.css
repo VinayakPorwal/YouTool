@@ -28,7 +28,7 @@
   justify-content: end;
   margin: -4vh 0px 0px -2vh;
 }
-.duration span{
+.duration span {
   font-weight: 700;
   color: white;
   background: rgba(0, 0, 0, 0.72);
@@ -197,6 +197,18 @@ svg {
   background-color: #ffcaa6;
 }
 
+.card-image {
+  background-color: rgb(236, 236, 236);
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+}
+
+.card-image img:hover {
+  transition: 1s;
+  /* transform: scale(0.98); */
+  cursor: pointer;
+  /* filter: grayscale(0.8); */
+}
 /* // Design card 2 */
 .card2 {
   width: auto;
@@ -204,23 +216,21 @@ svg {
   /* max-width: 50%; */
   /* background: white; */
   padding: 0.2em;
-  min-width: 310px;
+  min-width: 290px;
   border-radius: 6px;
 }
 
-.card-image {
-  min-width: 310px;
+.card2-image {
   background-color: rgb(236, 236, 236);
   width: 100%;
   border-radius: 6px 6px 0 0;
 }
 
-.card-image img{
-
-  min-width: 310px;
-  min-height: 175px;
+.card2-image img {
+  /* min-width: 300px; */
+  min-height: 160px;
 }
-.card-image img:hover {
+.card2-image img:hover {
   transition: 1s;
   /* transform: scale(0.98); */
   cursor: pointer;
@@ -300,26 +310,46 @@ i {
 .MainContainer {
   background: var(--secondaryGrey);
   color: white !important;
+  /* overflow: auto; */
 }
 
-
-#navbarButton{
+#navbarButton {
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
   z-index: 4;
-  margin: 1.66rem 1.09rem;
+  margin: 1.8rem 0 0 1.09rem;
+ cursor: pointer;
   width: auto;
 }
-@media screen and (min-width: 500px) {
-#navbarButton ,  .smallNav{
-  display: none;
+.BigNavlogo{
+  padding: 0 2.8rem;
+  margin: 2vh 0 !important;
 }
+@media screen and (min-width: 500px) {
+  /* #navbarButton, */
+  .smallNav {
+    display: none !important;
+  }
+  #sidenavbar {
+    position: sticky;
+    z-index: 3;
+    display: block;
+    /* display: none !important; */
+  }
 }
 @media screen and (max-width: 500px) {
   .mainCardDiv {
     width: 80%;
+  }
+  .BigNavlogo{
+    display: none !important;
+    
+  }
+  #navbarButton,
+  .smallNav {
+    display: block !important;
   }
   #sidenavbar {
     position: fixed;
@@ -327,7 +357,7 @@ i {
     display: none;
     /* display: none !important; */
   }
-  #navbarButton{
+  #navbarButton {
     display: flex;
   }
   .MainContainer {
@@ -425,10 +455,11 @@ i {
 
 .sideBar {
   height: 100vh;
-  width: 16%;
+  width: 19%;
   min-width: 200px;
   background: var(--secondaryBlack);
   position: sticky;
+  z-index: 2;
   top: 0px;
 }
 .logo img {
@@ -440,7 +471,7 @@ i {
 
 .logo {
   font-family: "Oswald", sans-serif;
-  margin: 2vh 0;
+  margin: 2.5vh 0 0 0;
   width: 70%;
   align-items: center;
   font-size: x-large;

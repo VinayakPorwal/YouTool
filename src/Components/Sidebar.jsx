@@ -21,8 +21,10 @@ function Sidebar(props) {
         onClick={() => {
           if (document.getElementById("sidenavbar").style.display === "none") {
             document.getElementById("sidenavbar").style.display = "block";
+            props.setLogo(false)
           } else {
             document.getElementById("sidenavbar").style.display = "none";
+            props.setLogo(true)
           }
         }}
       ></i>

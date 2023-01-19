@@ -183,10 +183,13 @@ function DesignCard2(props) {
 
     download();
   }, []);
+
+  const minW = "310px";
+  const minH = "170px";
   return (
     <div className="card2" style={{ width: props.wd }}>
       <div
-        className="card-image"
+        className="card2-image"
         onMouseOver={() => {
           document.getElementById(`${data.id}hover`).style.display = "flex";
         }}
@@ -222,7 +225,7 @@ function DesignCard2(props) {
         {video && (
           <iframe
             className="d-flex"
-            style={{ width: props.wd, height: props.ht , minWidth:"310px" , minHeight:"175px" }}
+            style={{ width: props.wd, height: props.ht , minWidth: minW , minHeight:minH }}
             //for video not from Youtube
             // src={Download[0].url}
             // for video from Youtube
@@ -239,7 +242,8 @@ function DesignCard2(props) {
             style={{
               width: props.wd,
               height: props.ht,
-              minWidth:"310px",
+              minWidth:minW,
+              minHeight:minH,
               margin: `-${props.ht} 0 0 -3px`,
             }}
           >
@@ -325,7 +329,7 @@ function DesignCard2(props) {
       </div>
 
       {/* --------------------------------- Title logo and Links --------------------------- */}
-      <div style={{ display: "flex", width: props.wd,minWidth:"310px", padding: "0 10px 0 0" }}>
+      <div style={{ display: "flex", width: props.wd,minWidth:minW, padding: "0 15px 0 0" }}>
         <div>
           {/* --------------------------------- Channel logo --------------------------- */}
           <Avatar mt="2" size="sm" name="Dan Abrahmov" src={Channelimg} />
@@ -427,12 +431,7 @@ function DesignCard2(props) {
                   </Text>
                 </div>
               </MenuItem>
-              {/* ---------------------- Description ------------------ */}
-              <MenuItem>
-                {props.toggle === 3 && (
-                  <Text fontSize="sm"> {data.description}</Text>
-                )}
-              </MenuItem>
+              
               {/* -------------------------Copy Link buttons-----------------------  */}
               {/* ---------------------------- Channel Link ------------------------ */}
               <div
