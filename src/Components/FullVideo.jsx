@@ -1,6 +1,6 @@
 import React from "react";
 import DesignCard2 from "../DesignCards/DesignCard2";
-import RelatedVideosCard from "../DesignCards/smallCard";
+import RelatedVideosCard from "../DesignCards/RelatedInfoCard";
 
 function FullVideo(props) {
   var data = props.array[0];

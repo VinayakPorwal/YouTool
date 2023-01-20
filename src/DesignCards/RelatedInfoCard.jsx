@@ -14,6 +14,7 @@ import {
 function RelatedVideosCard(props) {
   const [deta, setDeta] = useState();
   const [related, setRelated] = useState();
+  const [loading, setLoading] = useState(false);
   // const [click, setClick] = useState(true);
 
   // const data = props.data;
@@ -35,6 +36,7 @@ function RelatedVideosCard(props) {
     else return hr + ":" + min + ":" + sec;
   }
   async function RelatedVideos(id) {
+    setLoading(true);
     const response = await fetch(
       `https://server-ten-iota.vercel.app/relatedInfo/?url=https://www.youtube.com/watch?v=${id}`,
       {
@@ -46,6 +48,7 @@ function RelatedVideosCard(props) {
     const data = await response.json();
     setRelated(data.data);
     console.log(data.data);
+    setLoading(false);
   }
   useState(() => {
     RelatedVideos(props.id);
@@ -64,6 +67,52 @@ function RelatedVideosCard(props) {
       >
         <p>Related Videos</p>
       </Heading>
+
+      {loading && (
+        <>
+          <div class="card">
+            <div class="card_load"></div>
+            <div class="card_load_extreme_title"></div>
+            <div class="card_load_extreme_title2"></div>
+            <div class="meta">
+              <div class="card_load_extreme_title4"></div>
+              <div class="card_load_extreme_title3"></div>
+              <div class="card_load_extreme_title3"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card_load"></div>
+            <div class="card_load_extreme_title"></div>
+            <div class="card_load_extreme_title2"></div>
+            <div class="meta">
+              <div class="card_load_extreme_title4"></div>
+              <div class="card_load_extreme_title3"></div>
+              <div class="card_load_extreme_title3"></div>
+            </div>
+          </div>
+         
+          <div class="card">
+            <div class="card_load"></div>
+            <div class="card_load_extreme_title"></div>
+            <div class="card_load_extreme_title2"></div>
+            <div class="meta">
+              <div class="card_load_extreme_title4"></div>
+              <div class="card_load_extreme_title3"></div>
+              <div class="card_load_extreme_title3"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card_load"></div>
+            <div class="card_load_extreme_title"></div>
+            <div class="card_load_extreme_title2"></div>
+            <div class="meta">
+              <div class="card_load_extreme_title4"></div>
+              <div class="card_load_extreme_title3"></div>
+              <div class="card_load_extreme_title3"></div>
+            </div>
+          </div>
+        </>
+      )}
       {related &&
         related.map((data, i) => (
           <Card
@@ -99,7 +148,7 @@ function RelatedVideosCard(props) {
                       // if (click) setClick(false);
                       // else setClick(true);
                       RelatedVideos(data.id);
-
+                      setRelated([])
                       props.fun(data.id);
                     }}
                     style={{

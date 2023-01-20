@@ -83,13 +83,7 @@ function DesignCard2(props) {
   };
 
   var title = data.title;
-  if (title.length > 165) {
-    title = title.slice(0, 65) + "...";
-  }
 
-  let date = data.date;
-  date = new Date(date);
-  var ActualDate = date.toISOString().substring(0, 10);
 
   function convertToInternational(labelValue) {
     // Nine Zeroes for Billions
@@ -103,6 +97,10 @@ function DesignCard2(props) {
       ? (Math.abs(Number(labelValue)) / 1.0e3).toFixed(2) + "K"
       : Math.abs(Number(labelValue));
   }
+  let date = data.date;
+  date = new Date(date);
+  var ActualDate = date.toISOString().substring(0, 10);
+
   var date2 = new Date();
 
   var time_difference = date2.getTime() - date.getTime();
@@ -225,7 +223,12 @@ function DesignCard2(props) {
         {video && (
           <iframe
             className="d-flex"
-            style={{ width: props.wd, height: props.ht , minWidth: minW , minHeight:minH }}
+            style={{
+              width: props.wd,
+              height: props.ht,
+              minWidth: minW,
+              minHeight: minH,
+            }}
             //for video not from Youtube
             // src={Download[0].url}
             // for video from Youtube
@@ -242,8 +245,8 @@ function DesignCard2(props) {
             style={{
               width: props.wd,
               height: props.ht,
-              minWidth:minW,
-              minHeight:minH,
+              minWidth: minW,
+              minHeight: minH,
               margin: `-${props.ht} 0 0 -3px`,
             }}
           >
@@ -310,7 +313,42 @@ function DesignCard2(props) {
             <MenuList style={{ height: "50vh", overflow: "scroll" }}>
               {Download &&
                 Download.map((format, i) => (
-                  <MenuItem key={i}>
+                  <MenuItem
+                    key={i}
+                    onClick={() => {
+                      var downlaoadData = JSON.parse(
+                        localStorage.getItem("Downloads")
+                      );
+                      if (downlaoadData) {
+                        var newArr = downlaoadData.filter((downlaoadData) => {
+                          return downlaoadData.id !== data.id;
+                        });
+                        if (downlaoadData.length !== newArr.length) {
+                          console.log("Already Exists");
+                          return;
+                        } else {
+                          downlaoadData.push({
+                            id: data.id,
+                          });
+
+                          localStorage.setItem(
+                            "Downloads",
+                            JSON.stringify(downlaoadData)
+                          );
+                        }
+                      } else {
+                        downlaoadData = [];
+                        downlaoadData.push({
+                          id: data.id,
+                        });
+                        localStorage.setItem(
+                          "Downloads",
+                          JSON.stringify(downlaoadData)
+                        );
+                        console.log("Key not found");
+                      }
+                    }}
+                  >
                     Download
                     {format && (
                       <a href={format.url} download>
@@ -329,7 +367,14 @@ function DesignCard2(props) {
       </div>
 
       {/* --------------------------------- Title logo and Links --------------------------- */}
-      <div style={{ display: "flex", width: props.wd,minWidth:minW, padding: "0 15px 0 0" }}>
+      <div
+        style={{
+          display: "flex",
+          width: props.wd,
+          minWidth: minW,
+          padding: "0 15px 0 0",
+        }}
+      >
         <div>
           {/* --------------------------------- Channel logo --------------------------- */}
           <Avatar mt="2" size="sm" name="Dan Abrahmov" src={Channelimg} />
@@ -431,7 +476,7 @@ function DesignCard2(props) {
                   </Text>
                 </div>
               </MenuItem>
-              
+
               {/* -------------------------Copy Link buttons-----------------------  */}
               {/* ---------------------------- Channel Link ------------------------ */}
               <div
@@ -551,7 +596,7 @@ function DesignCard2(props) {
               justifyContent: "space-evenly",
               padding: "10px 5px",
               width: props.wd,
-              minWidth:"310px"
+              minWidth: "310px",
             }}
           >
             <Text
@@ -632,7 +677,7 @@ function DesignCard2(props) {
                   background: "var(--secondaryBlack)",
                   color: "white",
                   fontSize: "x-small",
-                  wordBreak:"break-all"
+                  wordBreak: "break-all",
                 }}
               >
                 {`https://www.youtube.com/channel/${data.channelId}`}

@@ -12,12 +12,14 @@ import Trending from "./Components/Trending";
 import Channel from "./Components/Channel";
 import Sidebar from "./Components/Sidebar";
 import img from "./logopng.png";
+import Downlods from "./Components/Downlods";
 
 function App() {
   const [array, setArray] = useState([]);
   const [check, setCheck] = useState();
   const [deta, setDeta] = useState();
   const [tab, setTab] = useState("Filter");
+  const [loading, setLoading] = useState(false);
   const country = "IN";
   var temp = "";
 
@@ -34,11 +36,12 @@ function App() {
   const api_key2 = "AIzaSyBeeesEJBFwXveug3nhfplFjuh5EDzdqRs";
   // const api_key2 = "AIzaSyC6Q6QFsLZWlEJfmOUYgEXbh19m9NVIjpw";
 
-  const loading = document.getElementById("loading");
+  // const loading = document.getElementById("loading");
   async function keySearch() {
     setArray([]);
     setDeta([]);
-    loading.style.display = "block";
+    // loading.style.display = "block";
+    setLoading(true);
 
     //keyword
     if (toggle === 1) {
@@ -60,7 +63,8 @@ function App() {
           setCheck(1);
           setArray(mainData);
           mainData = [];
-          loading.style.display = "none";
+          // loading.style.display = "none";
+          setLoading(false);
         }
         // console.log(i, load.id.videoId);
       });
@@ -83,7 +87,8 @@ function App() {
       setArray(mainData);
       mainData = [];
       // console.log("channel data",array);
-      loading.style.display = "none";
+      // loading.style.display = "none";
+      setLoading(false);
     }
 
     // Video Id
@@ -94,7 +99,9 @@ function App() {
       }
       if (input === inputFilter) {
         alert("please insert Correct Url");
-        loading.style.display = "none";
+        // loading.style.display = "none";
+        setLoading(false);
+
         return;
       }
       toggle3(inputFilter);
@@ -107,7 +114,9 @@ function App() {
     setArray(mainData);
     mainData = [];
     console.log(array);
-    loading.style.display = "none";
+    // loading.style.display = "none";
+    setLoading(false)
+
   };
 
   async function Detailed2(id) {
@@ -223,7 +232,7 @@ function App() {
   }, [check]);
 
   const navigate = useNavigate();
-  const [logo,setLogo]=useState(false)
+  const [logo, setLogo] = useState(false);
   return (
     <>
       {/* <Container
@@ -280,7 +289,7 @@ function App() {
               background: "var(--secondaryBlack)",
               justifyContent: "space-around",
               alignItems: "center",
-              width:"100%"
+              width: "100%",
             }}
           >
             {/* ---------------------hamburger-------------  */}
@@ -291,16 +300,15 @@ function App() {
                 opacity: "0.4",
               }}
             ></i>
-            { logo &&
+            {logo && (
+              <div className="logo BigNavlogo" style={{ width: "auto" }}>
+                <div className="youtube">
+                  <img src={img} alt="" />
+                </div>
 
-              <div className="logo BigNavlogo" style={{width:"auto"}}>
-              <div className="youtube">
-                <img src={img} alt="" />
+                <p>YouTool</p>
               </div>
-
-              <p>YouTool</p>
-            </div>
-            } 
+            )}
             {/* ----------------------- Input Group---- ---------------- */}
             <div className="InputGroup">
               <input
@@ -343,6 +351,44 @@ function App() {
 
           {/* --------------------Display Results------ ------------- */}
           <div className="CardGroup">
+            {/* --------- Skeleton replace Loader-------------- */}
+            {loading && (
+              <div
+                className="loadingHamster"
+                style={{
+                  display: "flex",
+                  width:"100%",
+                  justifyContent: "center",
+                  zIndex: "1",
+                  height:"auto",
+                  alignItems:"center",
+                  position: "relative",
+                }}
+              >
+                <div
+                  aria-label="Orange and tan hamster running in a metal wheel"
+                  role="img"
+                  className="wheel-and-hamster"
+                >
+                  <div className="wheel"></div>
+                  <div className="hamster">
+                    <div className="hamster__body">
+                      <div className="hamster__head">
+                        <div className="hamster__ear"></div>
+                        <div className="hamster__eye"></div>
+                        <div className="hamster__nose"></div>
+                      </div>
+                      <div className="hamster__limb hamster__limb--fr"></div>
+                      <div className="hamster__limb hamster__limb--fl"></div>
+                      <div className="hamster__limb hamster__limb--br"></div>
+                      <div className="hamster__limb hamster__limb--bl"></div>
+                      <div className="hamster__tail"></div>
+                    </div>
+                  </div>
+                  <div className="spoke"></div>
+                </div>
+              </div>
+            )}
             {/* -------------------Keyword Search Section-------------------- */}
             {check === 1 ? (
               array.map((data, i) => (
@@ -410,6 +456,10 @@ function App() {
             {check === 4 && (
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route
+                  path="/Downloads"
+                  element={<Downlods wd={"100%"} ht={"60px"} />}
+                />
                 <Route
                   path="/trending"
                   element={

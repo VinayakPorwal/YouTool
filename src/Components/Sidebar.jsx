@@ -164,12 +164,19 @@ function Sidebar(props) {
               History
             </p>
           </div>
-          <div className="sideTab">
+          <div
+            className="sideTab"
+            onClick={() => {
+              // props.trending();
+              props.setTab("Downloads");
+              navigate("/Downloads");
+            }}
+          >
             <i
               className="fa fa-download sideTab-i"
               style={{ color: "white" }}
             ></i>
-            <p className="sideTab-p" style={{ color: "grey" }}>
+            <p className="sideTab-p" style={{ color: "white" }}>
               Downloads
             </p>
           </div>
