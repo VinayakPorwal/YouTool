@@ -155,30 +155,31 @@ function Sidebar(props) {
             <i className="fa fa-fire sideTab-i"></i>
             <p className="sideTab-p">Trending</p>
           </div>
-          <div className="sideTab">
-            <i
-              className="fa fa-history sideTab-i"
-              style={{ color: "grey" }}
-            ></i>
-            <p className="sideTab-p" style={{ color: "grey" }}>
-              History
-            </p>
+          <div
+            className="sideTab"
+            onClick={() => {
+              // props.trending();
+              props.home();
+
+              props.setTab("History");
+              navigate("/History");
+            }}
+          >
+            <i className="fa fa-history sideTab-i"></i>
+            <p className="sideTab-p">History</p>
           </div>
           <div
             className="sideTab"
             onClick={() => {
               // props.trending();
+              props.home();
+
               props.setTab("Downloads");
               navigate("/Downloads");
             }}
           >
-            <i
-              className="fa fa-download sideTab-i"
-              style={{ color: "white" }}
-            ></i>
-            <p className="sideTab-p" style={{ color: "white" }}>
-              Downloads
-            </p>
+            <i className="fa fa-download sideTab-i"></i>
+            <p className="sideTab-p">Downloads</p>
           </div>
         </div>
       </div>

@@ -70,47 +70,47 @@ function RelatedVideosCard(props) {
 
       {loading && (
         <>
-          <div class="card">
-            <div class="card_load"></div>
-            <div class="card_load_extreme_title"></div>
-            <div class="card_load_extreme_title2"></div>
-            <div class="meta">
-              <div class="card_load_extreme_title4"></div>
-              <div class="card_load_extreme_title3"></div>
-              <div class="card_load_extreme_title3"></div>
+          <div className="card">
+            <div className="card_load"></div>
+            <div className="card_load_extreme_title"></div>
+            <div className="card_load_extreme_title2"></div>
+            <div className="meta">
+              <div className="card_load_extreme_title4"></div>
+              <div className="card_load_extreme_title3"></div>
+              <div className="card_load_extreme_title3"></div>
             </div>
           </div>
-          <div class="card">
-            <div class="card_load"></div>
-            <div class="card_load_extreme_title"></div>
-            <div class="card_load_extreme_title2"></div>
-            <div class="meta">
-              <div class="card_load_extreme_title4"></div>
-              <div class="card_load_extreme_title3"></div>
-              <div class="card_load_extreme_title3"></div>
+          <div className="card">
+            <div className="card_load"></div>
+            <div className="card_load_extreme_title"></div>
+            <div className="card_load_extreme_title2"></div>
+            <div className="meta">
+              <div className="card_load_extreme_title4"></div>
+              <div className="card_load_extreme_title3"></div>
+              <div className="card_load_extreme_title3"></div>
+            </div>
+          </div>
+          <div className="card">
+            <div className="card_load"></div>
+            <div className="card_load_extreme_title"></div>
+            <div className="card_load_extreme_title2"></div>
+            <div className="meta">
+              <div className="card_load_extreme_title4"></div>
+              <div className="card_load_extreme_title3"></div>
+              <div className="card_load_extreme_title3"></div>
+            </div>
+          </div>
+          <div className="card">
+            <div className="card_load"></div>
+            <div className="card_load_extreme_title"></div>
+            <div className="card_load_extreme_title2"></div>
+            <div className="meta">
+              <div className="card_load_extreme_title4"></div>
+              <div className="card_load_extreme_title3"></div>
+              <div className="card_load_extreme_title3"></div>
             </div>
           </div>
          
-          <div class="card">
-            <div class="card_load"></div>
-            <div class="card_load_extreme_title"></div>
-            <div class="card_load_extreme_title2"></div>
-            <div class="meta">
-              <div class="card_load_extreme_title4"></div>
-              <div class="card_load_extreme_title3"></div>
-              <div class="card_load_extreme_title3"></div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card_load"></div>
-            <div class="card_load_extreme_title"></div>
-            <div class="card_load_extreme_title2"></div>
-            <div class="meta">
-              <div class="card_load_extreme_title4"></div>
-              <div class="card_load_extreme_title3"></div>
-              <div class="card_load_extreme_title3"></div>
-            </div>
-          </div>
         </>
       )}
       {related &&
@@ -150,12 +150,41 @@ function RelatedVideosCard(props) {
                       RelatedVideos(data.id);
                       setRelated([])
                       props.fun(data.id);
+                      var watchData = JSON.parse(localStorage.getItem("WatchHistory"));
+                      if (watchData) {
+                        var newArr = watchData.filter((watchData) => {
+                          return watchData.id !== data.id;
+                        });
+                        if (watchData.length !== newArr.length) {
+                          console.log("Already Exists");
+                          return;
+                        } else {
+                          watchData.unshift({
+                            id: data.id,
+                          });
+                          if (watchData.length > 10) {
+                            watchData = watchData.slice(0, 10);
+                          }
+                          localStorage.setItem(
+                            "WatchHistory",
+                            JSON.stringify(watchData)
+                          );
+                        }
+                      } else {
+                        watchData = [];
+                        watchData.unshift({
+                          id: data.id,
+                        });
+                        localStorage.setItem("WatchHistory", JSON.stringify(watchData));
+                        console.log("Key not found");
+                      }
                     }}
                     style={{
                       minWidth: props.wd,
                       width: props.wd,
                       minHeight: props.ht,
                       objectFit: "cover",
+                      cursor:"pointer",
                     }}
                   />
 

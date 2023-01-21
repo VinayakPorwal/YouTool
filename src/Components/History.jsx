@@ -10,8 +10,8 @@ import {
   Button,
   Avatar,
 } from "@chakra-ui/react";
-function Downlods(props) {
-  var data = JSON.parse(localStorage.getItem("Downloads"));
+function History(props) {
+  var data = JSON.parse(localStorage.getItem("WatchHistory"));
   const [downloads, setDownloads] = useState([]);
   const [loading, setLoading] = useState(false);
   //   const [download, setDownload] = useState();
@@ -132,7 +132,7 @@ function Downlods(props) {
           justifyContent: "center",
         }}
       >
-        Recent Downloads
+        Watch History
       </Heading>
       {loading && (
         <div
@@ -168,8 +168,10 @@ function Downlods(props) {
           </div>
         </div>
       )}
-      {data &&
-        downloads.slice(0, data.length).map((data, i) => (
+      { data &&
+        downloads.
+        slice(0, data.length).
+        map((data, i) => (
           <Card
             direction={{ base: "column", sm: "row" }}
             variant="none"
@@ -180,7 +182,7 @@ function Downlods(props) {
           >
             <div
               className=""
-              style={{ display: "flex" }}
+              style={{ display: "flex" , width:"-webkit-fill-available"}}
               // onMouseOver={() => {
               //   document.getElementById(`${"data.id"}hover`).style.display =
               //     "flex";
@@ -235,13 +237,12 @@ function Downlods(props) {
                 <div
                   style={{
                     display: "flex",
-                    // width: props.wd,
                     maxWidth: "800px",
                     padding: "0 0px 0 0",
                     justifyContent: "space-between",
                   }}
                 >
-                  <div style={{ maxWidth: "600px" }}>
+                  <div style={{ maxWidth: "600px" ,  width: "-webkit-fill-available", }}>
                     {/* --------------------------------- Title --------------------------- */}
                     <div
                       className="heading title"
@@ -258,9 +259,9 @@ function Downlods(props) {
                   </div>
                   <div style={{ width: "", textAlign: "end" }}>
                     <i
-                      className="fa fa-check "
+                      className="fa fa-history "
                       title="More Details"
-                      style={{ margin: "0", color: "#5e5" }}
+                      style={{ margin: "0",color:"#5e5" }}
                       // id={`${data.id}button`}
                     ></i>
                   </div>
@@ -291,8 +292,7 @@ function Downlods(props) {
             </div>
           </Card>
         ))}
-
-      {!data && (
+         {!data && (
         <Heading
           size="md"
           my="3"
@@ -303,11 +303,11 @@ function Downlods(props) {
             justifyContent: "center",
           }}
         >
-          No Downloads yet!
+          No history yet!
         </Heading>
       )}
     </div>
   );
 }
 
-export default Downlods;
+export default History;

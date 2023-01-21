@@ -13,6 +13,7 @@ import Channel from "./Components/Channel";
 import Sidebar from "./Components/Sidebar";
 import img from "./logopng.png";
 import Downlods from "./Components/Downlods";
+import History from "./Components/History";
 
 function App() {
   const [array, setArray] = useState([]);
@@ -32,8 +33,11 @@ function App() {
   var mainData = [];
   var recData = [];
   // const api_key = "AIzaSyC6iuW5Oz08bv_e8pGIRTkyERDlTH5mWAc";
-  const api_key = "AIzaSyBeeesEJBFwXveug3nhfplFjuh5EDzdqRs";
-  const api_key2 = "AIzaSyBeeesEJBFwXveug3nhfplFjuh5EDzdqRs";
+  // const api_key2 = "AIzaSyC6iuW5Oz08bv_e8pGIRTkyERDlTH5mWAc";
+  // const api_key = "AIzaSyBeeesEJBFwXveug3nhfplFjuh5EDzdqRs";
+  // const api_key2 = "AIzaSyBeeesEJBFwXveug3nhfplFjuh5EDzdqRs";
+  const api_key = "AIzaSyB8uW_Tr7djLzI-ZCZyxgb8S8U3u9VcFu4";
+  const api_key2 = "AIzaSyB8uW_Tr7djLzI-ZCZyxgb8S8U3u9VcFu4";
   // const api_key2 = "AIzaSyC6Q6QFsLZWlEJfmOUYgEXbh19m9NVIjpw";
 
   // const loading = document.getElementById("loading");
@@ -115,8 +119,7 @@ function App() {
     mainData = [];
     console.log(array);
     // loading.style.display = "none";
-    setLoading(false)
-
+    setLoading(false);
   };
 
   async function Detailed2(id) {
@@ -330,7 +333,37 @@ function App() {
               <Button
                 colorScheme="blue"
                 className="button--submit"
-                onClick={keySearch}
+                onClick={() => {
+                  keySearch();
+                  var searchData = JSON.parse(localStorage.getItem("SearchHistory"));
+                  if (searchData) {
+                    var newArr = searchData.filter((searchData) => {
+                      return searchData.id !== input;
+                    });
+                    if (searchData.length !== newArr.length) {
+                      console.log("Already Exists");
+                      return;
+                    } else {
+                      searchData.unshift({
+                        id: input,
+                      });
+                      if (searchData.length>10){
+                        searchData = searchData.slice(0,10)
+                      }
+                      localStorage.setItem(
+                        "SearchHistory",
+                        JSON.stringify(searchData)
+                      );
+                    }
+                  } else {
+                    searchData = [];
+                    searchData.unshift({
+                      id: input,
+                    });
+                    localStorage.setItem("SearchHistory", JSON.stringify(searchData));
+                    console.log("Key not found");
+                  }
+                }}
               >
                 <i className="fa fa-search"></i>
               </Button>
@@ -357,11 +390,11 @@ function App() {
                 className="loadingHamster"
                 style={{
                   display: "flex",
-                  width:"100%",
+                  width: "100%",
                   justifyContent: "center",
                   zIndex: "1",
-                  height:"auto",
-                  alignItems:"center",
+                  height: "auto",
+                  alignItems: "center",
                   position: "relative",
                 }}
               >
@@ -459,6 +492,10 @@ function App() {
                 <Route
                   path="/Downloads"
                   element={<Downlods wd={"100%"} ht={"60px"} />}
+                />
+                <Route
+                  path="/History"
+                  element={<History wd={"100%"} ht={"60px"} />}
                 />
                 <Route
                   path="/trending"

@@ -84,7 +84,6 @@ function DesignCard2(props) {
 
   var title = data.title;
 
-
   function convertToInternational(labelValue) {
     // Nine Zeroes for Billions
     return Math.abs(Number(labelValue)) >= 1.0e9
@@ -298,6 +297,34 @@ function DesignCard2(props) {
             title="Open In Large"
             onClick={() => {
               props.fun(data.id);
+              var watchData = JSON.parse(localStorage.getItem("WatchHistory"));
+              if (watchData) {
+                var newArr = watchData.filter((watchData) => {
+                  return watchData.id !== data.id;
+                });
+                if (watchData.length !== newArr.length) {
+                  console.log("Already Exists");
+                  return;
+                } else {
+                  watchData.unshift({
+                    id: data.id,
+                  });
+                  if (watchData.length > 10) {
+                    watchData = watchData.slice(0, 10);
+                  }
+                  localStorage.setItem(
+                    "WatchHistory",
+                    JSON.stringify(watchData)
+                  );
+                }
+              } else {
+                watchData = [];
+                watchData.unshift({
+                  id: data.id,
+                });
+                localStorage.setItem("WatchHistory", JSON.stringify(watchData));
+                console.log("Key not found");
+              }
             }}
           ></i>
 
@@ -330,6 +357,9 @@ function DesignCard2(props) {
                           downlaoadData.push({
                             id: data.id,
                           });
+                          if (downlaoadData.length>10){
+                            downlaoadData = downlaoadData.slice(0,10)
+                          }
 
                           localStorage.setItem(
                             "Downloads",
