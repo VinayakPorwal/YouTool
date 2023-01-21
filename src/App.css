@@ -190,7 +190,7 @@ svg {
 }
 
 .card2-image img {
-  /* min-width: 300px; */
+  min-width: 290px;
   min-height: 160px;
 }
 .card2-image img:hover {

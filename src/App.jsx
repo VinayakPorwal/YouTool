@@ -4,7 +4,16 @@ import Component from "./Card";
 import { Container } from "@chakra-ui/react";
 import Home from "./Home";
 import React, { useEffect, useState } from "react";
-import { Button, CardBody, Card, Text } from "@chakra-ui/react";
+import {
+  Button,
+  CardBody,
+  Card,
+  Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from "@chakra-ui/react";
 import "./App.css";
 import DesignCard2 from "./DesignCards/DesignCard2";
 import FullVideo from "./Components/FullVideo";
@@ -29,6 +38,7 @@ function App() {
     "https://www.youtube.com/channel/UCqwUrj10mAEsqezcItqvwEw"
   );
   const [placeHolder, setPlaceHolder] = useState("");
+  const seachHistory = JSON.parse(localStorage.getItem("SearchHistory"));
   const count = 16;
   var mainData = [];
   var recData = [];
@@ -41,14 +51,38 @@ function App() {
   // const api_key2 = "AIzaSyC6Q6QFsLZWlEJfmOUYgEXbh19m9NVIjpw";
 
   // const loading = document.getElementById("loading");
-  async function keySearch() {
+
+  const LinkCheck = (str) => {
+    // console.log((str), 'type-------------------------------')
+    if (str.includes("watch")) {
+      // str = str.replace("https://www.youtube.com/watch?v=", "");
+      setToggle(3);
+      console.log("3");
+      return 3;
+      // keySearch();
+    } else if (str.includes("channel")) {
+      // str = str.replace("https://www.youtube.com/channel/", "");
+      setToggle(2);
+      console.log("2");
+      return 2;
+      // keySearch();
+      // alert("this is Channel Link");
+    } else {
+      setToggle(1);
+      console.log("1");
+      return 1;
+      // keySearch();
+    }
+  };
+
+  async function keySearch(i) {
     setArray([]);
     setDeta([]);
     // loading.style.display = "block";
     setLoading(true);
 
     //keyword
-    if (toggle === 1) {
+    if (i === 1) {
       const response = await fetch(
         `https://www.googleapis.com/youtube/v3/search?q=${input}&maxResults=${count}&key=${api_key}`
       );
@@ -75,7 +109,7 @@ function App() {
     }
 
     // Channel Id
-    else if (toggle === 2) {
+    else if (i === 2) {
       var inputFilter = input.replace("https://www.youtube.com/channel/", "");
       if (input === inputFilter) {
         inputFilter = input.replace("https://www.youtube.com/", "");
@@ -96,7 +130,7 @@ function App() {
     }
 
     // Video Id
-    else if (toggle === 3) {
+    else if (i === 3) {
       var inputFilter = input.replace("https://www.youtube.com/watch?v=", "");
       if (input === inputFilter) {
         inputFilter = input.replace("https://youtu.be/", "");
@@ -314,15 +348,53 @@ function App() {
             )}
             {/* ----------------------- Input Group---- ---------------- */}
             <div className="InputGroup">
-              <input
-                className="input"
-                placeholder={placeHolder}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-              />
+              <Menu>
+                <MenuButton style={{ width: "-webkit-fill-available" }}>
+                  <input
+                    className="input"
+                    placeholder={placeHolder}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onClick={() => {
+                      console.log("in");
+                    }}
+                  />
+                </MenuButton>
+                {seachHistory && (
+                  <MenuList
+                    w={"60vw"}
+                    maxW={"600px"}
+                    bg={"var(--secondaryBlack)"}
+                    variant="none"
+                    outline={"none"}
+                    style={{
+                      maxHeight: "50vh",
+                      width: "-webkit-fill-available",
+                      overflow: "scroll",
+                    }}
+                  >
+                    {seachHistory &&
+                      seachHistory.map((search, i) => (
+                        <MenuItem
+                          style={{ wordBreak: "break-all", fontSize: "small" }}
+                          key={i}
+                          bg={"var(--secondaryBlack)"}
+                        >
+                          <i
+                            className="fa fa-history "
+                            title="More Details"
+                            style={{ margin: "0 0.5rem 0 0", color: "#5e5" }}
+                            // id={`${data.id}button`}
+                          ></i>
+                          {search.id}
+                        </MenuItem>
+                      ))}
+                  </MenuList>
+                )}
+              </Menu>
               {/* <button
-                style={{
-                  width: "50px",
+              style={{
+                width: "50px",
                   fontSize: "large",
                   transform: "rotate(45deg)",
                 }}
@@ -333,9 +405,14 @@ function App() {
               <Button
                 colorScheme="blue"
                 className="button--submit"
-                onClick={() => {
-                  keySearch();
-                  var searchData = JSON.parse(localStorage.getItem("SearchHistory"));
+                onClick={async () => {
+                  // keySearch();
+                  // await LinkCheck(input);
+                  keySearch(LinkCheck(input));
+
+                  var searchData = JSON.parse(
+                    localStorage.getItem("SearchHistory")
+                  );
                   if (searchData) {
                     var newArr = searchData.filter((searchData) => {
                       return searchData.id !== input;
@@ -347,8 +424,8 @@ function App() {
                       searchData.unshift({
                         id: input,
                       });
-                      if (searchData.length>10){
-                        searchData = searchData.slice(0,10)
+                      if (searchData.length > 10) {
+                        searchData = searchData.slice(0, 10);
                       }
                       localStorage.setItem(
                         "SearchHistory",
@@ -360,7 +437,10 @@ function App() {
                     searchData.unshift({
                       id: input,
                     });
-                    localStorage.setItem("SearchHistory", JSON.stringify(searchData));
+                    localStorage.setItem(
+                      "SearchHistory",
+                      JSON.stringify(searchData)
+                    );
                     console.log("Key not found");
                   }
                 }}

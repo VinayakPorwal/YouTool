@@ -119,6 +119,7 @@ function History(props) {
   }
   useEffect(() => {
     downloadData();
+    console.log(downloads,data)
   }, []);
   return (
     <div style={{ minHeight: "82vh" }}>

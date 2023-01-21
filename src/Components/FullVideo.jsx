@@ -1,15 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DesignCard2 from "../DesignCards/DesignCard2";
 import RelatedVideosCard from "../DesignCards/RelatedInfoCard";
 
 function FullVideo(props) {
   var data = props.array[0];
+  data = data.items[0]
   var toggle = props.fun
+
+  useEffect(()=>{
+    var watchData = JSON.parse(localStorage.getItem("WatchHistory"));
+    if (watchData) {
+      var newArr = watchData.filter((watchData) => {
+        return watchData.id !== data.id;
+      });
+      if (watchData.length !== newArr.length) {
+        console.log("Already Exists");
+        return;
+      } else {
+        watchData.unshift({
+          id: data.id,
+        });
+        if (watchData.length > 10) {
+          watchData = watchData.slice(0, 10);
+        }
+        localStorage.setItem(
+          "WatchHistory",
+          JSON.stringify(watchData)
+        );
+      }
+    } else {
+      watchData = [];
+      watchData.unshift({
+        id: data.id,
+      });
+      localStorage.setItem("WatchHistory", JSON.stringify(watchData));
+      console.log("Key not found");
+    }
+  },[])
   return (
     <>
       {" "}
       {/* {props.array.map((data, i) => ( */}
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", overflow:"hidden" }}>
         {data && (
           <div
             className="mainCardDiv"
@@ -24,27 +56,25 @@ function FullVideo(props) {
               wd={"49vw"}
               ht={"28vw"}
               info={{
-                date: data.items[0].snippet.publishedAt,
-                url: data.items[0].snippet.thumbnails.medium.url,
-                views: data.items[0].statistics.viewCount,
-                id: data.items[0].id,
-                channelTitle: data.items[0].snippet.channelTitle,
-                duration: data.items[0].contentDetails.duration,
-                likes: data.items[0].statistics.likeCount,
-                comments: data.items[0].statistics.commentCount,
-                description: data.items[0].snippet.localized.description,
-                channelId: data.items[0].snippet.channelId,
-                title: data.items[0].snippet.localized.title,
+                date: data.snippet.publishedAt,
+                url: data.snippet.thumbnails.medium.url,
+                views: data.statistics.viewCount,
+                id: data.id,
+                channelTitle: data.snippet.channelTitle,
+                duration: data.contentDetails.duration,
+                likes: data.statistics.likeCount,
+                comments: data.statistics.commentCount,
+                description: data.snippet.localized.description,
+                channelId: data.snippet.channelId,
+                title: data.snippet.localized.title,
               }}
             />
           </div>
         )}
-        <div style={{ margin: "1rem auto" }}>
-          <RelatedVideosCard wd={"149px"} ht={"60px"} id={data.items[0].id}  fun={toggle}/>
-          {/* <RelatedVideosCard wd={"175px"} ht={"100px"} /> */}
-          {/* <RelatedVideosCard wd={"175px"} ht={"100px"} /> */}
-          {/* <RelatedVideosCard wd={"175px"} ht={"100px"} /> */}
-          {/* <RelatedVideosCard wd={"175px"} ht={"100px"} /> */}
+        <div style={{ margin: "1rem auto" , padding:"0 0rem "}}>
+        {data && (
+          <RelatedVideosCard wd={"149px"} ht={"60px"} id={data.id}  fun={toggle}/>)}
+        
         </div>
       </div>
       {/* ))} */}

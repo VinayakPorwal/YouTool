@@ -165,21 +165,21 @@ function DesignCard2(props) {
     ChannelById();
     // Channelimg = channelData.items[0].snippet.thumbnails.medium.url;
 
-    console.log(props.toggle);
-    if (props.toggle === 3) {
-      setStyling({
-        height: "60vw",
-        width: "85vw",
-      });
-    } else {
-      setStyling({
-        width: props.wd,
-        height: "fit-content",
-      });
-    }
+    // console.log(props.toggle);
+    // if (props.toggle === 3) {
+    //   setStyling({
+    //     height: "60vw",
+    //     width: "85vw",
+    //   });
+    // } else {
+    //   setStyling({
+    //     width: props.wd,
+    //     height: "fit-content",
+    //   });
+    // }
 
     download();
-  }, []);
+  }, [data]);
 
   const minW = "310px";
   const minH = "170px";
@@ -210,7 +210,7 @@ function DesignCard2(props) {
             <Text
               fontSize="xs"
               className="duration"
-              style={{ width: props.wd }}
+              style={{ width: props.wd, minWidth: "290px" }}
             >
               {" "}
               <span>{StringWithColons(data.duration)}</span>
@@ -292,50 +292,34 @@ function DesignCard2(props) {
           }}
         >
           {/* -------------------------Extend View Open in Large--------------------*/}
-          <i
-            className="fa fa-expand"
-            title="Open In Large"
-            onClick={() => {
-              props.fun(data.id);
-              var watchData = JSON.parse(localStorage.getItem("WatchHistory"));
-              if (watchData) {
-                var newArr = watchData.filter((watchData) => {
-                  return watchData.id !== data.id;
-                });
-                if (watchData.length !== newArr.length) {
-                  console.log("Already Exists");
-                  return;
-                } else {
-                  watchData.unshift({
-                    id: data.id,
-                  });
-                  if (watchData.length > 10) {
-                    watchData = watchData.slice(0, 10);
-                  }
-                  localStorage.setItem(
-                    "WatchHistory",
-                    JSON.stringify(watchData)
-                  );
-                }
-              } else {
-                watchData = [];
-                watchData.unshift({
-                  id: data.id,
-                });
-                localStorage.setItem("WatchHistory", JSON.stringify(watchData));
-                console.log("Key not found");
-              }
-            }}
-          ></i>
+
+          {props.toggle !== 3 && (
+            <i
+              className="fa fa-expand"
+              title="Open In Large"
+              onClick={() => {
+                props.fun(data.id);
+              }}
+            ></i>
+          )}
 
           {/* -------------------------Download Button----------------------  */}
           <Menu>
             <MenuButton onClick={download} title="Download">
               {/* <i className="fa fa-download"></i> */}
-              <i
-                className="fa fa-arrow-down"
-                style={{ borderBottom: "2px solid white" }}
-              ></i>
+              {props.toggle !== 3 ? (
+                <i
+                  className="fa fa-arrow-down"
+                  style={{ borderBottom: "2px solid white" }}
+                ></i>
+              ) : (
+                <div style={{ width: "40px", textAlign: "end" }}>
+                  <i
+                    className="fa fa-arrow-down"
+                    style={{ borderBottom: "2px solid white" }}
+                  ></i>
+                </div>
+              )}
             </MenuButton>
             <MenuList style={{ height: "50vh", overflow: "scroll" }}>
               {Download &&
@@ -357,8 +341,8 @@ function DesignCard2(props) {
                           downlaoadData.push({
                             id: data.id,
                           });
-                          if (downlaoadData.length>10){
-                            downlaoadData = downlaoadData.slice(0,10)
+                          if (downlaoadData.length > 10) {
+                            downlaoadData = downlaoadData.slice(0, 10);
                           }
 
                           localStorage.setItem(
@@ -403,24 +387,27 @@ function DesignCard2(props) {
           width: props.wd,
           minWidth: minW,
           padding: "0 15px 0 0",
+          justifyContent: "space-between",
         }}
       >
-        <div>
-          {/* --------------------------------- Channel logo --------------------------- */}
-          <Avatar mt="2" size="sm" name="Dan Abrahmov" src={Channelimg} />
-        </div>
-        <div style={{ width: "85%" }}>
-          {/* --------------------------------- Channel Title --------------------------- */}
-          <div className="channelName" title={data.channelTitle}>
-            {data.channelTitle}
+        <div style={{ display: "flex" }}>
+          <div>
+            {/* --------------------------------- Channel logo --------------------------- */}
+            <Avatar mt="2" size="sm" name="Dan Abrahmov" src={Channelimg} />
           </div>
-          {/* --------------------------------- Title --------------------------- */}
-          <div className="heading title" title={title}>
-            {title}
+          <div style={{ width: "85%" }}>
+            {/* --------------------------------- Channel Title --------------------------- */}
+            <div className="channelName" title={data.channelTitle}>
+              {data.channelTitle}
+            </div>
+            {/* --------------------------------- Title --------------------------- */}
+            <div className="heading title" title={title}>
+              {title}
+            </div>
           </div>
         </div>
         {/* ----------------------Details Acordian button-----------------  */}
-        <div style={{ width: "5%", textAlign: "end" }}>
+        <div style={{}}>
           <Menu>
             {props.toggle !== 3 && (
               <MenuButton
@@ -602,7 +589,7 @@ function DesignCard2(props) {
         </div>
       </div>
 
-      {/* ---------------------------------------Full Video View---------------------------------  */}
+      {/* --------------=========================-Full Video View========================------------------  */}
       {props.toggle === 3 && (
         <div
           id={`${data.id}`}
