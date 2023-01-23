@@ -118,8 +118,8 @@ function History(props) {
     return date;
   }
   useEffect(() => {
-    downloadData();
-    console.log(downloads,data)
+    // downloadData();
+    console.log(downloads, data);
   }, []);
   return (
     <div style={{ minHeight: "82vh" }}>
@@ -135,6 +135,7 @@ function History(props) {
       >
         Watch History
       </Heading>
+     
       {loading && (
         <div
           className="loadingHamster"
@@ -169,10 +170,8 @@ function History(props) {
           </div>
         </div>
       )}
-      { data &&
-        downloads.
-        slice(0, data.length).
-        map((data, i) => (
+      {data &&
+        downloads.slice(0, data.length).map((data, i) => (
           <Card
             direction={{ base: "column", sm: "row" }}
             variant="none"
@@ -183,7 +182,7 @@ function History(props) {
           >
             <div
               className=""
-              style={{ display: "flex" , width:"-webkit-fill-available"}}
+              style={{ display: "flex", width: "-webkit-fill-available" }}
               // onMouseOver={() => {
               //   document.getElementById(`${"data.id"}hover`).style.display =
               //     "flex";
@@ -243,7 +242,12 @@ function History(props) {
                     justifyContent: "space-between",
                   }}
                 >
-                  <div style={{ maxWidth: "600px" ,  width: "-webkit-fill-available", }}>
+                  <div
+                    style={{
+                      maxWidth: "600px",
+                      width: "-webkit-fill-available",
+                    }}
+                  >
                     {/* --------------------------------- Title --------------------------- */}
                     <div
                       className="heading title"
@@ -262,7 +266,7 @@ function History(props) {
                     <i
                       className="fa fa-history "
                       title="More Details"
-                      style={{ margin: "0",color:"#5e5" }}
+                      style={{ margin: "0", color: "#5e5" }}
                       // id={`${data.id}button`}
                     ></i>
                   </div>
@@ -293,7 +297,7 @@ function History(props) {
             </div>
           </Card>
         ))}
-         {!data && (
+      {!data && (
         <Heading
           size="md"
           my="3"

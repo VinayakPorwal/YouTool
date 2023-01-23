@@ -13,6 +13,15 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
 } from "@chakra-ui/react";
 import "./App.css";
 import DesignCard2 from "./DesignCards/DesignCard2";
@@ -256,6 +265,34 @@ function App() {
     trending();
   }, []);
 
+  function SearchHistory() {
+    var searchData = JSON.parse(localStorage.getItem("SearchHistory"));
+    if (searchData) {
+      var newArr = searchData.filter((searchData) => {
+        return searchData.id !== input;
+      });
+      if (searchData.length !== newArr.length) {
+        console.log("Already Exists");
+        return;
+      } else {
+        searchData.unshift({
+          id: input,
+        });
+        if (searchData.length > 10) {
+          searchData = searchData.slice(0, 10);
+        }
+        localStorage.setItem("SearchHistory", JSON.stringify(searchData));
+      }
+    } else {
+      searchData = [];
+      searchData.unshift({
+        id: input,
+      });
+      localStorage.setItem("SearchHistory", JSON.stringify(searchData));
+      console.log("Key not found");
+    }
+  }
+
   useEffect(() => {
     if (check === 1) {
       setTab("Search by : Keyword");
@@ -270,6 +307,7 @@ function App() {
 
   const navigate = useNavigate();
   const [logo, setLogo] = useState(false);
+  const [inputWd, setInputWd] = useState();
   return (
     <>
       {/* <Container
@@ -323,6 +361,7 @@ function App() {
               position: "sticky",
               zIndex: "2",
               top: "0px",
+              height: "10vh",
               background: "var(--secondaryBlack)",
               justifyContent: "space-around",
               alignItems: "center",
@@ -348,50 +387,84 @@ function App() {
             )}
             {/* ----------------------- Input Group---- ---------------- */}
             <div className="InputGroup">
-              <Menu>
-                <MenuButton style={{ width: "-webkit-fill-available" }}>
-                  <input
-                    className="input"
-                    placeholder={placeHolder}
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onClick={() => {
-                      console.log("in");
-                    }}
-                  />
-                </MenuButton>
+              <div
+                id="historybtn"
+                style={{
+                  position: "absolute",
+                  top: "8vh",
+                  left: "0px",
+                  // display: "flex",
+                  // justifyContent: "center",
+                  width: "90%",
+                  // height: "20vh",
+                  zIndex: "3",
+                }}
+              >
                 {seachHistory && (
-                  <MenuList
-                    w={"60vw"}
-                    maxW={"600px"}
-                    bg={"var(--secondaryBlack)"}
-                    variant="none"
-                    outline={"none"}
+                  <div
+                    id="S_history"
                     style={{
                       maxHeight: "50vh",
-                      width: "-webkit-fill-available",
+                      color: "white",
                       overflow: "scroll",
+                      maxWidth: "600px",
+                      padding: "0.5rem 1rem",
+                      background: "var(--secondaryBlack)",
+                      lineHeight: "2.5",
                     }}
                   >
                     {seachHistory &&
                       seachHistory.map((search, i) => (
-                        <MenuItem
-                          style={{ wordBreak: "break-all", fontSize: "small" }}
+                        <div
+                          style={{
+                            wordBreak: "break-all",
+                            fontSize: "small",
+                            background: "var(--secondaryBlack)",
+                          }}
                           key={i}
-                          bg={"var(--secondaryBlack)"}
                         >
                           <i
                             className="fa fa-history "
                             title="More Details"
-                            style={{ margin: "0 0.5rem 0 0", color: "#5e5" }}
+                            style={{
+                              margin: "0 0.5rem 0 0",
+                              color: "#5e5",
+                            }}
                             // id={`${data.id}button`}
                           ></i>
                           {search.id}
-                        </MenuItem>
+                        </div>
                       ))}
-                  </MenuList>
+                  </div>
                 )}
-              </Menu>
+              </div>
+
+              <input
+                className="input"
+                id="inpgrp"
+                placeholder={placeHolder}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    document.getElementById("historybtn").style.display =
+                      "none";
+                    keySearch(LinkCheck(input));
+                    SearchHistory();
+                  }
+                }}
+                onClick={() => {
+                  console.log("in");
+
+                  var inp = document.getElementById("inpgrp").offsetWidth;
+                  // document.getElementById("S_history").style.width = inp + "px";
+                  // document.getElementById("historybtn").click();
+                  document.getElementById("historybtn").style.display = "block";
+
+                  console.log(inp, "inx");
+                  setInputWd(inp);
+                }}
+              />
               {/* <button
               style={{
                 width: "50px",
@@ -408,41 +481,10 @@ function App() {
                 onClick={async () => {
                   // keySearch();
                   // await LinkCheck(input);
-                  keySearch(LinkCheck(input));
+                  document.getElementById("historybtn").style.display = "none";
 
-                  var searchData = JSON.parse(
-                    localStorage.getItem("SearchHistory")
-                  );
-                  if (searchData) {
-                    var newArr = searchData.filter((searchData) => {
-                      return searchData.id !== input;
-                    });
-                    if (searchData.length !== newArr.length) {
-                      console.log("Already Exists");
-                      return;
-                    } else {
-                      searchData.unshift({
-                        id: input,
-                      });
-                      if (searchData.length > 10) {
-                        searchData = searchData.slice(0, 10);
-                      }
-                      localStorage.setItem(
-                        "SearchHistory",
-                        JSON.stringify(searchData)
-                      );
-                    }
-                  } else {
-                    searchData = [];
-                    searchData.unshift({
-                      id: input,
-                    });
-                    localStorage.setItem(
-                      "SearchHistory",
-                      JSON.stringify(searchData)
-                    );
-                    console.log("Key not found");
-                  }
+                  keySearch(LinkCheck(input));
+                  SearchHistory();
                 }}
               >
                 <i className="fa fa-search"></i>
@@ -463,7 +505,12 @@ function App() {
           </Card>
 
           {/* --------------------Display Results------ ------------- */}
-          <div className="CardGroup">
+          <div
+            className="CardGroup"
+            onClick={() => {
+              document.getElementById("historybtn").style.display = "none";
+            }}
+          >
             {/* --------- Skeleton replace Loader-------------- */}
             {loading && (
               <div
