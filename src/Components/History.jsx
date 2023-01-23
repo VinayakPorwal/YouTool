@@ -118,7 +118,7 @@ function History(props) {
     return date;
   }
   useEffect(() => {
-    // downloadData();
+    downloadData();
     console.log(downloads, data);
   }, []);
   return (
@@ -135,7 +135,7 @@ function History(props) {
       >
         Watch History
       </Heading>
-     
+
       {loading && (
         <div
           className="loadingHamster"

@@ -419,9 +419,13 @@ function App() {
                           style={{
                             wordBreak: "break-all",
                             fontSize: "small",
+                            cursor: "pointer",
                             background: "var(--secondaryBlack)",
                           }}
                           key={i}
+                          onClick={() => {
+                            setInput(search.id);
+                          }}
                         >
                           <i
                             className="fa fa-history "
