@@ -391,6 +391,7 @@ function App() {
                 id="historybtn"
                 style={{
                   position: "absolute",
+                  display:"none",
                   top: "8vh",
                   left: "0px",
                   // display: "flex",
@@ -410,17 +411,18 @@ function App() {
                       maxWidth: "600px",
                       padding: "0.5rem 1rem",
                       background: "var(--secondaryBlack)",
-                      lineHeight: "2.5",
                     }}
                   >
                     {seachHistory &&
                       seachHistory.map((search, i) => (
                         <div
                           style={{
-                            wordBreak: "break-all",
                             fontSize: "small",
                             cursor: "pointer",
                             background: "var(--secondaryBlack)",
+                            display:"flex",
+                            alignItems:"center"
+
                           }}
                           key={i}
                           onClick={() => {
@@ -436,7 +438,10 @@ function App() {
                             }}
                             // id={`${data.id}button`}
                           ></i>
+                          <p className="searchHistoryP">
+
                           {search.id}
+                          </p>
                         </div>
                       ))}
                   </div>

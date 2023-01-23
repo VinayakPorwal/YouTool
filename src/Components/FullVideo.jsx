@@ -53,8 +53,8 @@ function FullVideo(props) {
               chanFun={props.PassChannel}
               // wd={"69vw"}
               // ht={"39vw"}
-              wd={"49vw"}
-              ht={"28vw"}
+              wd={"57vw"} //49
+              ht={"32vw"} //28
               info={{
                 date: data.snippet.publishedAt,
                 url: data.snippet.thumbnails.medium.url,

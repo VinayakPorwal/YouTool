@@ -140,10 +140,10 @@ function DesignCard2(props) {
     var button = document.getElementById(`${data.id}button`);
     if (metadata.style.display === "none") {
       metadata.style.display = "block";
-      button.style.transform = "rotate(0)";
+      button.style.transform = "rotate(180deg)";
     } else {
       metadata.style.display = "none";
-      button.style.transform = "rotate(180deg)";
+      button.style.transform = "rotate(0deg)";
     }
     console.log("done");
   }
@@ -395,16 +395,31 @@ function DesignCard2(props) {
             {/* --------------------------------- Channel logo --------------------------- */}
             <Avatar mt="2" size="sm" name="Dan Abrahmov" src={Channelimg} />
           </div>
-          <div style={{ width: "85%" }}>
-            {/* --------------------------------- Channel Title --------------------------- */}
-            <div className="channelName" title={data.channelTitle}>
-              {data.channelTitle}
+          {props.toggle === 3 ? (
+            <div>
+              {" "}
+              {/* --------------------------------- Channel Title --------------------------- */}
+              <div className="channelName" title={data.channelTitle}>
+                {data.channelTitle}
+              </div>
+              {/* --------------------------------- Title --------------------------- */}
+              <div className="heading title" title={title}>
+                {title}
+              </div>
             </div>
-            {/* --------------------------------- Title --------------------------- */}
-            <div className="heading title" title={title}>
-              {title}
+          ) : (
+            <div style={{ width: "85%" }}>
+              {" "}
+              {/* --------------------------------- Channel Title --------------------------- */}
+              <div className="channelName" title={data.channelTitle}>
+                {data.channelTitle}
+              </div>
+              {/* --------------------------------- Title --------------------------- */}
+              <div className="heading title" title={title}>
+                {title}
+              </div>
             </div>
-          </div>
+          )}
         </div>
         {/* ----------------------Details Acordian button-----------------  */}
         <div style={{}}>
@@ -423,7 +438,7 @@ function DesignCard2(props) {
                 }}
               >
                 <i
-                  className="fa fa-chevron-up detailsButton"
+                  className="fa fa-chevron-down detailsButton"
                   title="More Details"
                   id={`${data.id}button`}
                 ></i>
@@ -431,7 +446,7 @@ function DesignCard2(props) {
             )}
             {props.toggle === 3 && (
               <i
-                className="fa fa-chevron-up detailsButton"
+                className="fa fa-chevron-down detailsButton"
                 title="More Details"
                 onClick={Details}
                 id={`${data.id}button`}
@@ -600,12 +615,6 @@ function DesignCard2(props) {
             padding: "1vw 1vw",
           }}
         >
-          {/* ---------------------------- Published Date ---------------------------- */}
-          <div className="heading">
-            <div className="author" style={{ padding: "0" }}>
-              <span className="name">Published At : </span> {ActualDate}
-            </div>
-          </div>
           {/* ---------------------------- like and Comment Count -------------------- */}
           <div
             style={{
@@ -654,6 +663,13 @@ function DesignCard2(props) {
               <Text fontSize="xs"> {data.description}</Text>
             </>
           )}
+          {/* ---------------------------- Published Date ---------------------------- */}
+          <div className="heading">
+            <div className="author" style={{ padding: "0" }}>
+              <span className="name">Published At : </span> {ActualDate}
+            </div>
+          </div>
+
           {/* -------------------------Copy Link buttons-----------------------  */}
           {/* ---------------------------- Channel Link ------------------------ */}
           <div
