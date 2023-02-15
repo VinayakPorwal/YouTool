@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  Image,
-  Stack,
-  Heading,
-  Text,
-  Button,
-  Avatar,
-} from "@chakra-ui/react";
+import { Card, CardBody, Heading, Text } from "@chakra-ui/react";
 function Downlods(props) {
   var data = JSON.parse(localStorage.getItem("Downloads"));
   const [downloads, setDownloads] = useState([]);

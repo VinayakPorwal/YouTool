@@ -4,25 +4,7 @@ import Component from "./Card";
 import { Container } from "@chakra-ui/react";
 import Home from "./Home";
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  CardBody,
-  Card,
-  Text,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
-} from "@chakra-ui/react";
+import { Button, CardBody, Card, Text } from "@chakra-ui/react";
 import "./App.css";
 import DesignCard2 from "./DesignCards/DesignCard2";
 import FullVideo from "./Components/FullVideo";
@@ -51,13 +33,11 @@ function App() {
   const count = 16;
   var mainData = [];
   var recData = [];
-  // const api_key = "AIzaSyC6iuW5Oz08bv_e8pGIRTkyERDlTH5mWAc";
-  // const api_key2 = "AIzaSyC6iuW5Oz08bv_e8pGIRTkyERDlTH5mWAc";
-  // const api_key = "AIzaSyBeeesEJBFwXveug3nhfplFjuh5EDzdqRs";
-  // const api_key2 = "AIzaSyBeeesEJBFwXveug3nhfplFjuh5EDzdqRs";
-  const api_key = "AIzaSyB8uW_Tr7djLzI-ZCZyxgb8S8U3u9VcFu4";
-  const api_key2 = "AIzaSyB8uW_Tr7djLzI-ZCZyxgb8S8U3u9VcFu4";
-  // const api_key2 = "AIzaSyC6Q6QFsLZWlEJfmOUYgEXbh19m9NVIjpw";
+
+  // const api_key2 = "AIzaSyAzRnur4oDtGtMBiY2vbQELsCRUsG7Wh8o";
+  const api_key2 = "AIzaSyCGxnfmq4ShLqvHBMzRLBk1FgHX_t3jRqQ";
+  // const api_key = "AIzaSyB8uW_Tr7djLzI-ZCZyxgb8S8U3u9VcFu4";
+  const api_key = "AIzaSyCGxnfmq4ShLqvHBMzRLBk1FgHX_t3jRqQ";
 
   // const loading = document.getElementById("loading");
 
@@ -258,7 +238,7 @@ function App() {
   }
 
   async function home() {
-    console.log("home");
+    
     setCheck(4);
   }
   useEffect(() => {
@@ -346,13 +326,6 @@ function App() {
           className="MainContainer"
           style={{ width: "-webkit-fill-available" }}
         >
-          {/* <Heading
-            size="lg"
-            style={{ textAlign: "center", margin: "2vh", color: "white" }}
-          >
-            Search Your Youtube Video
-          </Heading> */}
-
           {/* ------------------- Search Group --------------- */}
           <div
             style={{
@@ -391,7 +364,7 @@ function App() {
                 id="historybtn"
                 style={{
                   position: "absolute",
-                  display:"none",
+                  display: "none",
                   top: "8vh",
                   left: "0px",
                   // display: "flex",
@@ -420,9 +393,8 @@ function App() {
                             fontSize: "small",
                             cursor: "pointer",
                             background: "var(--secondaryBlack)",
-                            display:"flex",
-                            alignItems:"center"
-
+                            display: "flex",
+                            alignItems: "center",
                           }}
                           key={i}
                           onClick={() => {
@@ -438,10 +410,7 @@ function App() {
                             }}
                             // id={`${data.id}button`}
                           ></i>
-                          <p className="searchHistoryP">
-
-                          {search.id}
-                          </p>
+                          <p className="searchHistoryP">{search.id}</p>
                         </div>
                       ))}
                   </div>
@@ -624,7 +593,18 @@ function App() {
             {/* -------------------------------Trending Section ---------------------------- */}
             {check === 4 && (
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route
+                  path="/"
+                  element={
+                    <Home
+                      array={array}
+                      check={check}
+                      toggle3={toggle3}
+                      api_key={api_key2}
+                      PassChannel={PassChannel}
+                    />
+                  }
+                />
                 <Route
                   path="/Downloads"
                   element={<Downlods wd={"100%"} ht={"60px"} />}
